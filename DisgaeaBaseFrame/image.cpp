@@ -176,8 +176,8 @@ D2D 사용 렌더 함수
 //기본 출력
 void image::render(float opacity)
 {
-	float posX = 0;
-	float posY = 0;
+	float posX = CAMERAMANAGER->getX() + 0;
+	float posY = CAMERAMANAGER->getY() + 0;
 
 	if (_imageInfo->pBitmap != NULL)
 	{
@@ -194,8 +194,8 @@ void image::render(float opacity)
 //원래 크기 출력
 void image::render(float destX, float destY, float opacity)
 {
-	float posX = destX;
-	float posY = destY;
+	float posX = CAMERAMANAGER->getX() + destX;
+	float posY = CAMERAMANAGER->getY() + destY;
 
 	if (_imageInfo->pBitmap != NULL)
 	{
@@ -211,12 +211,11 @@ void image::render(float destX, float destY, float opacity)
 //변형 크기 출력
 void image::render(float destX, float destY, int showWidth, int showHeight, float opacity)
 {
-	float posX = destX;
-	float posY = destY;
+	float posX = CAMERAMANAGER->getX() + destX;
+	float posY = CAMERAMANAGER->getY() + destY;
 
 	if (_imageInfo->pBitmap != NULL)
 	{
-
 		D2D1_RECT_F dxArea = RectF(posX, posY, posX + showWidth, posY + showHeight);
 		D2D1_RECT_F dxArea2 = RectF(0, 0, _imageInfo->width, _imageInfo->height);
 		DIRECT2D->_renderTarget->DrawBitmap(_imageInfo->pBitmap, dxArea, opacity,
@@ -227,13 +226,11 @@ void image::render(float destX, float destY, int showWidth, int showHeight, floa
 //원래 크기로 잘라서 출력
 void image::render(float destX, float destY, float sourX, float sourY, int sourWidth, int sourHeight, float opacity)
 {
-	float posX = destX;
-	float posY = destY;
+	float posX = CAMERAMANAGER->getX() + destX;
+	float posY = CAMERAMANAGER->getY() + destY;
 
 	if (_imageInfo->pBitmap != NULL)
 	{
-		
-
 		D2D1_RECT_F dxArea = RectF(posX, posY, posX + sourWidth, posY + sourHeight);
 		D2D1_RECT_F dxArea2 = RectF(sourX, sourY, sourX + sourWidth, sourY + sourHeight);
 		DIRECT2D->_renderTarget->DrawBitmap(_imageInfo->pBitmap, dxArea, opacity,
@@ -243,10 +240,10 @@ void image::render(float destX, float destY, float sourX, float sourY, int sourW
 }
 
 //변형 크기로 잘라서 출력
-void image::render(float destX, float destY, int showWidth, int showHeight, float sourX, float sourY, int sourWidth, int sourHeight, float opacity = 1.0f)
+void image::render(float destX, float destY, int showWidth, int showHeight, float sourX, float sourY, int sourWidth, int sourHeight, float opacity)
 {
-	float posX = destX;
-	float posY = destY;
+	float posX = CAMERAMANAGER->getX() + destX;
+	float posY = CAMERAMANAGER->getY() + destY;
 
 	if (_imageInfo->pBitmap != NULL)
 	{
@@ -272,13 +269,11 @@ void image::render(float destX, float destY, int showWidth, int showHeight, floa
 //원래 크기 프레임렌더
 void image::frameRender(float destX, float destY, int currentFrameX, int currentFrameY, float opacity)
 {
-	float posX = destX;
-	float posY = destY;
+	float posX = CAMERAMANAGER->getX() + destX;
+	float posY = CAMERAMANAGER->getY() + destY;
 
 	if (_imageInfo->pBitmap != NULL)
 	{
-		
-
 		D2D1_RECT_F dxArea = RectF(posX, posY, posX + _imageInfo->frameWidth, posY + _imageInfo->frameHeight);
 		D2D1_RECT_F dxArea2 = RectF(currentFrameX * _imageInfo->frameWidth, currentFrameY * _imageInfo->frameHeight,
 			(currentFrameX + 1) * _imageInfo->frameWidth, (currentFrameY + 1) * _imageInfo->frameHeight);
@@ -290,12 +285,11 @@ void image::frameRender(float destX, float destY, int currentFrameX, int current
 //변형 크기 프레임렌더
 void image::frameRender(float destX, float destY, int showWidth, int showHeight, int currentFrameX, int currentFrameY, float opacity)
 {
-	float posX = destX;
-	float posY = destY;
+	float posX = CAMERAMANAGER->getX() + destX;
+	float posY = CAMERAMANAGER->getY() + destY;
 
 	if (_imageInfo->pBitmap != NULL)
-	{
-		
+	{		
 		D2D1_RECT_F dxArea = RectF(posX, posY, posX + showWidth, posY + showHeight);
 		D2D1_RECT_F dxArea2 = RectF(currentFrameX * _imageInfo->frameWidth, currentFrameY * _imageInfo->frameHeight,
 			(currentFrameX + 1) * _imageInfo->frameWidth, (currentFrameY + 1) * _imageInfo->frameHeight);

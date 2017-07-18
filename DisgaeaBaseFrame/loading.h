@@ -21,11 +21,21 @@ struct tagImageResource
 	int frameX, frameY;
 };
 
+struct tagSoundResource
+{
+	string keyName;
+	const CHAR* fileName;
+	bool bgm;
+	bool loop;
+};
+
 class loadItem
 {
 private:
 	LOAD_KIND _kind;
 	tagImageResource _imageResource;
+	tagSoundResource _soundResource;
+	
 
 public:
 	
@@ -34,11 +44,13 @@ public:
 
 	HRESULT initForFrameImage(string keyName, const WCHAR* fileName, int width, int height,
 		int frameX, int frameY);
+	HRESULT initForSound(string keyName, const CHAR* soundName, bool bgm = FALSE, bool loop = FALSE);
 
 
 	LOAD_KIND getLoadingKind(void) { return _kind; }
 
 	tagImageResource getImageResource(void) { return _imageResource; }
+	tagSoundResource getSoundResource(void) { return _soundResource; }
 
 	loadItem();
 	~loadItem();
@@ -58,6 +70,8 @@ private:
 
 	int				_currentGauge;
 
+	WCHAR _loadingFileName[64];
+
 public:
 	HRESULT init();
 	void release();
@@ -68,7 +82,7 @@ public:
 	void loadImage(string keyName, const WCHAR* fileName, int width, int height);
 	
 	void loadFrameImage(string keyName, const WCHAR* fileName, int width, int height, int frameX, int frameY);
-	
+	void loadSound(string key, const CHAR* soundName, BOOL bgm = FALSE, BOOL loop = FALSE);
 
 	BOOL loadingDone();
 

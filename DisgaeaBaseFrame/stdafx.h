@@ -42,6 +42,7 @@
 #include "txtData.h"
 #include "database.h"
 #include "direct2DManager.h"
+#include "cameraManager.h"
 
 using namespace std;
 using namespace OMEGA_UTIL;
@@ -52,8 +53,8 @@ using namespace D2D1;
 //==================================
 
 #define WINNAME (LPTSTR)(TEXT("Disgaea"))
-#define WINSTARTX 50			//윈도우 창 시작지점 X좌표
-#define WINSTARTY 50			//윈도우 창 시작지점 Y좌표
+#define WINSTARTX 0			//윈도우 창 시작지점 X좌표
+#define WINSTARTY 0			//윈도우 창 시작지점 Y좌표
 #define WINSIZEX  1600			//윈도우 창 가로크기
 #define WINSIZEY  900			//윈도우 창 세로크기
 #define WINSTYLE WS_CAPTION | WS_SYSMENU
@@ -65,11 +66,12 @@ using namespace D2D1;
 #define TIMEMANAGER timeManager::getSingleton()
 #define EFFECTMANAGER effectManager::getSingleton()
 #define SOUNDMANAGER soundManager::getSingleton()
-#define SCENEMANAGER sceneManager::getSingleton()
 #define KEYANIMANAGER keyAniManager::getSingleton()
 #define TXTDATA txtData::getSingleton()
 #define DATABASE database::getSingleton()
 #define DIRECT2D direct2DManager::getSingleton()
+#define SCENEMANAGER sceneManager::getSingleton()
+#define CAMERAMANAGER cameraManager::getSingleton()
 
 //==================================
 // 매크로 함수 ##

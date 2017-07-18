@@ -27,6 +27,31 @@ HRESULT progressBar::init(int x, int y, int width, int height)
 	return S_OK;
 }
 
+//HRESULT progressBar::init(string topImage, string bottomImage, float x, float y, int width, int height)
+//{
+//	_x = x;
+//	_y = y;
+//
+//	_rcProgress = RectMake(x, y, width, height);
+//
+//	CHAR strTopImageName[128];
+//	CHAR strBottomImageName[128];
+//
+//	ZeroMemory(strTopImageName, sizeof(strTopImageName));
+//	ZeroMemory(strBottomImageName, sizeof(strBottomImageName));
+//
+//	sprintf_s(strTopImageName, "Image/Loading/%s.png", topImage.c_str());
+//	sprintf_s(strBottomImageName, "Image/Loading/%s.png", bottomImage.c_str());
+//
+//	//MultiByteToWideChar(CP_ACP, 0, strTopImageName, -1,  )
+//
+//	_progressBarBottom = IMAGEMANAGER->addImage(bottomImage.c_str(), strBottomImageName, width, height);
+//	_progressBarTop = IMAGEMANAGER->addImage(topImage.c_str(), strTopImageName, width, height);
+//
+//	_width = _progressBarTop->getWidth();
+//
+//	return S_OK;
+//}
 HRESULT progressBar::init(char* topImage, char* bottomImage, float x, float y, int width, int height)
 {
 	_x = x;
@@ -34,20 +59,23 @@ HRESULT progressBar::init(char* topImage, char* bottomImage, float x, float y, i
 
 	_rcProgress = RectMake(x, y, width, height);
 
-	char strTopImageName[128];
-	char strBottomImageName[128];
+	wchar_t strTopImageName[128];
+	wchar_t strBottomImageName[128];
 
 	ZeroMemory(strTopImageName, sizeof(strTopImageName));
 	ZeroMemory(strBottomImageName, sizeof(strBottomImageName));
 
-	sprintf(strTopImageName, "%s.bmp", topImage);
-	sprintf(strBottomImageName, "%s.bmp", bottomImage);
+	MultiByteToWideChar(CP_ACP, 0, bottomImage, -1, strBottomImageName, sizeof(strTopImageName));
+	MultiByteToWideChar(CP_ACP, 0, topImage, -1, strTopImageName, sizeof(strTopImageName));
 
-	//010-9425-6266 ºÀ±â³²
-	//010-4822-6515 ÁØth¤Ã
+	wchar_t strTopImageName2[128];
+	wchar_t strBottomImageName2[128];
 
-	//_progressBarBottom = IMAGEMANAGER->addImage(bottomImage, strBottomImageName, x, y, width, height, true, RGB(255, 0, 255));
-	//_progressBarTop = IMAGEMANAGER->addImage(topImage, strTopImageName, x, y, width, height, true, RGB(255, 0, 255));
+	swprintf_s(strTopImageName2, L"Image/Loading/%s.png", strTopImageName);
+	swprintf_s(strBottomImageName2, L"Image/Loading/%s.png", strBottomImageName);
+
+	_progressBarBottom = IMAGEMANAGER->addImage(bottomImage, strBottomImageName2, width, height);
+	_progressBarTop = IMAGEMANAGER->addImage(topImage, strTopImageName2, width, height);
 
 	_width = _progressBarTop->getWidth();
 
@@ -79,13 +107,15 @@ void progressBar::render()
 	//	0, 0,
 	//	_width, _progressBarTop->getHeight());
 
-	/*_progressBarBottom->render(getMemDC(), _rcProgress.left, _y, 0, 0,
+	_progressBarBottom->render(_rcProgress.left, _y, 0, 0,
 		_progressBarBottom->getWidth(),
-		_progressBarBottom->getHeight());
+		_progressBarBottom->getHeight(), 1);
 
-	_progressBarTop->render(getMemDC(), _rcProgress.left, _y, 0, 0,
+	_progressBarTop->render(_rcProgress.left, _y, 0, 0,
 		_width,
-		_progressBarTop->getHeight());*/
+		_progressBarTop->getHeight(), 1);
+
+
 
 }
 

@@ -58,6 +58,15 @@
     <Filter Include="Disgaea">
       <UniqueIdentifier>{eefbd589-e95b-4818-93ee-cd0ca4ebca6e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Disgaea\MapToolScene">
+      <UniqueIdentifier>{b6d525af-0c15-4299-989f-827a406b7434}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Disgaea\MenuScene">
+      <UniqueIdentifier>{b6c6d342-2340-419d-9dbe-61d9a18bf9fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Disgaea\LoadingScene">
+      <UniqueIdentifier>{95ef20ff-59b8-49f6-8688-5b8e8084d14b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -138,6 +147,18 @@
     <ClInclude Include="direct2DManager.h">
       <Filter>2DGameFramework\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="loadingScene.h">
+      <Filter>Disgaea\LoadingScene</Filter>
+    </ClInclude>
+    <ClInclude Include="menuScene.h">
+      <Filter>Disgaea\MenuScene</Filter>
+    </ClInclude>
+    <ClInclude Include="mapToolScene.h">
+      <Filter>Disgaea\MapToolScene</Filter>
+    </ClInclude>
+    <ClInclude Include="cameraManager.h">
+      <Filter>2DGameFramework\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -204,6 +225,18 @@
       <Filter>Disgaea</Filter>
     </ClCompile>
     <ClCompile Include="direct2DManager.cpp">
+      <Filter>2DGameFramework\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="loadingScene.cpp">
+      <Filter>Disgaea\LoadingScene</Filter>
+    </ClCompile>
+    <ClCompile Include="menuScene.cpp">
+      <Filter>Disgaea\MenuScene</Filter>
+    </ClCompile>
+    <ClCompile Include="mapToolScene.cpp">
+      <Filter>Disgaea\MapToolScene</Filter>
+    </ClCompile>
+    <ClCompile Include="cameraManager.cpp">
       <Filter>2DGameFramework\Manager</Filter>
     </ClCompile>
   </ItemGroup>

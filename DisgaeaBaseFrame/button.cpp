@@ -12,11 +12,10 @@ button::~button()
 }
 
 HRESULT button::init(const char* imageName, int x, int y,
-	POINT btnDownFramePoint, POINT btnUpFramePoint,
-	CALLBACK_FUNCTION cbFunction)
+	POINT btnDownFramePoint, POINT btnUpFramePoint)
 {
-	_callbackFunction = static_cast<CALLBACK_FUNCTION>(cbFunction);
-
+	//_callbackFunction = static_cast<CALLBACK_FUNCTION>(cbFunction);
+	_push = false;
 	_direction = BUTTONDIRECTION_NULL;
 
 	_x = x;
@@ -51,11 +50,15 @@ void button::update(void)
 		else if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON) && _direction == BUTTONDIRECTION_DOWN)
 		{
 			_direction = BUTTONDIRECTION_UP;
-			_callbackFunction();
+			_push = true;
 			
 		}
 	}
-	else _direction = BUTTONDIRECTION_NULL;
+	else
+	{
+		_direction = BUTTONDIRECTION_NULL;
+		_push = false;
+	}
 }
 
 void button::render(void)

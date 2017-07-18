@@ -1,6 +1,8 @@
 #pragma once
 #include "gameNode.h"
-
+#include "loadingScene.h"
+#include "menuScene.h"
+#include "mapToolScene.h"
 
 
 class disgaea : public gameNode

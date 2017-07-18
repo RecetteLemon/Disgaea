@@ -16,7 +16,10 @@ HRESULT disgaea::init(void)
 {
 	gameNode::init(true);
 
-	
+	SCENEMANAGER->addScene("LoadingScene", new loadingScene);
+	SCENEMANAGER->addScene("MenuScene", new menuScene);
+	SCENEMANAGER->addScene("MapToolScene", new mapToolScene);
+	SCENEMANAGER->changeScene("LoadingScene");
 
 
 	return S_OK;
@@ -25,13 +28,8 @@ HRESULT disgaea::init(void)
 //메모리 해제 함수
 void disgaea::release(void)
 {
-	
-	
-
-
 	gameNode::release();
 
-	
 
 }
 
@@ -39,9 +37,8 @@ void disgaea::release(void)
 void disgaea::update(void)
 {
 	gameNode::update();
-
-
-
+	SCENEMANAGER->update();
+	
 }
 
 //여기가 그려주는 곳
@@ -51,15 +48,11 @@ void disgaea::render(void)
 	//==============================================================================
 	
 	
-	
+	SCENEMANAGER->render();
 
 
 	//================================================================================
 	//건들지마라 이거도
 	TIMEMANAGER->render();
 	DIRECT2D->endDraw();
-	
-
-	
-
 }

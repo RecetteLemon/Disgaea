@@ -82,33 +82,33 @@ public:
 	*/
 
 	//기본 출력
-	void render(float opacity);
+	void render(float opacity = 1);
 
 	//원래 크기 출력 - 그려줄 x좌표, y좌표, 투명도
-	void render(float destX, float destY, float opacity);
+	void render(float destX, float destY, float opacity = 1);
 
 	//변형 크기 출력 - 그려줄 x좌표, y좌표, 출력할 너비, 출력할 높이, 투명도
-	void render(float destX, float destY, int showWidth, int showHeight, float opacity);
+	void render(float destX, float destY, int showWidth, int showHeight, float opacity = 1);
 
 	//원래 크기로 잘라서 가져오기 - 그려줄 x좌표, y좌표 -> 가져올 곳의 left, top, 가로 크기, 세로 크기, 투명도
 	void render(float destX, float destY, float sourX, float sourY,
-		int sourWidth, int sourHeight, float opacity);
+		int sourWidth, int sourHeight, float opacity = 1);
 
 	//변형 크기로 잘라서 가져오기 - 그려줄 x좌표, y좌표, 출력할 너비, 출력할 높이 -> 가져올 곳의 left, top, 가로 크기, 세로 크기, 투명도
 	void render(float destX, float destY, int showWidth, int showHeight, float sourX, float sourY,
-		int sourWidth, int sourHeight, float opacity);
+		int sourWidth, int sourHeight, float opacity = 1);
 
 
 	//원래 크기 프레임렌더 - 그려줄 x, y 좌표, 가로 방향 프레임 인덱스, 세로 방향 프레임 인덱스, 투명도
-	void frameRender(float destX, float destY, int currentFrameX, int currentFrameY, float opacity);
+	void frameRender(float destX, float destY, int currentFrameX, int currentFrameY, float opacity = 1);
 
 	//변형 크기 프레임렌더 - 그려줄 x, y 좌표, 출력할 너비, 출력할 높이, 가로 방향 프레임 인덱스, 세로 방향 프레임 인덱스, 투명도
-	void frameRender(float destX, float destY, int showWidth, int showHeight, int currentFrameX, int currentFrameY, float opacity);
+	void frameRender(float destX, float destY, int showWidth, int showHeight, int currentFrameX, int currentFrameY, float opacity = 1);
 
 	// 원본 애니 렌더
-	void aniRender(float destX, float destY, animation* ani, float opacity);
+	void aniRender(float destX, float destY, animation* ani, float opacity = 1);
 
-	void aniRender(float destX, float destY, int showWidth, int showHeight, animation* ani, float opacity);
+	void aniRender(float destX, float destY, int showWidth, int showHeight, animation* ani, float opacity = 1);
 
 	//루프 렌더 - 수정 필요
 	//void LoopRender(const LPRECT drawArea, int offSetX = 0, int offSetY = 0, float opacity = 1.0f);
@@ -147,6 +147,5 @@ public:
 
 	inline int getFrameWidth(void) { return _imageInfo->frameWidth; }
 	inline int getFrameHeight(void) { return _imageInfo->frameHeight; }
-
 
 };

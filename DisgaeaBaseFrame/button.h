@@ -23,17 +23,17 @@ private:
 	POINT _btnDownFramePoint;
 	POINT _btnUpFramePoint;
 
-	CALLBACK_FUNCTION _callbackFunction;
+	//CALLBACK_FUNCTION _callbackFunction;
+	BOOL _push;
 
 public:
 	HRESULT init(const char* imageName, int x, int y,
-		POINT btnDownFramePoint, POINT btnUpFramePoint,
-		CALLBACK_FUNCTION cbFunction);
+		POINT btnDownFramePoint, POINT btnUpFramePoint);
 	void release(void);
 	void update(void);
 	void render(void);
 
-
+	inline BOOL getPush() { return _push; }
 
 
 	button();

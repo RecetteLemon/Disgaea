@@ -35,6 +35,7 @@ HRESULT gameNode::init(bool managerInit)
 		KEYANIMANAGER->init();
 		TXTDATA->init();
 		DATABASE->init();
+		CAMERAMANAGER->init();
 	}
 
 	return S_OK;
@@ -60,6 +61,7 @@ void gameNode::release(void)
 		KEYANIMANAGER->releaseSingleton();
 		TXTDATA->releaseSingleton();
 		DATABASE->releaseSingleton();
+		CAMERAMANAGER->releaseSingleton();
 	}
 	
 }
