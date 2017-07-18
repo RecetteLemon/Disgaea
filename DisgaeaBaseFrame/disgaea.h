@@ -3,6 +3,7 @@
 #include "loadingScene.h"
 #include "menuScene.h"
 #include "mapToolScene.h"
+#include "dungeonScene.h"
 
 
 class disgaea : public gameNode

@@ -176,8 +176,8 @@ D2D 사용 렌더 함수
 //기본 출력
 void image::render(float opacity)
 {
-	float posX = CAMERAMANAGER->getX() + 0;
-	float posY = CAMERAMANAGER->getY() + 0;
+	float posX = 0;
+	float posY = 0;
 
 	if (_imageInfo->pBitmap != NULL)
 	{
@@ -194,8 +194,8 @@ void image::render(float opacity)
 //원래 크기 출력
 void image::render(float destX, float destY, float opacity)
 {
-	float posX = CAMERAMANAGER->getX() + destX;
-	float posY = CAMERAMANAGER->getY() + destY;
+	float posX = destX;
+	float posY = destY;
 
 	if (_imageInfo->pBitmap != NULL)
 	{
@@ -211,8 +211,8 @@ void image::render(float destX, float destY, float opacity)
 //변형 크기 출력
 void image::render(float destX, float destY, int showWidth, int showHeight, float opacity)
 {
-	float posX = CAMERAMANAGER->getX() + destX;
-	float posY = CAMERAMANAGER->getY() + destY;
+	float posX = destX;
+	float posY = destY;
 
 	if (_imageInfo->pBitmap != NULL)
 	{
@@ -226,8 +226,8 @@ void image::render(float destX, float destY, int showWidth, int showHeight, floa
 //원래 크기로 잘라서 출력
 void image::render(float destX, float destY, float sourX, float sourY, int sourWidth, int sourHeight, float opacity)
 {
-	float posX = CAMERAMANAGER->getX() + destX;
-	float posY = CAMERAMANAGER->getY() + destY;
+	float posX = destX;
+	float posY = destY;
 
 	if (_imageInfo->pBitmap != NULL)
 	{
@@ -242,8 +242,8 @@ void image::render(float destX, float destY, float sourX, float sourY, int sourW
 //변형 크기로 잘라서 출력
 void image::render(float destX, float destY, int showWidth, int showHeight, float sourX, float sourY, int sourWidth, int sourHeight, float opacity)
 {
-	float posX = CAMERAMANAGER->getX() + destX;
-	float posY = CAMERAMANAGER->getY() + destY;
+	float posX = destX;
+	float posY = destY;
 
 	if (_imageInfo->pBitmap != NULL)
 	{
@@ -269,8 +269,8 @@ void image::render(float destX, float destY, int showWidth, int showHeight, floa
 //원래 크기 프레임렌더
 void image::frameRender(float destX, float destY, int currentFrameX, int currentFrameY, float opacity)
 {
-	float posX = CAMERAMANAGER->getX() + destX;
-	float posY = CAMERAMANAGER->getY() + destY;
+	float posX = destX;
+	float posY = destY;
 
 	if (_imageInfo->pBitmap != NULL)
 	{
@@ -285,8 +285,8 @@ void image::frameRender(float destX, float destY, int currentFrameX, int current
 //변형 크기 프레임렌더
 void image::frameRender(float destX, float destY, int showWidth, int showHeight, int currentFrameX, int currentFrameY, float opacity)
 {
-	float posX = CAMERAMANAGER->getX() + destX;
-	float posY = CAMERAMANAGER->getY() + destY;
+	float posX = destX;
+	float posY = destY;
 
 	if (_imageInfo->pBitmap != NULL)
 	{		

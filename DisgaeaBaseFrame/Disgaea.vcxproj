@@ -81,6 +81,7 @@
     <ClInclude Include="commonMacroFunction.h" />
     <ClInclude Include="database.h" />
     <ClInclude Include="direct2DManager.h" />
+    <ClInclude Include="dungeonScene.h" />
     <ClInclude Include="effect.h" />
     <ClInclude Include="effectManager.h" />
     <ClInclude Include="gameNode.h" />
@@ -112,6 +113,7 @@
     <ClCompile Include="cameraManager.cpp" />
     <ClCompile Include="database.cpp" />
     <ClCompile Include="direct2DManager.cpp" />
+    <ClCompile Include="dungeonScene.cpp" />
     <ClCompile Include="effect.cpp" />
     <ClCompile Include="effectManager.cpp" />
     <ClCompile Include="gameNode.cpp" />

@@ -67,6 +67,9 @@
     <Filter Include="Disgaea\LoadingScene">
       <UniqueIdentifier>{95ef20ff-59b8-49f6-8688-5b8e8084d14b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Disgaea\dungeonScene">
+      <UniqueIdentifier>{a4e8f62b-3cda-4431-903e-5ca6b33cc87c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -159,6 +162,9 @@
     <ClInclude Include="cameraManager.h">
       <Filter>2DGameFramework\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="dungeonScene.h">
+      <Filter>Disgaea\dungeonScene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -238,6 +244,9 @@
     </ClCompile>
     <ClCompile Include="cameraManager.cpp">
       <Filter>2DGameFramework\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="dungeonScene.cpp">
+      <Filter>Disgaea\dungeonScene</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
