@@ -31,24 +31,27 @@ HRESULT mapToolScene::init()
 			_phaseSample.rc.top + i * SAMSIZEY, _phaseSample.rc.left + j * SAMSIZEX + SAMSIZEX, _phaseSample.rc.top + i * SAMSIZEY + SAMSIZEY);
 	}
 
-	for (int i = 0; i < TILEY; i++) for (int j = 0; j < TILEX; j++)
+	for (int z = 0; z < TILEZ; z++) for (int y = 0; y < TILEY; y++) for (int x = 0; x < TILEX; x++)
 	{
-		_tile[i * TILEX + j].iso = RectMake(j, i, 1, 1);
+		_tile[x][y][z].iso = RectMake(x, y - z, 1, 1);
 	}
-	for (int i = 0; i < TILEX * TILEY; i++)
+
+	for (int z = 0; z < TILEZ; z++) for (int y = 0; y < TILEY; y++) for (int x = 0; x < TILEX; x++)
 	{
-		_tile[i].screen.x = WINSIZEX / 2 + _tile[i].iso.left * TILESIZEX / 2 - _tile[i].iso.top * TILESIZEX / 2;
-		_tile[i].screen.y = WINSIZEY / 2 - TILEMAXSIZEY / 2 + _tile[i].iso.left * TILESIZEY / 2 + _tile[i].iso.top * TILESIZEY / 2;
-		_tile[i].line[0] = { _tile[i].screen.x - TILESIZEX / 2, _tile[i].screen.y + TILESIZEY / 2 };
-		_tile[i].line[1] = { _tile[i].screen.x, _tile[i].screen.y + TILESIZEY };
-		_tile[i].line[2] = { _tile[i].screen.x + TILESIZEX / 2, _tile[i].screen.y + TILESIZEY / 2 };
-		_tile[i].line[3] = { _tile[i].screen.x, _tile[i].screen.y };
-		_tile[i].ter = TER_LOAD;
-		_tile[i].obj = OBJ_ERASE;
-		_tile[i].terFrame.x = 0;
-		_tile[i].terFrame.y = 0;
-		_tile[i].objFrame.x = 0;
-		_tile[i].objFrame.y = 0;
+		_tile[x][y][z].x = CAMERAMANAGER->getX() + WINSIZEX / 2 + _tile[x][y][z].iso.left * TILESIZEX / 2 - (_tile[x][y][z].iso.top + z) * TILESIZEX / 2;
+		_tile[x][y][z].y = CAMERAMANAGER->getY() + WINSIZEY / 2 - TILEMAXSIZEY / 2 + _tile[x][y][z].iso.left * TILESIZEY / 2 + (_tile[x][y][z].iso.top + z) * TILESIZEY / 2;
+		_tile[x][y][z].z = z * TILESIZEZ;
+		_tile[x][y][z].line[0] = { _tile[x][y][z].x, _tile[x][y][z].y - _tile[x][y][z].z };
+		_tile[x][y][z].line[1] = { _tile[x][y][z].x - TILESIZEX / 2, _tile[x][y][z].y + TILESIZEY / 2 - _tile[x][y][z].z };
+		_tile[x][y][z].line[2] = { _tile[x][y][z].x, _tile[x][y][z].y + TILESIZEY - _tile[x][y][z].z };
+		_tile[x][y][z].line[3] = { _tile[x][y][z].x + TILESIZEX / 2, _tile[x][y][z].y + TILESIZEY / 2 - _tile[x][y][z].z };
+
+		_tile[x][y][z].ter = TER_LOAD;
+		_tile[x][y][z].obj = OBJ_ERASE;
+		_tile[x][y][z].terFrame.x = 1;
+		_tile[x][y][z].terFrame.y = 0;
+		_tile[x][y][z].objFrame.x = 0;
+		_tile[x][y][z].objFrame.y = 0;
 	}
 
 
@@ -76,18 +79,17 @@ void mapToolScene::render()
 	this->drawSample();
 
 	this->drawButton();
-	//IMAGEMANAGER->findImage("menuz")->render(0, 0);
 }
 void mapToolScene::coordinateUpdate()
 {
-	for (int i = 0; i < TILEX * TILEY; i++)
+	for (int z = 0; z < TILEZ; z++) for (int y = 0; y < TILEY; y++) for (int x = 0; x < TILEX; x++)
 	{
-		_tile[i].screen.x = WINSIZEX / 2 + _tile[i].iso.left * TILESIZEX / 2 - _tile[i].iso.top * TILESIZEX / 2;
-		_tile[i].screen.y = WINSIZEY / 2 - TILEMAXSIZEY / 2 + _tile[i].iso.left * TILESIZEY / 2 + _tile[i].iso.top * TILESIZEY / 2;
-		_tile[i].line[0] = { _tile[i].screen.x - TILESIZEX / 2, _tile[i].screen.y + TILESIZEY / 2 };
-		_tile[i].line[1] = { _tile[i].screen.x, _tile[i].screen.y + TILESIZEY };
-		_tile[i].line[2] = { _tile[i].screen.x + TILESIZEX / 2, _tile[i].screen.y + TILESIZEY / 2 };
-		_tile[i].line[3] = { _tile[i].screen.x, _tile[i].screen.y };
+		_tile[x][y][z].x = CAMERAMANAGER->getX() + WINSIZEX / 2 + _tile[x][y][z].iso.left * TILESIZEX / 2 - (_tile[x][y][z].iso.top + z) * TILESIZEX / 2;
+		_tile[x][y][z].y = CAMERAMANAGER->getY() + WINSIZEY / 2 - TILEMAXSIZEY / 2 + _tile[x][y][z].iso.left * TILESIZEY / 2 + (_tile[x][y][z].iso.top + z) * TILESIZEY / 2;
+		_tile[x][y][z].line[0] = { _tile[x][y][z].x, _tile[x][y][z].y - _tile[x][y][z].z };
+		_tile[x][y][z].line[1] = { _tile[x][y][z].x - TILESIZEX / 2, _tile[x][y][z].y + TILESIZEY / 2 - _tile[x][y][z].z };
+		_tile[x][y][z].line[2] = { _tile[x][y][z].x, _tile[x][y][z].y + TILESIZEY - _tile[x][y][z].z };
+		_tile[x][y][z].line[3] = { _tile[x][y][z].x + TILESIZEX / 2, _tile[x][y][z].y + TILESIZEY / 2 - _tile[x][y][z].z };
 	}
 
 	for (int i = 0; i < SAMY; i++) for (int j = 0; j < SAMX; j++)
@@ -143,27 +145,27 @@ void mapToolScene::setTile()
 			_phaseSample.token.y = _ptMouse.y - _phaseSample.y;
 		}
 
-		for (int i = 0; i < TILEX * TILEY; i++)
+		for (int z = 0; z < TILEZ; z++) for (int y = 0; y < TILEY; y++) for (int x = 0; x < TILEX; x++)
 		{
-			HRGN hRgn = CreatePolygonRgn(_tile[i].line, 4, WINDING);
+			HRGN hRgn = CreatePolygonRgn(_tile[x][y][z].line, 4, WINDING);
 			if (PtInRegion(hRgn, _ptMouse.x, _ptMouse.y) && !PtInRect(&_phaseSample.rc, _ptMouse) && !_phaseSample.isMove)
 			{
 				switch (_phaseSample.cur)
 				{
 				case SAM_TERRAIN:
-					_tile[i].terFrame.x = _curTile.x;
-					_tile[i].terFrame.y = _curTile.y;
-					_tile[i].ter = this->terCreater({ _curTile.x, _curTile.y });
+					_tile[x][y][z].terFrame.x = _curTile.x;
+					_tile[x][y][z].terFrame.y = _curTile.y;
+					_tile[x][y][z].ter = this->terCreater({ _curTile.x, _curTile.y });
 					break;
 				case SAM_OBJECT:
-					_tile[i].objFrame.x = _curTile.x;
-					_tile[i].objFrame.y = _curTile.y;
-					_tile[i].obj = this->objCreater({ _curTile.x, _curTile.y });
+					_tile[x][y][z].objFrame.x = _curTile.x;
+					_tile[x][y][z].objFrame.y = _curTile.y;
+					_tile[x][y][z].obj = this->objCreater({ _curTile.x, _curTile.y });
 					break;
 				case SAM_ERASER:
-					_tile[i].objFrame.x = _curTile.x;
-					_tile[i].objFrame.y = _curTile.y;
-					_tile[i].obj = OBJ_ERASE;
+					_tile[x][y][z].objFrame.x = _curTile.x;
+					_tile[x][y][z].objFrame.y = _curTile.y;
+					_tile[x][y][z].obj = OBJ_ERASE;
 					break;
 				}
 			}
@@ -184,27 +186,18 @@ void mapToolScene::setTile()
 }
 void mapToolScene::drawTile()
 {
-	/*for (int i = 0; i < TILEX * TILEY; i++)
+	for (int z = 0; z < TILEZ; z++) for (int y = 0; y < TILEY; y++) for (int x = 0; x < TILEX; x++)
 	{
-		MoveToEx(_tile[i].screen.x, _tile[i].screen.y, NULL);
-		LineTo(getMemDC(), _tile[i].screen.x - TILESIZEX / 2, _tile[i].screen.y + TILESIZEY / 2);
-		LineTo(getMemDC(), _tile[i].screen.x, _tile[i].screen.y + TILESIZEY);
-		LineTo(getMemDC(), _tile[i].screen.x + TILESIZEX / 2, _tile[i].screen.y + TILESIZEY / 2);
-		LineTo(getMemDC(), _tile[i].screen.x, _tile[i].screen.y);
-	}*/
-
-	for (int i = 0; i < TILEX * TILEY; i++)
-	{
-		IMAGEMANAGER->findImage("isoTerrain")->frameRender(_tile[i].screen.x - TILESIZEX / 2,
-			_tile[i].screen.y,
-			_tile[i].terFrame.x, _tile[i].terFrame.y);
+		IMAGEMANAGER->findImage("isoTerrain")->frameRender(_tile[x][y][z].x - TILESIZEX / 2,
+			_tile[x][y][z].y - _tile[x][y][z].z,
+			_tile[x][y][z].terFrame.x, _tile[x][y][z].terFrame.y);
 	}
-	for (int i = 0; i < TILEX * TILEY; i++)
+	for (int z = 0; z < TILEZ; z++) for (int y = 0; y < TILEY; y++) for (int x = 0; x < TILEX; x++)
 	{
-		if (_tile[i].obj == OBJ_ERASE) continue;
-		IMAGEMANAGER->findImage("isoObject")->frameRender(_tile[i].screen.x - TILESIZEX / 2 - IMAGEMANAGER->findImage("isoObject")->getFrameWidth() + TILESIZEX,
-			_tile[i].screen.y - IMAGEMANAGER->findImage("isoObject")->getFrameHeight() + TILESIZEY,
-			_tile[i].objFrame.x, _tile[i].objFrame.y);
+		if (_tile[x][y][z].obj == OBJ_ERASE) continue;
+		IMAGEMANAGER->findImage("isoObject")->frameRender(_tile[x][y][z].x - TILESIZEX / 2 - IMAGEMANAGER->findImage("isoObject")->getFrameWidth() + TILESIZEX,
+			_tile[x][y][z].y - _tile[x][y][z].z - IMAGEMANAGER->findImage("isoObject")->getFrameHeight() + TILESIZEY,
+			_tile[x][y][z].objFrame.x, _tile[x][y][z].objFrame.y);
 	}
 }
 void mapToolScene::drawSample()
@@ -232,12 +225,23 @@ void mapToolScene::updateButton()
 	if (_btn[BTN_TERRAIN]->getPush() == TRUE) _phaseSample.cur = SAM_TERRAIN;
 	if (_btn[BTN_OBJECT]->getPush() == TRUE) _phaseSample.cur = SAM_OBJECT;
 	if (_btn[BTN_ERASER]->getPush() == TRUE) _phaseSample.cur = SAM_ERASER;
+	if (_btn[BTN_START]->getPush() == TRUE) this->startTile();
 	if (_btn[BTN_SAVE]->getPush() == TRUE) this->saveTile();
 	if (_btn[BTN_LOAD]->getPush() == TRUE) this->loadTile();
 }
 void mapToolScene::drawButton()
 {
 	for (int i = 0; i < BTN_END; i++) _btn[(SAMPLE_TYPE)i]->render();
+}
+void mapToolScene::startTile()
+{
+	CAMERAMANAGER->setPosition(0, 0);
+	HANDLE file;
+	DWORD write;
+	file = CreateFile("curFile.map", GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	WriteFile(file, _tile, sizeof(tagIso) * TILEX * TILEY * TILEZ, &write, NULL);
+	CloseHandle(file);
+	SCENEMANAGER->changeScene("DungeonScene");
 }
 void mapToolScene::saveTile()
 {
@@ -267,7 +271,7 @@ void mapToolScene::saveTile()
 	HANDLE file;
 	DWORD write;
 	file = CreateFile(save.lpstrFile, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-	WriteFile(file, _tile, sizeof(tagIso) * TILEX * TILEY, &write, NULL);
+	WriteFile(file, _tile, sizeof(tagIso) * TILEX * TILEY * TILEZ, &write, NULL);
 	DeleteObject(&save);
 	CloseHandle(file);
 }
@@ -298,12 +302,24 @@ void mapToolScene::loadTile()
 	HANDLE file;
 	DWORD read;
 	file = CreateFile(ofn.lpstrFile, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-	ReadFile(file, _tile, sizeof(tagIso) * TILEX * TILEY, &read, NULL);
+	ReadFile(file, _tile, sizeof(tagIso) * TILEX * TILEY * TILEZ, &read, NULL);
 	DeleteObject(&ofn);
 	CloseHandle(file);
 }
 TERRAIN_TYPE mapToolScene::terCreater(POINT tile)
 {
+	if (tile.x == 0 && tile.y == 0) return TER_WALL;
+	if (tile.x == 8 && tile.y == 3) return TER_WALL;
+	if (tile.x == 9 && tile.y == 3) return TER_WALL;
+	if (tile.x == 9 && tile.y == 4) return TER_WALL;
+	for (int i = 1; i < 9; i++)
+	{
+		if (tile.x == i && tile.y == 2) return TER_WALL;
+	}
+	for (int i = 0; i < 8; i++)
+	{
+		if (tile.x == i && tile.y == 1) return TER_WALL;
+	}
 	return TER_LOAD;
 }
 OBJECT_TYPE mapToolScene::objCreater(POINT tile)

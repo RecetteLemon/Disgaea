@@ -3,8 +3,10 @@
 #include "button.h"
 #define TILEX 20
 #define TILEY 20
+#define TILEZ 1
 #define TILESIZEX 96
 #define TILESIZEY 48
+#define TILESIZEZ 48
 #define SAMX (_sample[_phaseSample.cur]->getMaxFrameX() + 1)
 #define SAMY (_sample[_phaseSample.cur]->getMaxFrameY() + 1)
 #define SAMSIZEX _sample[_phaseSample.cur]->getFrameWidth()
@@ -13,6 +15,7 @@
 #define SAMMAXSIZEY SAMSIZEY * SAMY
 #define TILEMAXSIZEX TILEX * TILESIZEX
 #define TILEMAXSIZEY TILEY * TILESIZEY
+#define TILEMAXSIZEZ TILEZ * TILESIZEZ
 enum BUTTON_TYPE
 {
 	BTN_START,
@@ -46,7 +49,7 @@ enum SAMPLE_TYPE
 struct tagIso
 {
 	RECT iso;
-	POINT screen;
+	int x, y, z;
 	POINT line[4];
 	TERRAIN_TYPE ter;
 	OBJECT_TYPE obj;
@@ -74,7 +77,7 @@ private:
 	image* _sample[SAM_END];
 	tagSamplePhase _phaseSample;
 	tagSample _tileSample[TILEX * TILEY];
-	tagIso _tile[TILEX * TILEY];
+	tagIso _tile[TILEX][TILEY][TILEZ];
 	POINT _curTile;
 public:
 	mapToolScene();
@@ -83,6 +86,7 @@ public:
 	void release();
 	void update();
 	void render();
+	void startTile();
 	void saveTile();
 	void loadTile();
 
