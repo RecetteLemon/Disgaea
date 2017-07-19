@@ -12,8 +12,6 @@ mapToolScene::~mapToolScene()
 }
 HRESULT mapToolScene::init()
 {
-	_ui = new tileMapUI;
-	_ui->init();
 	_sample[SAM_TERRAIN] = IMAGEMANAGER->findImage(L"isoTerrain");
 	_sample[SAM_OBJECT] = IMAGEMANAGER->findImage(L"isoObject");
 	_sample[SAM_ERASER] = IMAGEMANAGER->findImage(L"isoEraser");
@@ -55,6 +53,8 @@ HRESULT mapToolScene::init()
 		_tile[x][y][z].terFrame.y = 0;
 		_tile[x][y][z].objFrame.x = 0;
 		_tile[x][y][z].objFrame.y = 0;
+
+		_tile[x][y][z].paint = true;
 	}
 
 
@@ -68,14 +68,13 @@ void mapToolScene::release()
 }
 void mapToolScene::update()
 {
+	this->updateButton();
 	this->setTile();
 	this->camControl();
 
 
 
 	this->coordinateUpdate();
-
-	_ui->update();
 }
 void mapToolScene::render()
 {
@@ -83,7 +82,14 @@ void mapToolScene::render()
 	this->drawSample();
 
 	this->drawButton();
-	_ui->render();
+
+	wchar_t str[100];
+	swprintf_s(str, L"x: %d, y: %d", _ptMouse.x, _ptMouse.y);
+	DIRECT2D->drawTextD2D(DIRECT2D->_defaultBrush, str, 10, 100, 200, 200);
+
+	wchar_t str2[100];
+	swprintf_s(str2, L"x: %d, y: %d", (int)((-CAMERAMANAGER->getX() + INITX + _ptMouse.x) / TILESIZEX), (int)((-CAMERAMANAGER->getY() + INITY + _ptMouse.y) / TILESIZEY));
+	DIRECT2D->drawTextD2D(DIRECT2D->_defaultBrush, str2, 10, 140, 200, 200);
 }
 void mapToolScene::coordinateUpdate()
 {
@@ -96,7 +102,6 @@ void mapToolScene::coordinateUpdate()
 		_tile[x][y][z].line[2] = { _tile[x][y][z].x, _tile[x][y][z].y + TILESIZEY - _tile[x][y][z].z };
 		_tile[x][y][z].line[3] = { _tile[x][y][z].x + TILESIZEX / 2, _tile[x][y][z].y + TILESIZEY / 2 - _tile[x][y][z].z };
 	}
-
 	for (int i = 0; i < SAMY; i++) for (int j = 0; j < SAMX; j++)
 	{
 		_phaseSample.rc = RectMakeCenter(_phaseSample.x, _phaseSample.y, SAMMAXSIZEX, SAMMAXSIZEY);
@@ -105,25 +110,22 @@ void mapToolScene::coordinateUpdate()
 		SetRect(&_tileSample[i * SAMX + j].rc, _phaseSample.rc.left + j * SAMSIZEX,
 			_phaseSample.rc.top + i * SAMSIZEY, _phaseSample.rc.left + j * SAMSIZEX + SAMSIZEX, _phaseSample.rc.top + i * SAMSIZEY + SAMSIZEY);
 	}
-
-
-	_phaseSample.edge = RectMakeCenter(_phaseSample.edgePoint.x, _phaseSample.edgePoint.y, TILESIZEX, TILESIZEY);
 }
 void mapToolScene::camControl()
 {
-	if (KEYMANAGER->isStayKeyDown(VK_LEFT) || _ptMouse.x <= 0 + 5)
+	if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 	{
 		CAMERAMANAGER->setX(CAMERAMANAGER->getX() + 10);
 	}
-	if (KEYMANAGER->isStayKeyDown(VK_UP) || _ptMouse.y <= 0 + 5)
+	if (KEYMANAGER->isStayKeyDown(VK_UP))
 	{
 		CAMERAMANAGER->setY(CAMERAMANAGER->getY() + 10);
 	}
-	if (KEYMANAGER->isStayKeyDown(VK_RIGHT) || _ptMouse.x >= WINSIZEX - 5)
+	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 	{
 		CAMERAMANAGER->setX(CAMERAMANAGER->getX() - 10);
 	}
-	if (KEYMANAGER->isStayKeyDown(VK_DOWN) || _ptMouse.y >= WINSIZEY - 5)
+	if (KEYMANAGER->isStayKeyDown(VK_DOWN))
 	{
 		CAMERAMANAGER->setY(CAMERAMANAGER->getY() - 10);
 	}
@@ -133,18 +135,27 @@ void mapToolScene::setTile()
 	for (int z = 0; z < TILEZ; z++) for (int y = 0; y < TILEY; y++) for (int x = 0; x < TILEX; x++)
 	{
 		HRGN hRgn = CreatePolygonRgn(_tile[x][y][z].line, 4, WINDING);
+
 		if (PtInRegion(hRgn, _ptMouse.x, _ptMouse.y))
 		{
 			_tile[x][y][z].edgePaint = true;
 		}
 		else _tile[x][y][z].edgePaint = false;
+		
 		DeleteObject(hRgn);
 	}
 
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
-		_ui->lButtonClick();
-		this->updateButton();
+		for (int i = 0; i < SAMX * SAMY; i++)
+		{
+			if (PtInRect(&_tileSample[i].rc, _ptMouse))
+			{
+				_curTile.x = _tileSample[i].frame.x;
+				_curTile.y = _tileSample[i].frame.y;
+				break;
+			}
+		}
 	}
 	if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
 	{
@@ -160,21 +171,21 @@ void mapToolScene::setTile()
 			HRGN hRgn = CreatePolygonRgn(_tile[x][y][z].line, 4, WINDING);
 			if (PtInRegion(hRgn, _ptMouse.x, _ptMouse.y) && !PtInRect(&_phaseSample.rc, _ptMouse) && !_phaseSample.isMove)
 			{
-				switch (_ui->getTileInfo())
+				switch (_phaseSample.cur)
 				{
-				case GROUNDTILE:
-					_tile[x][y][z].terFrame.x = _ui->getGroundTileFrameX();
-					_tile[x][y][z].terFrame.y = _ui->getGroundTileFrameY();
-					_tile[x][y][z].ter = this->terCreater({ _ui->getGroundTileFrameX(), _ui->getGroundTileFrameY() });
+				case SAM_TERRAIN:
+					_tile[x][y][z].terFrame.x = _curTile.x;
+					_tile[x][y][z].terFrame.y = _curTile.y;
+					_tile[x][y][z].ter = this->terCreater({ _curTile.x, _curTile.y });
 					break;
-				case OBJTILE:
-					_tile[x][y][z].objFrame.x = _ui->getObjTileFrameX();
-					_tile[x][y][z].objFrame.y = _ui->getObjTileFrameY();
-					_tile[x][y][z].obj = this->objCreater({ _ui->getObjTileFrameX(), _ui->getObjTileFrameY() });
+				case SAM_OBJECT:
+					_tile[x][y][z].objFrame.x = _curTile.x;
+					_tile[x][y][z].objFrame.y = _curTile.y;
+					_tile[x][y][z].obj = this->objCreater({ _curTile.x, _curTile.y });
 					break;
 				case SAM_ERASER:
-					_tile[x][y][z].objFrame.x = _ui->getObjTileFrameX();
-					_tile[x][y][z].objFrame.y = _ui->getObjTileFrameY();
+					_tile[x][y][z].objFrame.x = _curTile.x;
+					_tile[x][y][z].objFrame.y = _curTile.y;
 					_tile[x][y][z].obj = OBJ_ERASE;
 					break;
 				}
@@ -198,18 +209,17 @@ void mapToolScene::drawTile()
 {
 	for (int z = 0; z < TILEZ; z++) for (int y = 0; y < TILEY; y++) for (int x = 0; x < TILEX; x++)
 	{
-		IMAGEMANAGER->findImage(L"groundImage")->frameRender(_tile[x][y][z].x - TILESIZEX / 2,
+		IMAGEMANAGER->findImage(L"isoTerrain")->frameRender(_tile[x][y][z].x - TILESIZEX / 2,
 			_tile[x][y][z].y - _tile[x][y][z].z,
-			_tile[x][y][z].terFrame.x, _tile[x][y][z].terFrame.y);
+			_tile[x][y][z].terFrame.x, _tile[x][y][z].terFrame.y);	
 	}
 	for (int z = 0; z < TILEZ; z++) for (int y = 0; y < TILEY; y++) for (int x = 0; x < TILEX; x++)
 	{
 		if (_tile[x][y][z].obj == OBJ_ERASE) continue;
-		IMAGEMANAGER->findImage(L"objImage")->frameRender(_tile[x][y][z].x - TILESIZEX / 2 - IMAGEMANAGER->findImage(L"objImage")->getFrameWidth() + TILESIZEX,
-			_tile[x][y][z].y - _tile[x][y][z].z - IMAGEMANAGER->findImage(L"objImage")->getFrameHeight() + TILESIZEY,
+		IMAGEMANAGER->findImage(L"isoObject")->frameRender(_tile[x][y][z].x - TILESIZEX / 2 - IMAGEMANAGER->findImage(L"isoObject")->getFrameWidth() + TILESIZEX,
+			_tile[x][y][z].y - _tile[x][y][z].z - IMAGEMANAGER->findImage(L"isoObject")->getFrameHeight() + TILESIZEY,
 			_tile[x][y][z].objFrame.x, _tile[x][y][z].objFrame.y);
 	}
-
 	for (int z = 0; z < TILEZ; z++) for (int y = 0; y < TILEY; y++) for (int x = 0; x < TILEX; x++)
 	{
 		if (_tile[x][y][z].edgePaint) IMAGEMANAGER->findImage(L"isoEdge")->render(_tile[x][y][z].x - TILESIZEX / 2, _tile[x][y][z].y - _tile[x][y][z].z);
@@ -218,49 +228,35 @@ void mapToolScene::drawTile()
 void mapToolScene::drawSample()
 {
 	//for (int i = 0; i < SAMX * SAMY; i++) Rectangle(getMemDC(), _tileSample[i].rc.left, _tileSample[i].rc.top, _tileSample[i].rc.right, _tileSample[i].rc.bottom);
-	
+	_sample[_phaseSample.cur]->render(_phaseSample.rc.left, _phaseSample.rc.top);
 
 }
 void mapToolScene::initButton()
 {
-	_SL[TILE_SAVE].img = IMAGEMANAGER->findImage(L"saveButton");
-	_SL[TILE_SAVE].x = WINSIZEX - 300;
-	_SL[TILE_SAVE].y = WINSIZEY - 100;
-
-	_SL[TILE_LOAD].img = IMAGEMANAGER->findImage(L"loadButton");
-	_SL[TILE_LOAD].x = WINSIZEX - 150;
-	_SL[TILE_LOAD].y = WINSIZEY - 100;
-
-	for (int i = 0; i < SLEND; i++)
+	for (int i = 0; i < BTN_END; i++)
 	{
-		_SL[TILE_SAVE].rc = RectMake(_SL[i].x, _SL[i].y, _SL[i].img->getWidth(), _SL[i].img->getHeight());
+		_btn[(SAMPLE_TYPE)i] = new button;
 	}
+	_btn[BTN_START]->init(L"startButton", WINSIZEX - IMAGEMANAGER->findImage(L"saveButton")->getFrameWidth() * 3 + IMAGEMANAGER->findImage(L"saveButton")->getFrameWidth() / 2, WINSIZEY - IMAGEMANAGER->findImage(L"saveButton")->getFrameHeight() + IMAGEMANAGER->findImage(L"saveButton")->getFrameHeight() / 2, { 0, 1 }, { 0, 0 });
+	_btn[BTN_SAVE]->init(L"saveButton", WINSIZEX - IMAGEMANAGER->findImage(L"saveButton")->getFrameWidth() * 2 + IMAGEMANAGER->findImage(L"saveButton")->getFrameWidth() / 2, WINSIZEY - IMAGEMANAGER->findImage(L"saveButton")->getFrameHeight() + IMAGEMANAGER->findImage(L"saveButton")->getFrameHeight() / 2, { 0, 1 }, { 0, 0 });
+	_btn[BTN_LOAD]->init(L"loadButton", WINSIZEX - IMAGEMANAGER->findImage(L"saveButton")->getFrameWidth() + IMAGEMANAGER->findImage(L"saveButton")->getFrameWidth() / 2, WINSIZEY - IMAGEMANAGER->findImage(L"saveButton")->getFrameHeight() + IMAGEMANAGER->findImage(L"saveButton")->getFrameHeight() / 2, { 0, 1 }, { 0, 0 });
+	_btn[BTN_TERRAIN]->init(L"terrainButton", WINSIZEX - IMAGEMANAGER->findImage(L"terrainButton")->getFrameWidth() + IMAGEMANAGER->findImage(L"terrainButton")->getFrameWidth() / 2, WINSIZEY - IMAGEMANAGER->findImage(L"terrainButton")->getFrameHeight() / 2 - IMAGEMANAGER->findImage(L"saveButton")->getFrameHeight(), { 0, 1 }, { 0, 0 });
+	_btn[BTN_OBJECT]->init(L"objectButton", WINSIZEX - IMAGEMANAGER->findImage(L"objectButton")->getFrameWidth() + IMAGEMANAGER->findImage(L"objectButton")->getFrameWidth() / 2, WINSIZEY - IMAGEMANAGER->findImage(L"objectButton")->getFrameHeight() - IMAGEMANAGER->findImage(L"objectButton")->getFrameHeight() / 2 - IMAGEMANAGER->findImage(L"saveButton")->getFrameHeight(), { 0, 1 }, { 0, 0 });
+	_btn[BTN_ERASER]->init(L"eraseButton", WINSIZEX - IMAGEMANAGER->findImage(L"eraseButton")->getFrameWidth() + IMAGEMANAGER->findImage(L"eraseButton")->getFrameWidth() / 2, WINSIZEY - IMAGEMANAGER->findImage(L"eraseButton")->getFrameHeight() * 2 - IMAGEMANAGER->findImage(L"eraseButton")->getFrameHeight() / 2 - IMAGEMANAGER->findImage(L"saveButton")->getFrameHeight(), { 0, 1 }, { 0, 0 });
 }
 void mapToolScene::updateButton()
 {
-	for (int i = 0; i < SLEND; i++)
-	{
-		if (PtInRect(&_SL[i].rc, _ptMouse))
-		{
-			if (i == TILE_SAVE)
-			{
-				this->saveTile();
-				break;
-			}
-			else if (i == TILE_LOAD)
-			{
-				this->loadTile();
-				break;
-			}
-		}
-	}
+	for (int i = 0; i < BTN_END; i++) _btn[(SAMPLE_TYPE)i]->update();
+	if (_btn[BTN_TERRAIN]->getPush() == TRUE) _phaseSample.cur = SAM_TERRAIN;
+	if (_btn[BTN_OBJECT]->getPush() == TRUE) _phaseSample.cur = SAM_OBJECT;
+	if (_btn[BTN_ERASER]->getPush() == TRUE) _phaseSample.cur = SAM_ERASER;
+	if (_btn[BTN_START]->getPush() == TRUE) this->startTile();
+	if (_btn[BTN_SAVE]->getPush() == TRUE) this->saveTile();
+	if (_btn[BTN_LOAD]->getPush() == TRUE) this->loadTile();
 }
 void mapToolScene::drawButton()
 {
-	for (int i = 0; i < SLEND; i++)
-	{
-		_SL[i].img->render(_SL[i].x, _SL[i].y);
-	}
+	for (int i = 0; i < BTN_END; i++) _btn[(SAMPLE_TYPE)i]->render();
 }
 void mapToolScene::startTile()
 {

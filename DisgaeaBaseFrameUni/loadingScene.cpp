@@ -27,7 +27,7 @@ void loadingScene::release()
 void loadingScene::update()
 {
 	_ld->update();
-	if (_ld->loadingDone()) SCENEMANAGER->changeScene(L"MapToolScene");
+	if (_ld->loadingDone()) SCENEMANAGER->changeScene(L"MenuScene");
 }
 void loadingScene::render()
 {
@@ -39,6 +39,9 @@ void loadingScene::loadingImage()
 	// 메뉴씬 이미지
 	_ld->loadImage(L"Menu", L"Image/Menu/M01.png", 1600, 900);
 	_ld->loadImage(L"MenuMouse", L"Image/Menu/MMouse.png", 50, 39);
+	_ld->loadFrameImage(L"startButton", L"Image/MapTool/buttonStart.png", 243, 258, 1, 2);
+	_ld->loadFrameImage(L"saveButton", L"Image/MapTool/buttonSave.png", 243, 258, 1, 2);
+	_ld->loadFrameImage(L"loadButton", L"Image/MapTool/buttonLoad.png", 243, 258, 1, 2);
 	_ld->loadFrameImage(L"terrainButton", L"Image/MapTool/BtnTerrain.png", 125, 64, 1, 2);
 	_ld->loadFrameImage(L"objectButton", L"Image/MapTool/BtnObject.png", 125, 64, 1, 2);
 	_ld->loadFrameImage(L"eraseButton", L"Image/MapTool/BtnEraser.png", 125, 64, 1, 2);
@@ -48,13 +51,6 @@ void loadingScene::loadingImage()
 	_ld->loadImage(L"isoEraser", L"Image/MapTool/isoEraser.png", 128, 128);
 	_ld->loadImage(L"isoEdge", L"Image/MapTool/Edge.png", 96, 48);
 
-	_ld->loadFrameImage(L"selectTile", L"image/MapTool/tileInterFace.png", 192 * 2, 104, 2, 1);
-	_ld->loadFrameImage(L"groundImage", L"image/MapTool/terrainTile.png", 640, 320, 10, 5);
-	_ld->loadFrameImage(L"objImage", L"image/MapTool/objTile.png", 512, 448, 8, 7);
-	_ld->loadFrameImage(L"groundList", L"image/MapTool/terrainListTile.png", 640, 320, 10, 5);
-	_ld->loadFrameImage(L"objList", L"image/MapTool/objListTile.png", 512, 448, 8, 7);
-	_ld->loadImage(L"saveButton", L"Image/MapTool/saveButton.png", 100, 50);
-	_ld->loadImage(L"loadButton", L"Image/MapTool/loadButton.png", 100, 50);
 	// ?? 이미지
 
 

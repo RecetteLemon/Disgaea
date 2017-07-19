@@ -17,7 +17,10 @@
 
 enum TILESET
 {
-	GROUNDTILE, OBJTILE, ENDTILE
+	SAM_TERRAIN = 0,
+	SAM_OBJECT,
+	SAM_ERASER,
+	SAM_END
 };
 
 enum SAVENLOAD
@@ -40,8 +43,8 @@ class tileMapUI : public gameNode
 {
 private:
 	tagImageSetting _uiImage;
-	tagImageSetting _listImage[ENDTILE];
-	tagImageSetting _tileImage[ENDTILE]; // obj, tile;
+	tagImageSetting _listImage[SAM_END];
+	tagImageSetting _tileImage[SAM_END]; // obj, tile;
 	
 
 	RECT _selectRect[ENDTILE];
@@ -69,10 +72,10 @@ public:
 	
 	//		현재 타일이 오브젝트인지 평범한 땅인지를 반환
 	inline TILESET getTileInfo() { return _tileInfo; }
-	inline int getGroundTileFrameX() { return _listImage[GROUNDTILE].img->getFrameX(); }
-	inline int getGroundTileFrameY() { return _listImage[GROUNDTILE].img->getFrameY(); }
-	inline int getObjTileFrameX() { return _listImage[OBJTILE].img->getFrameX(); }
-	inline int getObjTileFrameY() { return _listImage[OBJTILE].img->getFrameY(); }
+	inline int getGroundTileFrameX() { return _listImage[SAM_TERRAIN].img->getFrameX(); }
+	inline int getGroundTileFrameY() { return _listImage[SAM_TERRAIN].img->getFrameY(); }
+	inline int getObjTileFrameX() { return _listImage[SAM_OBJECT].img->getFrameX(); }
+	inline int getObjTileFrameY() { return _listImage[SAM_OBJECT].img->getFrameY(); }
 
 
 
