@@ -1,6 +1,8 @@
 #pragma once
 #include "gameNode.h"
 #include "button.h"
+#include "tileMapUI.h"
+
 #define TILEX 20
 #define TILEY 20
 #define TILEZ 1
@@ -18,6 +20,7 @@
 #define TILEMAXSIZEZ TILEZ * TILESIZEZ
 #define INITX (WINSIZEX / 2)
 #define INITY (WINSIZEY / 2 - TILEMAXSIZEY / 2)
+
 enum BUTTON_TYPE
 {
 	BTN_START,
@@ -81,15 +84,19 @@ struct tagSample
 	RECT rc;
 	POINT frame;
 };
+
 class mapToolScene : public gameNode
 {
 private:
+	tileMapUI* _ui;
 	button* _btn[BTN_END];
 	image* _sample[SAM_END];
 	tagSamplePhase _phaseSample;
 	tagSample _tileSample[TILEX * TILEY];
 	tagIso _tile[TILEX][TILEY][TILEZ];
 	POINT _curTile;
+
+	tagImageSetting _SL[SLEND];
 public:
 	mapToolScene();
 	~mapToolScene();
