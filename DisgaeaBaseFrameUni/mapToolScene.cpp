@@ -34,6 +34,7 @@ HRESULT mapToolScene::init()
 	for (int z = 0; z < TILEZ; z++) for (int y = 0; y < TILEY; y++) for (int x = 0; x < TILEX; x++)
 	{
 		_tile[x][y][z].iso = RectMake(x, y - z, 1, 1);
+		_tile[x][y][z].edgePaint = false;
 	}
 
 	for (int z = 0; z < TILEZ; z++) for (int y = 0; y < TILEY; y++) for (int x = 0; x < TILEX; x++)
@@ -101,6 +102,8 @@ void mapToolScene::coordinateUpdate()
 			_phaseSample.rc.top + i * SAMSIZEY, _phaseSample.rc.left + j * SAMSIZEX + SAMSIZEX, _phaseSample.rc.top + i * SAMSIZEY + SAMSIZEY);
 	}
 
+
+	_phaseSample.edge = RectMakeCenter(_phaseSample.edgePoint.x, _phaseSample.edgePoint.y, TILESIZEX, TILESIZEY);
 }
 void mapToolScene::camControl()
 {
@@ -123,6 +126,16 @@ void mapToolScene::camControl()
 }
 void mapToolScene::setTile()
 {
+	for (int z = 0; z < TILEZ; z++) for (int y = 0; y < TILEY; y++) for (int x = 0; x < TILEX; x++)
+	{
+		HRGN hRgn = CreatePolygonRgn(_tile[x][y][z].line, 4, WINDING);
+		if (PtInRegion(hRgn, _ptMouse.x, _ptMouse.y))
+		{
+			_tile[x][y][z].edgePaint = true;
+		}
+		else _tile[x][y][z].edgePaint = false;
+		DeleteObject(hRgn);
+	}
 
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
@@ -191,6 +204,8 @@ void mapToolScene::drawTile()
 		IMAGEMANAGER->findImage(L"isoTerrain")->frameRender(_tile[x][y][z].x - TILESIZEX / 2,
 			_tile[x][y][z].y - _tile[x][y][z].z,
 			_tile[x][y][z].terFrame.x, _tile[x][y][z].terFrame.y);
+
+		
 	}
 	for (int z = 0; z < TILEZ; z++) for (int y = 0; y < TILEY; y++) for (int x = 0; x < TILEX; x++)
 	{
@@ -198,6 +213,10 @@ void mapToolScene::drawTile()
 		IMAGEMANAGER->findImage(L"isoObject")->frameRender(_tile[x][y][z].x - TILESIZEX / 2 - IMAGEMANAGER->findImage(L"isoObject")->getFrameWidth() + TILESIZEX,
 			_tile[x][y][z].y - _tile[x][y][z].z - IMAGEMANAGER->findImage(L"isoObject")->getFrameHeight() + TILESIZEY,
 			_tile[x][y][z].objFrame.x, _tile[x][y][z].objFrame.y);
+	}
+	for (int z = 0; z < TILEZ; z++) for (int y = 0; y < TILEY; y++) for (int x = 0; x < TILEX; x++)
+	{
+		if (_tile[x][y][z].edgePaint) IMAGEMANAGER->findImage(L"isoEdge")->render(_tile[x][y][z].x - TILESIZEX / 2, _tile[x][y][z].y - _tile[x][y][z].z);
 	}
 }
 void mapToolScene::drawSample()

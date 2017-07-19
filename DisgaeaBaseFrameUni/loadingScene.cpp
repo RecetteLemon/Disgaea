@@ -27,7 +27,7 @@ void loadingScene::release()
 void loadingScene::update()
 {
 	_ld->update();
-	if (_ld->loadingDone()) SCENEMANAGER->changeScene(L"DungeonScene");
+	if (_ld->loadingDone()) SCENEMANAGER->changeScene(L"MenuScene");
 }
 void loadingScene::render()
 {
@@ -45,10 +45,11 @@ void loadingScene::loadingImage()
 	_ld->loadFrameImage(L"terrainButton", L"Image/MapTool/BtnTerrain.png", 125, 64, 1, 2);
 	_ld->loadFrameImage(L"objectButton", L"Image/MapTool/BtnObject.png", 125, 64, 1, 2);
 	_ld->loadFrameImage(L"eraseButton", L"Image/MapTool/BtnEraser.png", 125, 64, 1, 2);
-	_ld->loadFrameImage(L"isoTerrain", L"Image/MapTool/isoTile.png", 480, 96, 5, 2);
+	//_ld->loadFrameImage(L"isoTerrain", L"Image/MapTool/isoTile.png", 480, 96, 5, 2);
 	_ld->loadFrameImage(L"isoTerrain", L"Image/MapTool/isoTile96.png", 960, 480, 10, 5);
 	_ld->loadFrameImage(L"isoObject", L"Image/MapTool/isoObject2.png", 180, 160, 2, 1);
 	_ld->loadImage(L"isoEraser", L"Image/MapTool/isoEraser.png", 128, 128);
+	_ld->loadImage(L"isoEdge", L"Image/MapTool/Edge.png", 96, 48);
 
 	// ?? ÀÌ¹ÌÁö
 
