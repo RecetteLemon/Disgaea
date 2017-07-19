@@ -20,7 +20,8 @@ HRESULT disgaea::init(void)
 	SCENEMANAGER->addScene(L"MenuScene", new menuScene);
 	SCENEMANAGER->addScene(L"MapToolScene", new mapToolScene);
 	SCENEMANAGER->addScene(L"DungeonScene", new dungeonScene);
-	SCENEMANAGER->changeScene(L"LoadingScene");
+	SCENEMANAGER->addScene(L"testScene", new testScene);
+	SCENEMANAGER->changeScene(L"testScene");
 
 
 	return S_OK;

@@ -162,6 +162,15 @@
     <ClInclude Include="dungeonScene.h">
       <Filter>Disgaea\DungeonScene</Filter>
     </ClInclude>
+    <ClInclude Include="character1.h">
+      <Filter>Disgaea</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>Disgaea</Filter>
+    </ClInclude>
+    <ClInclude Include="testScene.h">
+      <Filter>Disgaea</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -241,6 +250,15 @@
     </ClCompile>
     <ClCompile Include="dungeonScene.cpp">
       <Filter>Disgaea\DungeonScene</Filter>
+    </ClCompile>
+    <ClCompile Include="character1.cpp">
+      <Filter>Disgaea</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>Disgaea</Filter>
+    </ClCompile>
+    <ClCompile Include="testScene.cpp">
+      <Filter>Disgaea</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

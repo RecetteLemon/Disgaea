@@ -4,7 +4,7 @@
 #include "menuScene.h"
 #include "mapToolScene.h"
 #include "dungeonScene.h"
-
+#include "testScene.h"
 
 class disgaea : public gameNode
 {
