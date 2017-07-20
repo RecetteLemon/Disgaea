@@ -1,21 +1,26 @@
 #pragma once
 #include "gameNode.h"
 #include "button.h"
-#define TILEX 20
-#define TILEY 20
-#define TILEZ 1
+#define TILEX 19
+#define TILEY 19
+#define TILEZ 4
+
 #define TILESIZEX 96
 #define TILESIZEY 48
 #define TILESIZEZ 48
+
 #define SAMX (_sample[_phaseSample.cur]->getMaxFrameX() + 1)
 #define SAMY (_sample[_phaseSample.cur]->getMaxFrameY() + 1)
 #define SAMSIZEX _sample[_phaseSample.cur]->getFrameWidth()
 #define SAMSIZEY _sample[_phaseSample.cur]->getFrameHeight()
+
 #define SAMMAXSIZEX SAMSIZEX * SAMX
 #define SAMMAXSIZEY SAMSIZEY * SAMY
+
 #define TILEMAXSIZEX TILEX * TILESIZEX
 #define TILEMAXSIZEY TILEY * TILESIZEY
 #define TILEMAXSIZEZ TILEZ * TILESIZEZ
+
 #define INITX (22)
 #define INITY (22 - TILEMAXSIZEY / 2)
 enum BUTTON_TYPE
@@ -30,6 +35,7 @@ enum BUTTON_TYPE
 };
 enum TERRAIN_TYPE
 {
+	TER_NONE,
 	TER_LOAD,
 	TER_WALL,
 	TER_END
@@ -87,6 +93,9 @@ private:
 	tagSample _tileSample[TILEX * TILEY];
 	tagIso _tile[TILEX][TILEY][TILEZ];
 	POINT _curTile;
+
+	int _vertical;
+
 public:
 	mapToolScene();
 	~mapToolScene();
