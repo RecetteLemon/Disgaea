@@ -3,7 +3,7 @@
 #include "button.h"
 #define TILEX 19
 #define TILEY 19
-#define TILEZ 4
+#define TILEZ 6
 
 #define TILESIZEX 96
 #define TILESIZEY 48
@@ -35,9 +35,9 @@ enum BUTTON_TYPE
 };
 enum TERRAIN_TYPE
 {
-	TER_NONE,
 	TER_LOAD,
 	TER_WALL,
+	TER_VOID,
 	TER_END
 };
 enum OBJECT_TYPE
@@ -51,7 +51,7 @@ enum SAMPLE_TYPE
 {
 	SAM_TERRAIN = 0,
 	SAM_OBJECT,
-	SAM_ERASER,
+	SAM_OBJ_ERASER,
 	SAM_END
 };
 struct tagIso
@@ -60,18 +60,15 @@ struct tagIso
 	int x, y, z;
 	int floorZ;
 	int centerX, centerY;
-	int indexX, indexY;
+	int indexX, indexY, indexZ;
 	POINT line[4];
 	TERRAIN_TYPE ter;
 	OBJECT_TYPE obj;
 	POINT terFrame;
 	POINT objFrame;
+	bool tileVoid;
 	bool edgePaint;
-	tagIso* getParents;
-	tagIso()
-	{
-		getParents = NULL;
-	}
+	bool clickCheck;
 };
 struct tagSamplePhase
 {

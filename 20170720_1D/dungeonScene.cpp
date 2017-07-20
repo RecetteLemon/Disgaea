@@ -41,23 +41,16 @@ void dungeonScene::drawTile()
 {
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
-		if (-CAMERAMANAGER->getX() + _tile[i].x + TILESIZEX / 2 < 22) continue;
-		if (-CAMERAMANAGER->getX() + _tile[i].x - TILESIZEX / 2 > 22 + 1167) continue;
-		if (-CAMERAMANAGER->getY() + _tile[i].y + TILESIZEY / 2 < 22) continue;
-		if (-CAMERAMANAGER->getY() + _tile[i].y - TILESIZEY / 2 > 22 + 624) continue;
-		if (_tile[i].ter == TER_NONE) continue;
-
-		IMAGEMANAGER->findImage(L"IsoTerrain")->frameRender(_tile[i].x - TILESIZEX / 2,
-			_tile[i].y - _tile[i].z,
-			_tile[i].terFrame.x, _tile[i].terFrame.y, true, 1.0f);
+		for (int j = 0; j <= _tile[i].z; j++)
+		{
+			IMAGEMANAGER->findImage(L"IsoTerrain")->frameRender(_tile[i].x - TILESIZEX / 2,
+				_tile[i].y - j * TILESIZEZ,
+				_tile[i].terFrame.x, _tile[i].terFrame.y, true, 1.0f);
+		}
 
 	}
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
-		if (-CAMERAMANAGER->getX() + _tile[i].x + TILESIZEX / 2 < 22) continue;
-		if (-CAMERAMANAGER->getX() + _tile[i].x - TILESIZEX / 2 > 22 + 1167) continue;
-		if (-CAMERAMANAGER->getY() + _tile[i].y + TILESIZEY / 2 < 22) continue;
-		if (-CAMERAMANAGER->getY() + _tile[i].y - TILESIZEY / 2 > 22 + 624) continue;
 		if (_tile[i].obj == OBJ_ERASE) continue;
 		IMAGEMANAGER->findImage(L"IsoObject")->frameRender(_tile[i].x - TILESIZEX / 2 - IMAGEMANAGER->findImage(L"IsoObject")->getFrameWidth() + TILESIZEX,
 			_tile[i].y - _tile[i].z - IMAGEMANAGER->findImage(L"IsoObject")->getFrameHeight() + TILESIZEY,

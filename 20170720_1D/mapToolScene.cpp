@@ -18,7 +18,7 @@ HRESULT mapToolScene::init()
 
 	_sample[SAM_TERRAIN] = IMAGEMANAGER->findImage(L"IsoTerrain");
 	_sample[SAM_OBJECT] = IMAGEMANAGER->findImage(L"IsoObject");
-	_sample[SAM_ERASER] = IMAGEMANAGER->findImage(L"IsoEraser");
+	_sample[SAM_OBJ_ERASER] = IMAGEMANAGER->findImage(L"IsoEraser");
 	_phaseSample.x = WINSIZEX / 2;
 	_phaseSample.y = WINSIZEY / 2;
 	_phaseSample.cur = SAM_TERRAIN;
@@ -40,6 +40,7 @@ HRESULT mapToolScene::init()
 		_tile[TILEX * y + x].iso = RectMake(x, y, 1, 1);
 		_tile[TILEX * y + x].indexX = x;
 		_tile[TILEX * y + x].indexY = y;
+		_tile[TILEX * y + x].indexZ = 0;
 	}
 
 	for (int i = 0; i < TILEX * TILEY; i++)
@@ -54,16 +55,15 @@ HRESULT mapToolScene::init()
 		_tile[i].centerX = _tile[i].x;
 		_tile[i].centerY = _tile[i].y + TILESIZEY / 2;
 
-		_tile[i].ter = TER_NONE;
+		_tile[i].ter = TER_LOAD;
 		_tile[i].obj = OBJ_ERASE;
-		_tile[i].terFrame.x = 0;
+		_tile[i].terFrame.x = 1;
 		_tile[i].terFrame.y = 0;
 		_tile[i].objFrame.x = 0;
 		_tile[i].objFrame.y = 0;
 
-		_tile[i].ter = TER_LOAD;
-		_tile[i].terFrame.x = 1;
-		_tile[i].terFrame.y = 0;
+
+		_tile[i].clickCheck = false;
 	}
 
 	_vertical = 1;
@@ -128,8 +128,6 @@ void mapToolScene::setTile()
 	mouse.x = _ptMouse.x + CAMERAMANAGER->getX();
 	mouse.y = _ptMouse.y + CAMERAMANAGER->getY();
 
-
-
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
 		HRGN hRgn = CreatePolygonRgn(_tile[i].line, 4, WINDING);
@@ -154,21 +152,6 @@ void mapToolScene::setTile()
 				break;
 			}
 		}
-
-		RECT vUpBtn, vDownBtn;
-		SetRect(&vUpBtn, 1534, 22, 1584, 72);
-		SetRect(&vDownBtn, 1534, 178, 1584, 229);
-
-		if (PtInRect(&vUpBtn, _ptMouse))
-		{
-			++_vertical;
-			if (_vertical > TILEZ) _vertical = TILEZ;
-		}
-		else if (PtInRect(&vDownBtn, _ptMouse))
-		{
-			--_vertical;
-			if (_vertical < 1) _vertical = 1;
-		}
 	}
 
 	if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
@@ -180,31 +163,55 @@ void mapToolScene::setTile()
 			_phaseSample.token.y = _ptMouse.y - _phaseSample.y;
 		}
 
-		for (int i = 0; i < TILEX * TILEY; i++)
-		{
+		for (int i = 0; i < TILEX * TILEY; i++) for (int j = 0; j < TILEZ; j++)
+		{		
+			if (_tile[i].clickCheck) continue;
 			HRGN hRgn = CreatePolygonRgn(_tile[i].line, 4, WINDING);
-
-			if (PtInRegion(hRgn, mouse.x, mouse.y) && !PtInRect(&_phaseSample.rc, _ptMouse) && !_phaseSample.isMove)
+			if (PtInRegion(hRgn, mouse.x, mouse.y) && !PtInRect(&_phaseSample.rc, _ptMouse) && !_phaseSample.isMove && _tile[i].z == j)
 			{
 				switch (_phaseSample.cur)
 				{
-				case SAM_TERRAIN:					
-					_tile[i].terFrame.x = _curTile.x;
-					_tile[i].terFrame.y = _curTile.y;
-					_tile[i].ter = this->terCreater({ _curTile.x, _curTile.y });					
+				case SAM_TERRAIN:
+					if (this->terCreater({ _curTile.x, _curTile.y }) == TER_VOID)
+					{
+						_tile[i].z = 0;
+						_tile[i].terFrame.x = _curTile.x;
+						_tile[i].terFrame.y = _curTile.y;
+						_tile[i].ter = this->terCreater({ _curTile.x, _curTile.y });
+						_tile[i].clickCheck = true;
+					}
+					else
+					{
+						if (this->terCreater({ _tile[i].terFrame.x, _tile[i].terFrame.y }) == TER_VOID)
+						{
+							_tile[i].z = j;
+							_tile[i].terFrame.x = _curTile.x;
+							_tile[i].terFrame.y = _curTile.y;
+							_tile[i].ter = this->terCreater({ _curTile.x, _curTile.y });
+							_tile[i].clickCheck = true;
+						}
+						else
+						{
+							if (_tile[i].z < TILEZ - 1) _tile[i].z = j + 1;
+							_tile[i].terFrame.x = _curTile.x;
+							_tile[i].terFrame.y = _curTile.y;
+							_tile[i].ter = this->terCreater({ _curTile.x, _curTile.y });
+							_tile[i].clickCheck = true;
+						}
+					}
 					break;
 				case SAM_OBJECT:
 					_tile[i].objFrame.x = _curTile.x;
 					_tile[i].objFrame.y = _curTile.y;
 					_tile[i].obj = this->objCreater({ _curTile.x, _curTile.y });
 					break;
-				case SAM_ERASER:
+				case SAM_OBJ_ERASER:
 					_tile[i].objFrame.x = _curTile.x;
 					_tile[i].objFrame.y = _curTile.y;
 					_tile[i].obj = OBJ_ERASE;
 					break;
 				}
-			}
+			}		
 			DeleteObject(hRgn);
 		}
 	}
@@ -213,6 +220,14 @@ void mapToolScene::setTile()
 		_phaseSample.isMove = false;
 		_phaseSample.token.x = 0;
 		_phaseSample.token.y = 0;
+
+		for (int i = 0; i < TILEX * TILEY; i++)
+		{
+			if (_tile[i].clickCheck)
+			{
+				_tile[i].clickCheck = false;
+			}
+		}
 	}
 	if (_phaseSample.isMove)
 	{
@@ -230,20 +245,21 @@ void mapToolScene::drawTile()
 		if (-CAMERAMANAGER->getX() + _tile[i].x - TILESIZEX / 2 > 22 + 1167) continue;
 		if (-CAMERAMANAGER->getY() + _tile[i].y + TILESIZEY / 2 < 22) continue;
 		if (-CAMERAMANAGER->getY() + _tile[i].y - TILESIZEY / 2 > 22 + 624) continue;
-		if (_tile[i].ter == TER_NONE) continue;
 
-		IMAGEMANAGER->findImage(L"IsoTerrain")->frameRender(_tile[i].x - TILESIZEX / 2,
-			_tile[i].y - _tile[i].z,
-			_tile[i].terFrame.x, _tile[i].terFrame.y, true, 1.0f);
-		
-	}
+		for (int j = 0; j < _tile[i].z + 1; j++)
+		{
+			IMAGEMANAGER->findImage(L"IsoTerrain")->frameRender(_tile[i].x - TILESIZEX / 2,
+				_tile[i].y - j * TILESIZEZ,
+				_tile[i].terFrame.x, _tile[i].terFrame.y, true, 1.0f);
+		}
 
-	for (int i = 0; i < TILEX * TILEY; i++)
-	{
-		DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[0].x, _tile[i].line[0].y, _tile[i].line[1].x, _tile[i].line[1].y, true, 1);
-		DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[1].x, _tile[i].line[1].y, _tile[i].line[2].x, _tile[i].line[2].y, true, 1);
-		DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[2].x, _tile[i].line[2].y, _tile[i].line[3].x, _tile[i].line[3].y, true, 1);
-		DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[3].x, _tile[i].line[3].y, _tile[i].line[0].x, _tile[i].line[0].y, true, 1);
+		if (_tile[i].z <= 0)
+		{
+			DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[0].x, _tile[i].line[0].y, _tile[i].line[1].x, _tile[i].line[1].y, true, 1);
+			DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[1].x, _tile[i].line[1].y, _tile[i].line[2].x, _tile[i].line[2].y, true, 1);
+			DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[2].x, _tile[i].line[2].y, _tile[i].line[3].x, _tile[i].line[3].y, true, 1);
+			DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[3].x, _tile[i].line[3].y, _tile[i].line[0].x, _tile[i].line[0].y, true, 1);
+		}
 	}
 
 	for (int i = 0; i < TILEX * TILEY; i++)
@@ -260,7 +276,19 @@ void mapToolScene::drawTile()
 
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
-		if (_tile[i].edgePaint) IMAGEMANAGER->findImage(L"IsoEdge")->render(_tile[i].x - TILESIZEX / 2, _tile[i].y - _tile[i].z, true, 1);
+		if (_tile[i].edgePaint)
+		{
+			if (_tile[i].z >= 0)
+			{
+				IMAGEMANAGER->findImage(L"IsoEdge")->render(_tile[i].x - TILESIZEX / 2,
+					_tile[i].y - _tile[i].z * TILESIZEZ, true, 1);
+			}
+			else if (_tile[i].z < 0)
+			{
+				IMAGEMANAGER->findImage(L"IsoEdge")->render(_tile[i].x - TILESIZEX / 2,
+					_tile[i].y, true, 1);
+			}
+		}
 	}
 	IMAGEMANAGER->findImage(L"IsoEdgeFrame")->render(0, 0, false, 1);
 
@@ -297,7 +325,7 @@ void mapToolScene::updateButton()
 	for (int i = 0; i < BTN_END; i++) _btn[(SAMPLE_TYPE)i]->update();
 	if (_btn[BTN_TERRAIN]->getPush() == TRUE) _phaseSample.cur = SAM_TERRAIN;
 	if (_btn[BTN_OBJECT]->getPush() == TRUE) _phaseSample.cur = SAM_OBJECT;
-	if (_btn[BTN_ERASER]->getPush() == TRUE) _phaseSample.cur = SAM_ERASER;
+	if (_btn[BTN_ERASER]->getPush() == TRUE) _phaseSample.cur = SAM_OBJ_ERASER;
 	if (_btn[BTN_START]->getPush() == TRUE) this->startTile();
 	if (_btn[BTN_SAVE]->getPush() == TRUE) this->saveTile();
 	if (_btn[BTN_LOAD]->getPush() == TRUE) this->loadTile();
@@ -308,7 +336,7 @@ void mapToolScene::drawButton()
 }
 void mapToolScene::startTile()
 {
-	CAMERAMANAGER->setPosition(0, 0);
+	CAMERAMANAGER->setPosition(INITX - WINSIZEX / 2, INITY + 22);
 	HANDLE file;
 	DWORD write;
 	file = CreateFile(L"CurFile.map", GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -381,7 +409,7 @@ void mapToolScene::loadTile()
 }
 TERRAIN_TYPE mapToolScene::terCreater(POINT tile)
 {
-	if (tile.x == 0 && tile.y == 0) return TER_WALL;
+	if (tile.x == 0 && tile.y == 0) return TER_VOID;
 	if (tile.x == 8 && tile.y == 3) return TER_WALL;
 	if (tile.x == 9 && tile.y == 3) return TER_WALL;
 	if (tile.x == 9 && tile.y == 4) return TER_WALL;
