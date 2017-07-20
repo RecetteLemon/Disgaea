@@ -1,0 +1,147 @@
+﻿  stdafx.cpp
+  winMain.cpp
+  utils.cpp
+  txtData.cpp
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\txtdata.cpp(49): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\txtdata.cpp(52): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\txtdata.cpp(52): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\string.h(90): note: 'strcat' 선언을 참조하십시오.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\txtdata.cpp(85): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\string.h(431): note: 'strtok' 선언을 참조하십시오.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\txtdata.cpp(88): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\string.h(431): note: 'strtok' 선언을 참조하십시오.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\txtdata.cpp(81): warning C4101: 'temp' :참조되지 않은 지역 변수입니다.
+  townInven.cpp
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(191): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(192): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(193): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(194): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(195): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(196): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(208): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(229): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(230): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(231): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(232): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(233): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(236): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(237): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(238): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(239): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(240): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(241): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(242): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(243): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(244): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(245): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(248): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(249): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(250): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(251): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(252): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(253): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(254): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(255): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(256): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(257): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(265): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(266): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(267): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(268): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(269): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(270): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(271): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(272): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(273): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(274): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(275): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\towninven.cpp(276): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  timer.cpp
+  timeManager.cpp
+  testScene.cpp
+  soundManager.cpp
+  sceneManager.cpp
+  progressBar.cpp
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\progressbar.cpp(25): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\progressbar.cpp(57): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\progressbar.cpp(58): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\progressbar.cpp(60): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\progressbar.cpp(80): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\progressbar.cpp(112): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\progressbar.cpp(112): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\progressbar.cpp(116): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\progressbar.cpp(116): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\progressbar.cpp(116): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  menuScene.cpp
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\menuscene.cpp(33): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  mapToolScene.cpp
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\maptoolscene.cpp(21): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\maptoolscene.cpp(95): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\maptoolscene.cpp(142): warning C4244: '=': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\maptoolscene.cpp(143): warning C4244: '=': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\maptoolscene.cpp(181): warning C4244: '=': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\maptoolscene.cpp(182): warning C4244: '=': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\maptoolscene.cpp(200): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\maptoolscene.cpp(207): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\maptoolscene.cpp(213): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  loadingScene.cpp
+  disgaea.cpp
+  loading.cpp
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\loading.cpp(131): warning C4018: '>=': signed 또는 unsigned가 일치하지 않습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\loading.cpp(168): warning C4244: '인수': 'unsigned int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\loading.cpp(168): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\loading.cpp(163): warning C4477: 'swprintf_s' : 서식 문자열 '%s'에 'wchar_t *' 형식의 인수가 필요하지만 variadic 인수 1의 형식이 'const CHAR *'입니다.
+  c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\loading.cpp(163): note: 서식 문자열에서 '%hs'을(를) 사용하는 것이 좋습니다.
+  c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\loading.cpp(163): note: 서식 문자열에서 '%Ts'을(를) 사용하는 것이 좋습니다.
+  c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\loading.cpp(163): note: 이 경고는 Visual C++에서 사용되는 표준이 아닌 의미 체계를 기반으로 합니다.
+  keyManager.cpp
+  keyAniManager.cpp
+  item.cpp
+  inven.cpp
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\inven.cpp(110): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\inven.cpp(111): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\inven.cpp(123): warning C4018: '>': signed 또는 unsigned가 일치하지 않습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\inven.cpp(128): warning C4018: '<=': signed 또는 unsigned가 일치하지 않습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\inven.cpp(134): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\inven.cpp(137): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\inven.cpp(138): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\inven.cpp(139): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\inven.cpp(140): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\inven.cpp(141): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\inven.cpp(217): warning C4244: '-=': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\inven.cpp(218): warning C4244: '-=': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\inven.cpp(234): warning C4244: '+=': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\inven.cpp(235): warning C4244: '+=': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  imageManager.cpp
+  코드를 생성하고 있습니다...
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\txtdata.cpp(55): warning C4172: 지역 변수 또는 임시: str의 주소를 반환하고 있습니다.
+  컴파일하고 있습니다...
+  image.cpp
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\image.cpp(187): warning C4244: '인수': 'int'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\image.cpp(205): warning C4244: '인수': 'int'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\image.cpp(220): warning C4244: '인수': 'int'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\image.cpp(279): warning C4244: '인수': 'int'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\image.cpp(295): warning C4244: '인수': 'int'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\image.cpp(304): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\image.cpp(309): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  gameNode.cpp
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\gamenode.cpp(88): warning C4244: '=': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\gamenode.cpp(89): warning C4244: '=': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  effectManager.cpp
+  effect.cpp
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\effect.cpp(62): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  direct2DManager.cpp
+  database.cpp
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\database.cpp(42): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\database.cpp(74): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\database.cpp(80): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  cameraManager.cpp
+  button.cpp
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\button.cpp(21): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\button.cpp(22): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\button.cpp(70): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\dustlr\documents\github\disgaea\inven,itemimagerecource - v2.0\button.cpp(74): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  animation.cpp
+  코드를 생성하고 있습니다...
+  Disgaea.vcxproj -> C:\Users\dustlr\Documents\GitHub\Disgaea\inven,itemImageRecource - v2.0\Debug\Disgaea.exe
+  Disgaea.vcxproj -> C:\Users\dustlr\Documents\GitHub\Disgaea\inven,itemImageRecource - v2.0\Debug\Disgaea.pdb (Partial PDB)
