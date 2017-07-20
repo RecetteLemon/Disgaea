@@ -18,6 +18,7 @@ struct playerStat
 	int _exp, _maxExp;
 	int _atk, _int, _def, _res;
 	int	_mov, _thr, _counter, _jm;
+
 };
 
 class statDataBase : public singletonBase<statDataBase>
@@ -25,7 +26,7 @@ class statDataBase : public singletonBase<statDataBase>
 private:
 
 	playerStat _plStat[DB_PLAYER_END];
-
+	unsigned int _money;
 public:
 
 	void update(void);
@@ -43,8 +44,11 @@ public:
 	void setDef(int i, int def) { _plStat[i]._def = def; }
 	void setRes(int i, int res) { _plStat[i]._res = res; }
 
-	
+
 	playerStat* getPlayerStat() { return _plStat; }
+
+	void setMoney(unsigned int money) { _money = money; }
+	unsigned int getMoney() { return _money; }
 
 	statDataBase();
 	~statDataBase();
