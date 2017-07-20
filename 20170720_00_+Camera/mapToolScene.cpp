@@ -260,14 +260,14 @@ void mapToolScene::drawTile()
 		IMAGEMANAGER->findImage(L"IsoTerrain")->frameRender(_tile[x][y][z].x - TILESIZEX / 2,
 			_tile[x][y][z].y - _tile[x][y][z].z,
 			_tile[x][y][z].terFrame.x, _tile[x][y][z].terFrame.y, true, 1.0f);
-	}
 
-	for (int y = 0; y < TILEY; y++) for (int x = 0; x < TILEX; x++)
-	{
-		DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[x][y][0].line[0].x, _tile[x][y][0].line[0].y, _tile[x][y][0].line[1].x, _tile[x][y][0].line[1].y, true, 1);
-		DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[x][y][0].line[1].x, _tile[x][y][0].line[1].y, _tile[x][y][0].line[2].x, _tile[x][y][0].line[2].y, true, 1);
-		DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[x][y][0].line[2].x, _tile[x][y][0].line[2].y, _tile[x][y][0].line[3].x, _tile[x][y][0].line[3].y, true, 1);
-		DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[x][y][0].line[3].x, _tile[x][y][0].line[3].y, _tile[x][y][0].line[0].x, _tile[x][y][0].line[0].y, true, 1);
+		if (z <= 0)
+		{
+			DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[x][y][0].line[0].x, _tile[x][y][0].line[0].y, _tile[x][y][0].line[1].x, _tile[x][y][0].line[1].y, true, 1);
+			DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[x][y][0].line[1].x, _tile[x][y][0].line[1].y, _tile[x][y][0].line[2].x, _tile[x][y][0].line[2].y, true, 1);
+			DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[x][y][0].line[2].x, _tile[x][y][0].line[2].y, _tile[x][y][0].line[3].x, _tile[x][y][0].line[3].y, true, 1);
+			DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[x][y][0].line[3].x, _tile[x][y][0].line[3].y, _tile[x][y][0].line[0].x, _tile[x][y][0].line[0].y, true, 1);
+		}
 	}
 
 	for (int z = 0; z < TILEZ; z++) for (int y = 0; y < TILEY; y++) for (int x = 0; x < TILEX; x++)

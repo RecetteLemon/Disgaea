@@ -78,7 +78,7 @@ vector<wstring> txtData::charArraySeparation(WCHAR charArray[])
 {
 	vector<wstring> vArray;
 
-	/*WCHAR* temp;
+	WCHAR* temp;
 	WCHAR* separator = L",";
 	WCHAR* token;
 
@@ -88,7 +88,7 @@ vector<wstring> txtData::charArraySeparation(WCHAR charArray[])
 	while (NULL != (token = wcstok(NULL, separator)))
 	{
 		vArray.push_back(token);
-	}*/
+	}
 
 	return vArray;
 }
