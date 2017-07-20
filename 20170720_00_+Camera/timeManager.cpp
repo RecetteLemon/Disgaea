@@ -65,7 +65,15 @@ void timeManager::render()
 	{
 		//FPS
 		swprintf_s(str, L"framePerSec(FPS) : %d", _timer->getFrameRate());
-		DIRECT2D->DrawTextD2D(DIRECT2D->_defaultBrush, str, 10, 10, 200, 20);
+		DIRECT2D->drawTextD2D(DIRECT2D->_defaultBrush, str, 10, 10, 200, 20);
+
+		//WorldTime
+		swprintf_s(str, L"worldTime : %f", _timer->getWorldTime());
+		DIRECT2D->drawTextD2D(DIRECT2D->_defaultBrush, str, 10, 30, 200, 50);
+
+		//ElapsedTime
+		swprintf_s(str, L"elaspedTime : %f", _timer->getElapsedTime());
+		DIRECT2D->drawTextD2D(DIRECT2D->_defaultBrush, str, 10, 50, 200, 70);
 	}
 #endif
 

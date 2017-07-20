@@ -252,18 +252,14 @@ void mapToolScene::drawTile()
 	
 	for (int z = 0; z < TILEZ; z++) for (int y = 0; y < TILEY; y++) for (int x = 0; x < TILEX; x++)
 	{
+		if (-CAMERAMANAGER->getX() + _tile[x][y][z].x + TILESIZEX / 2 < 22) continue;
+		if (-CAMERAMANAGER->getX() + _tile[x][y][z].x - TILESIZEX / 2 > 22 + 1167) continue;
+		if (-CAMERAMANAGER->getY() + _tile[x][y][z].y + TILESIZEY / 2 < 22) continue;
+		if (-CAMERAMANAGER->getY() + _tile[x][y][z].y - TILESIZEY / 2 > 22 + 624) continue;
 		if (_tile[x][y][z].ter == TER_NONE) continue;
 		IMAGEMANAGER->findImage(L"IsoTerrain")->frameRender(_tile[x][y][z].x - TILESIZEX / 2,
 			_tile[x][y][z].y - _tile[x][y][z].z,
 			_tile[x][y][z].terFrame.x, _tile[x][y][z].terFrame.y, true, 1.0f);
-	}
-
-	for (int z = 0; z < TILEZ; z++) for (int y = 0; y < TILEY; y++) for (int x = 0; x < TILEX; x++)
-	{
-		if (_tile[x][y][z].obj == OBJ_ERASE) continue;
-		IMAGEMANAGER->findImage(L"IsoObject")->frameRender(_tile[x][y][z].x - TILESIZEX / 2 - IMAGEMANAGER->findImage(L"IsoObject")->getFrameWidth() + TILESIZEX,
-			_tile[x][y][z].y - _tile[x][y][z].z - IMAGEMANAGER->findImage(L"IsoObject")->getFrameHeight() + TILESIZEY,
-			_tile[x][y][z].objFrame.x, _tile[x][y][z].objFrame.y, true, 1.0f);
 	}
 
 	for (int y = 0; y < TILEY; y++) for (int x = 0; x < TILEX; x++)
@@ -276,9 +272,20 @@ void mapToolScene::drawTile()
 
 	for (int z = 0; z < TILEZ; z++) for (int y = 0; y < TILEY; y++) for (int x = 0; x < TILEX; x++)
 	{
-		if (_tile[x][y][z].edgePaint) IMAGEMANAGER->findImage(L"IsoEdge")->render(_tile[x][y][z].x - TILESIZEX / 2, _tile[x][y][z].y - _tile[x][y][z].z, true, 1);
+		if (-CAMERAMANAGER->getX() + _tile[x][y][z].x + TILESIZEX / 2 < 22) continue;
+		if (-CAMERAMANAGER->getX() + _tile[x][y][z].x - TILESIZEX / 2 > 22 + 1167) continue;
+		if (-CAMERAMANAGER->getY() + _tile[x][y][z].y + TILESIZEY / 2 < 22) continue;
+		if (-CAMERAMANAGER->getY() + _tile[x][y][z].y - TILESIZEY / 2 > 22 + 624) continue;
+		if (_tile[x][y][z].obj == OBJ_ERASE) continue;
+		IMAGEMANAGER->findImage(L"IsoObject")->frameRender(_tile[x][y][z].x - TILESIZEX / 2 - IMAGEMANAGER->findImage(L"IsoObject")->getFrameWidth() + TILESIZEX,
+			_tile[x][y][z].y - _tile[x][y][z].z - IMAGEMANAGER->findImage(L"IsoObject")->getFrameHeight() + TILESIZEY,
+			_tile[x][y][z].objFrame.x, _tile[x][y][z].objFrame.y, true, 1.0f);
 	}
 
+	for (int z = 0; z < TILEZ; z++) for (int y = 0; y < TILEY; y++) for (int x = 0; x < TILEX; x++)
+	{
+		if (_tile[x][y][z].edgePaint) IMAGEMANAGER->findImage(L"IsoEdge")->render(_tile[x][y][z].x - TILESIZEX / 2, _tile[x][y][z].y - _tile[x][y][z].z, true, 1);
+	}
 	IMAGEMANAGER->findImage(L"IsoEdgeFrame")->render(0, 0, false, 1);
 
 
