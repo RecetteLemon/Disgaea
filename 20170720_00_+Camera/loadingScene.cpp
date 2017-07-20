@@ -27,7 +27,7 @@ void loadingScene::release()
 void loadingScene::update()
 {
 	_ld->update();
-	if (_ld->loadingDone()) SCENEMANAGER->changeScene(L"TestScene");
+	if (_ld->loadingDone()) SCENEMANAGER->changeScene(L"MenuScene");
 }
 void loadingScene::render()
 {
@@ -45,11 +45,13 @@ void loadingScene::loadingImage()
 	_ld->loadFrameImage(L"TerrainButton", L"Image/MapTool/BtnTerrain.png", 125, 64, 1, 2);
 	_ld->loadFrameImage(L"ObjectButton", L"Image/MapTool/BtnObject.png", 125, 64, 1, 2);
 	_ld->loadFrameImage(L"EraseButton", L"Image/MapTool/BtnEraser.png", 125, 64, 1, 2);
-	_ld->loadFrameImage(L"IsoTerrain", L"Image/MapTool/isoTile.png", 480, 96, 5, 2);
+	//_ld->loadFrameImage(L"IsoTerrain", L"Image/MapTool/isoTile.png", 480, 96, 5, 2);
 	_ld->loadFrameImage(L"IsoTerrain", L"Image/MapTool/isoTile96.png", 960, 480, 10, 5);
 	_ld->loadFrameImage(L"IsoObject", L"Image/MapTool/isoObject2.png", 180, 160, 2, 1);
 	_ld->loadImage(L"IsoEraser", L"Image/MapTool/isoEraser.png", 128, 128);
-
+	_ld->loadImage(L"IsoEdge", L"Image/MapTool/Edge.png", 96, 48);
+	_ld->loadImage(L"IsoEdgeFrame", L"Image/MapTool/EdgeFrame.png", 1600, 900);
+	_ld->loadImage(L"IsoBackground", L"Image/MapTool/Background.png", 1600, 900);
 	// 캐릭터 관련 이미지
 
 	_ld->loadFrameImage(L"Valvatorez", L"image/player/Valvatorez.png", 2964, 2873, 12, 13);

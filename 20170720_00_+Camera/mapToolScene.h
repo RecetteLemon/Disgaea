@@ -16,6 +16,8 @@
 #define TILEMAXSIZEX TILEX * TILESIZEX
 #define TILEMAXSIZEY TILEY * TILESIZEY
 #define TILEMAXSIZEZ TILEZ * TILESIZEZ
+#define INITX (22)
+#define INITY (22 - TILEMAXSIZEY / 2)
 enum BUTTON_TYPE
 {
 	BTN_START,
@@ -55,7 +57,12 @@ struct tagIso
 	OBJECT_TYPE obj;
 	POINT terFrame;
 	POINT objFrame;
+	bool edgePaint;
 	tagIso* getParents;
+	tagIso()
+	{
+		getParents = NULL;
+	}
 };
 struct tagSamplePhase
 {
