@@ -4,6 +4,7 @@
 //전역변수 선언
 HINSTANCE	_hInstance;		//윈도우 APP 고유번호
 HWND		_hWnd;
+bool _leftButtonDown;
 
 LPTSTR _lpszClass = TEXT("Omega API");
 

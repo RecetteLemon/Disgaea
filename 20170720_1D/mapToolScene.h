@@ -55,6 +55,7 @@ private:
 
 	RECT _btnTileRight;
 	RECT _btnTileLeft;
+	RECT _tileMonitor;
 
 public:
 	mapToolScene();

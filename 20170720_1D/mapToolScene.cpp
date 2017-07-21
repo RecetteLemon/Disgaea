@@ -77,6 +77,7 @@ HRESULT mapToolScene::init()
 
 	_btnTileRight = RectMake(1459, 250, 50, 50);
 	_btnTileLeft = RectMake(1209, 250, 50, 50);
+	_tileMonitor = RectMake(22, 22, 1167, 624);
 
 	return S_OK;
 }
@@ -161,7 +162,12 @@ void mapToolScene::setTile()
 			{
 			case SAM_TERRAIN:
 				++_phaseSample.token.x;
-				if (_phaseSample.token.x > _sample[SAM_TERRAIN]->getMaxFrameX()) _phaseSample.token.x = 0;
+				if (_phaseSample.token.x > _sample[SAM_TERRAIN]->getMaxFrameX())
+				{
+					_phaseSample.token.x = 0;
+				}
+				_curTile.x = _phaseSample.token.x;
+				_curTile.y = _phaseSample.token.y;
 				break;
 			case SAM_OBJECT:
 				++_phaseSample.token.x;
@@ -176,6 +182,8 @@ void mapToolScene::setTile()
 					++_phaseSample.token.y;
 					if (_phaseSample.token.y > _sample[SAM_OBJECT]->getMaxFrameY()) _phaseSample.token.y = 0;
 				}
+				_curTile.x = _phaseSample.token.x;
+				_curTile.y = _phaseSample.token.y;
 				break;
 			}
 			
@@ -188,6 +196,8 @@ void mapToolScene::setTile()
 			case SAM_TERRAIN:
 				--_phaseSample.token.x;
 				if (_phaseSample.token.x < 0) _phaseSample.token.x = _sample[SAM_OBJECT]->getMaxFrameX();
+				_curTile.x = _phaseSample.token.x;
+				_curTile.y = _phaseSample.token.y;
 				break;
 			case SAM_OBJECT:
 				--_phaseSample.token.x;
@@ -202,19 +212,21 @@ void mapToolScene::setTile()
 					--_phaseSample.token.y;
 					if (_phaseSample.token.y < 0) _phaseSample.token.y = _sample[SAM_OBJECT]->getMaxFrameY();
 				}
+				_curTile.x = _phaseSample.token.x;
+				_curTile.y = _phaseSample.token.y;
 				break;
 			}
 			
 		}
 
-		if (PtInRect(&_sampleTile.rc, _ptMouse))
+		/*if (PtInRect(&_sampleTile.rc, _ptMouse))
 		{
 			_curTile.x = _phaseSample.token.x;
 			_curTile.y = _phaseSample.token.y;
-		}
+		}*/
 	}
 
-	if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
+	if (KEYMANAGER->isStayKeyDown(VK_LBUTTON) && PtInRect(&_tileMonitor, _ptMouse))
 	{
 		for (int i = 0; i < TILEX * TILEY; i++) for (int j = 0; j < TILEZ; j++)
 		{		
@@ -227,11 +239,19 @@ void mapToolScene::setTile()
 				case SAM_TERRAIN:
 					if (this->terCreater({ _curTile.x, _curTile.y }) == TER_VOID)
 					{
-						_tile[i].z = 0;
-						_tile[i].terFrame.x = _curTile.x;
-						_tile[i].terFrame.y = _curTile.y;
-						_tile[i].ter = this->terCreater({ _curTile.x, _curTile.y });
-						_tile[i].clickCheck = true;
+						if (_tile[i].z > 0)
+						{
+							_tile[i].z -= 1;
+							_tile[i].clickCheck = true;
+						}
+						else if (_tile[i].z <= 0)
+						{
+							_tile[i].z = 0;
+							_tile[i].terFrame.x = _curTile.x;
+							_tile[i].terFrame.y = _curTile.y;
+							_tile[i].ter = this->terCreater({ _curTile.x, _curTile.y });
+							_tile[i].clickCheck = true;
+						}
 					}
 					else
 					{

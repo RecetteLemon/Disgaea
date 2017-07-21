@@ -21,7 +21,7 @@ HRESULT gameNode::init(void)
 
 HRESULT gameNode::init(bool managerInit)
 {
-	
+	_leftButtonDown = false;
 	_managerInit = managerInit;
 
 	if (_managerInit)
@@ -99,6 +99,13 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 			
 			}
 		break;
+
+		case WM_LBUTTONDOWN:
+			_leftButtonDown = true;
+			break;
+		case WM_LBUTTONUP:
+			_leftButtonDown = false;
+			break;
 
 		case WM_DESTROY:
 			PostQuitMessage(0);

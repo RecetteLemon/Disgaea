@@ -42,12 +42,12 @@ void button::update(void)
 {
 	if (PtInRect(&_rc, _ptMouse))
 	{
-		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+		if (_leftButtonDown)
 		{
 			_direction = BUTTONDIRECTION_DOWN;
 			
 		}
-		else if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON) && _direction == BUTTONDIRECTION_DOWN)
+		else if (!_leftButtonDown && _direction == BUTTONDIRECTION_DOWN)
 		{
 			_direction = BUTTONDIRECTION_UP;
 			_push = true;
