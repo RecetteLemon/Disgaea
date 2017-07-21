@@ -54,14 +54,20 @@ void loadingScene::loadingImage()
 	_ld->loadImage(L"IsoEdge", L"Image/MapTool/Edge.png", 192, 96);
 	_ld->loadImage(L"IsoEdgeFrame", L"Image/MapTool/EdgeFrame.png", 1600, 900);
 	_ld->loadImage(L"IsoBackground", L"Image/MapTool/Background.png", 1600, 900);
+
+
 	// 캐릭터 관련 이미지
-
 	_ld->loadFrameImage(L"Valvatorez", L"image/player/Valvatorez.png", 2964, 2873, 12, 13);
+	_ld->loadFrameImage(L"Rozalin", L"image/player/rozalin.png", 1536, 2380, 12, 14);
+	_ld->loadFrameImage(L"Cleric", L"image/player/Cleric.png", 1476, 1630, 12, 10);
+	_ld->loadFrameImage(L"Adell", L"image/player/Adell.png", 1320, 1920, 12, 12);
+	_ld->loadFrameImage(L"Pram", L"image/player/Pram.png", 2136, 2340, 12, 12);
+	_ld->loadFrameImage(L"Prinny", L"image/player/prinny.png", 3744, 854, 32, 7);
+	_ld->loadImage(L"shadow", L"image/player/shadow.png", 100, 40);
 
-	
 
-
-	// ?? 이미지
+	// 이펙트 이미지
+	_ld->loadFrameImage(L"PrinnyEffect", L"image/Effect/prinny_effect.png", 1704, 202, 8, 1);
 
 
 	// ?? 이미지

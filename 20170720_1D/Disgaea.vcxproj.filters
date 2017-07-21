@@ -73,11 +73,14 @@
     <Filter Include="Disgaea\Character">
       <UniqueIdentifier>{6fc5fc4e-aa9f-483d-ba38-874117434f58}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Disgaea\CharacterTestScene">
-      <UniqueIdentifier>{04460f6e-b083-42a5-8ffb-69f93c7ce505}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Disgaea\TownScene">
       <UniqueIdentifier>{6d129df5-f3f0-417c-8be3-e3bd1310449f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Disgaea\Character\player">
+      <UniqueIdentifier>{57440293-3054-4758-bd58-d1f070db5600}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Disgaea\Character\enemy">
+      <UniqueIdentifier>{da9b83c6-1c38-456d-9554-c32c90bdb910}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -171,20 +174,41 @@
     <ClInclude Include="dungeonScene.h">
       <Filter>Disgaea\DungeonScene</Filter>
     </ClInclude>
-    <ClInclude Include="character1.h">
-      <Filter>Disgaea\Character</Filter>
-    </ClInclude>
-    <ClInclude Include="player.h">
-      <Filter>Disgaea\Character</Filter>
-    </ClInclude>
-    <ClInclude Include="testScene.h">
-      <Filter>Disgaea\CharacterTestScene</Filter>
-    </ClInclude>
     <ClInclude Include="tile.h">
       <Filter>Disgaea</Filter>
     </ClInclude>
     <ClInclude Include="townScene.h">
       <Filter>Disgaea\TownScene</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>Disgaea\Character\player</Filter>
+    </ClInclude>
+    <ClInclude Include="characterManager.h">
+      <Filter>Disgaea\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="statDataBase.h">
+      <Filter>Disgaea\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Pram.h">
+      <Filter>Disgaea\Character\player</Filter>
+    </ClInclude>
+    <ClInclude Include="rozalin.h">
+      <Filter>Disgaea\Character\player</Filter>
+    </ClInclude>
+    <ClInclude Include="valvatorez.h">
+      <Filter>Disgaea\Character\player</Filter>
+    </ClInclude>
+    <ClInclude Include="Cleric.h">
+      <Filter>Disgaea\Character\player</Filter>
+    </ClInclude>
+    <ClInclude Include="Adell.h">
+      <Filter>Disgaea\Character\player</Filter>
+    </ClInclude>
+    <ClInclude Include="enemy.h">
+      <Filter>Disgaea\Character\enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Prinny.h">
+      <Filter>Disgaea\Character\enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -266,17 +290,38 @@
     <ClCompile Include="dungeonScene.cpp">
       <Filter>Disgaea\DungeonScene</Filter>
     </ClCompile>
-    <ClCompile Include="character1.cpp">
-      <Filter>Disgaea\Character</Filter>
-    </ClCompile>
-    <ClCompile Include="player.cpp">
-      <Filter>Disgaea\Character</Filter>
-    </ClCompile>
-    <ClCompile Include="testScene.cpp">
-      <Filter>Disgaea\CharacterTestScene</Filter>
-    </ClCompile>
     <ClCompile Include="townScene.cpp">
       <Filter>Disgaea\TownScene</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>Disgaea\Character\player</Filter>
+    </ClCompile>
+    <ClCompile Include="characterManager.cpp">
+      <Filter>Disgaea\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="statDataBase.cpp">
+      <Filter>Disgaea\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Pram.cpp">
+      <Filter>Disgaea\Character\player</Filter>
+    </ClCompile>
+    <ClCompile Include="rozalin.cpp">
+      <Filter>Disgaea\Character\player</Filter>
+    </ClCompile>
+    <ClCompile Include="valvatorez.cpp">
+      <Filter>Disgaea\Character\player</Filter>
+    </ClCompile>
+    <ClCompile Include="Cleric.cpp">
+      <Filter>Disgaea\Character\player</Filter>
+    </ClCompile>
+    <ClCompile Include="Adell.cpp">
+      <Filter>Disgaea\Character\player</Filter>
+    </ClCompile>
+    <ClCompile Include="enemy.cpp">
+      <Filter>Disgaea\Character\enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Prinny.cpp">
+      <Filter>Disgaea\Character\enemy</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -47,5 +47,8 @@ public:
 
 	inline map<wstring, gameNode*> getMap() { return _mSceneList; }
 	inline map<wstring, gameNode*>::iterator getIMap() { return _miSceneList; }
+
+	//ÇØ´ç¾À «n
+	bool sceneCheck(wstring sceneName);
 };
 

@@ -36,6 +36,13 @@ inline RECT RectMakeCenter(int x, int y, int width, int height)
 	return rc;
 }
 
+inline RECT RectMakeBottomCenter(int x, int y, int width, int height)
+{
+	RECT rc = { x - width / 2, y - height, x + width / 2, y };
+
+	return rc;
+}
+
 //Rectangle
 inline void RectangleMake(HDC hdc, int x, int y, int width, int height)
 {

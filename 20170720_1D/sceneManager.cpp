@@ -154,3 +154,11 @@ HRESULT sceneManager::changeScene(wstring sceneName, wstring loadingSceneName)
 }
 
 
+bool sceneManager::sceneCheck(wstring sceneName)
+{
+	mapSceneIter find = _mSceneList.find(sceneName);
+
+	if (find == _mSceneList.end()) return false;
+	if (find->second == _currentScene) return true;
+	else return false;
+}

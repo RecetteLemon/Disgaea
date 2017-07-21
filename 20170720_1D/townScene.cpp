@@ -12,6 +12,11 @@ townScene::~townScene()
 }
 HRESULT townScene::init()
 {
+	_cm = new characterManager;
+	_cm->init(2, 5);
+	_cm->selectPlayer(3);
+
+	
 	this->loadTile();
 	return S_OK;
 }
@@ -22,8 +27,16 @@ void townScene::release()
 void townScene::update()
 {
 	this->camControl();
+	_cm->update();
+	
 }
 void townScene::render()
+{
+	this->drawTile();
+	_cm->render();
+	
+}
+void townScene::drawTile()
 {
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{

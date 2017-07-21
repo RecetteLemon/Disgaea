@@ -47,7 +47,7 @@ public:
 	~animation();
 
 	HRESULT init(int totalW, int totalH, int frameW, int frameH);
-	
+
 
 	//디폴트 애니메이션
 	void setDefPlayFrame(BOOL reverse = FALSE, BOOL loop = FALSE);
@@ -75,6 +75,7 @@ public:
 	inline BOOL isPlay(void) { return _play; }
 
 	inline POINT getFramePos(void) { return _frameList[_playList[_nowPlayIndex]]; }
+	inline int getFrameNum() { return _nowPlayIndex; }
 
 	inline int getFrameWidth(void) { return _frameWidth; }
 	inline int getFrameHeight(void) { return _frameHeight; }
