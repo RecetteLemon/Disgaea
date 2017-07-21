@@ -268,6 +268,16 @@ void mapToolScene::setTile()
 			DeleteObject(hRgn);
 		}
 	}
+	if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
+	{
+		for (int i = 0; i < TILEX * TILEY; i++)
+		{
+			if (_tile[i].clickCheck)
+			{
+				_tile[i].clickCheck = false;
+			}
+		}
+	}
 }
 void mapToolScene::drawTile()
 {

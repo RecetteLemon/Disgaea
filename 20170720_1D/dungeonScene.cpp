@@ -59,19 +59,19 @@ void dungeonScene::drawTile()
 }
 void dungeonScene::camControl()
 {
-	if (KEYMANAGER->isStayKeyDown(VK_LEFT) || _ptMouse.x <= 0 + 5)
+	if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 	{
 		CAMERAMANAGER->setX(CAMERAMANAGER->getX() - 10);
 	}
-	if (KEYMANAGER->isStayKeyDown(VK_UP) || _ptMouse.y <= 0 + 5)
+	if (KEYMANAGER->isStayKeyDown(VK_UP))
 	{
 		CAMERAMANAGER->setY(CAMERAMANAGER->getY() - 10);
 	}
-	if (KEYMANAGER->isStayKeyDown(VK_RIGHT) || _ptMouse.x >= WINSIZEX - 5)
+	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 	{
 		CAMERAMANAGER->setX(CAMERAMANAGER->getX() + 10);
 	}
-	if (KEYMANAGER->isStayKeyDown(VK_DOWN) || _ptMouse.y >= WINSIZEY - 5)
+	if (KEYMANAGER->isStayKeyDown(VK_DOWN))
 	{
 		CAMERAMANAGER->setY(CAMERAMANAGER->getY() + 10);
 	}

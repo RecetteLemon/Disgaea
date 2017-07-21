@@ -76,6 +76,9 @@
     <Filter Include="Disgaea\CharacterTestScene">
       <UniqueIdentifier>{04460f6e-b083-42a5-8ffb-69f93c7ce505}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Disgaea\TownScene">
+      <UniqueIdentifier>{6d129df5-f3f0-417c-8be3-e3bd1310449f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -177,6 +180,12 @@
     <ClInclude Include="testScene.h">
       <Filter>Disgaea\CharacterTestScene</Filter>
     </ClInclude>
+    <ClInclude Include="tile.h">
+      <Filter>Disgaea</Filter>
+    </ClInclude>
+    <ClInclude Include="townScene.h">
+      <Filter>Disgaea\TownScene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -265,6 +274,9 @@
     </ClCompile>
     <ClCompile Include="testScene.cpp">
       <Filter>Disgaea\CharacterTestScene</Filter>
+    </ClCompile>
+    <ClCompile Include="townScene.cpp">
+      <Filter>Disgaea\TownScene</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

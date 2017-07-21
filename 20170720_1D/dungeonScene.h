@@ -1,6 +1,6 @@
 #pragma once
 #include "gameNode.h"
-#include "mapToolScene.h"
+#include "tile.h"
 class dungeonScene : public gameNode
 {
 private:

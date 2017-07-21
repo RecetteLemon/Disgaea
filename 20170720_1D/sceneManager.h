@@ -12,13 +12,13 @@ class sceneManager : public singletonBase <sceneManager>
 public:
 	typedef map<wstring, gameNode*> mapSceneList;
 	typedef map<wstring, gameNode*>::iterator mapSceneIter;
-
 private:
 	static gameNode* _currentScene;
 	static gameNode* _loadingScene;
 	static gameNode* _readyScene;
 
 	mapSceneList _mSceneList;
+	mapSceneIter _miSceneList;
 	mapSceneList _mLoadingSceneList;
 
 	DWORD _loadingThreadID;
@@ -43,5 +43,9 @@ public:
 
 	friend DWORD CALLBACK loadingThread(LPVOID prc);
 
+	inline gameNode* getCurScene() { return _currentScene; }
+
+	inline map<wstring, gameNode*> getMap() { return _mSceneList; }
+	inline map<wstring, gameNode*>::iterator getIMap() { return _miSceneList; }
 };
 

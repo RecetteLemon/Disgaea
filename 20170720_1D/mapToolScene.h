@@ -1,28 +1,13 @@
 #pragma once
 #include "gameNode.h"
 #include "button.h"
-#define TILEX 19
-#define TILEY 19
-#define TILEZ 6
-
-#define TILESIZEX 192
-#define TILESIZEY 96
-#define TILESIZEZ 96
-
+#include "tile.h"
 #define SAMX (_sample[_phaseSample.cur]->getMaxFrameX() + 1)
 #define SAMY (_sample[_phaseSample.cur]->getMaxFrameY() + 1)
 #define SAMSIZEX _sample[_phaseSample.cur]->getFrameWidth()
 #define SAMSIZEY _sample[_phaseSample.cur]->getFrameHeight()
-
 #define SAMMAXSIZEX SAMSIZEX * SAMX
 #define SAMMAXSIZEY SAMSIZEY * SAMY
-
-#define TILEMAXSIZEX TILEX * TILESIZEX
-#define TILEMAXSIZEY TILEY * TILESIZEY
-#define TILEMAXSIZEZ TILEZ * TILESIZEZ
-
-#define INITX (22)
-#define INITY (22 - TILEMAXSIZEY / 2)
 enum BUTTON_TYPE
 {
 	BTN_START,
@@ -33,42 +18,12 @@ enum BUTTON_TYPE
 	BTN_ERASER,
 	BTN_END
 };
-enum TERRAIN_TYPE
-{
-	TER_LOAD,
-	TER_WALL,
-	TER_VOID,
-	TER_END
-};
-enum OBJECT_TYPE
-{
-	OBJ_ITEM,
-	OBJ_CRASH,
-	OBJ_ERASE,
-	OBJ_END
-};
 enum SAMPLE_TYPE
 {
 	SAM_TERRAIN = 0,
 	SAM_OBJECT,
 	SAM_OBJ_ERASER,
 	SAM_END
-};
-struct tagIso
-{
-	RECT iso;
-	int x, y, z;
-	int floorZ;
-	int centerX, centerY;
-	int indexX, indexY, indexZ;
-	POINT line[4];
-	TERRAIN_TYPE ter;
-	OBJECT_TYPE obj;
-	POINT terFrame;
-	POINT objFrame;
-	bool tileVoid;
-	bool edgePaint;
-	bool clickCheck;
 };
 struct tagSamplePhase
 {
