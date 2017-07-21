@@ -10,6 +10,7 @@ mapToolScene::mapToolScene()
 mapToolScene::~mapToolScene()
 {
 }
+
 HRESULT mapToolScene::init()
 {
 	ZeroMemory(&_tileSample, sizeof(tagSample) * TILEX * TILEY);
@@ -19,10 +20,10 @@ HRESULT mapToolScene::init()
 	_sample[SAM_TERRAIN] = IMAGEMANAGER->findImage(L"IsoTerrain");
 	_sample[SAM_OBJECT] = IMAGEMANAGER->findImage(L"IsoObject");
 	_sample[SAM_OBJ_ERASER] = IMAGEMANAGER->findImage(L"IsoEraser");
-	_phaseSample.x = WINSIZEX / 2;
-	_phaseSample.y = WINSIZEY / 2;
+	_phaseSample.x = 1359;
+	_phaseSample.y = 124;
 	_phaseSample.cur = SAM_TERRAIN;
-	_phaseSample.rc = RectMakeCenter(_phaseSample.x, _phaseSample.y, SAMMAXSIZEX, SAMMAXSIZEY);
+	_phaseSample.rc = RectMakeCenter(_phaseSample.x, _phaseSample.y, 192, 192);
 	_phaseSample.token = { 0, 0 };
 	_phaseSample.isMove = false;
 	_curTile.x = _curTile.y = 0;
@@ -34,6 +35,10 @@ HRESULT mapToolScene::init()
 		SetRect(&_tileSample[i * SAMX + j].rc, _phaseSample.rc.left + j * SAMSIZEX,
 			_phaseSample.rc.top + i * SAMSIZEY, _phaseSample.rc.left + j * SAMSIZEX + SAMSIZEX, _phaseSample.rc.top + i * SAMSIZEY + SAMSIZEY);
 	}
+
+	_sampleTile.frame.x = 0;
+	_sampleTile.frame.y = 0;
+	_sampleTile.rc = RectMakeCenter(_phaseSample.x, _phaseSample.y, 192, 192);
 
 	for (int y = 0; y < TILEY; y++) for (int x = 0; x < TILEX; x++)
 	{
@@ -70,11 +75,18 @@ HRESULT mapToolScene::init()
 
 	this->initButton();
 
+	_btnTileRight = RectMake(1459, 250, 50, 50);
+	_btnTileLeft = RectMake(1209, 250, 50, 50);
+
 	return S_OK;
 }
 void mapToolScene::release()
 {
-
+	for (int i = 0; i < BTN_END; i++)
+	{
+		_btn[i]->release();
+		SAFE_DELETE(_btn[i]);
+	}
 }
 void mapToolScene::update()
 {
@@ -95,7 +107,7 @@ void mapToolScene::coordinateUpdate()
 {
 	for (int i = 0; i < SAMY; i++) for (int j = 0; j < SAMX; j++)
 	{
-		_phaseSample.rc = RectMakeCenter(_phaseSample.x, _phaseSample.y, SAMMAXSIZEX, SAMMAXSIZEY);
+		_phaseSample.rc = RectMakeCenter(_phaseSample.x, _phaseSample.y, 192, 192);
 		_tileSample[i * SAMX + j].frame.x = j;
 		_tileSample[i * SAMX + j].frame.y = i;
 		SetRect(&_tileSample[i * SAMX + j].rc, _phaseSample.rc.left + j * SAMSIZEX,
@@ -143,26 +155,67 @@ void mapToolScene::setTile()
 
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
-		for (int i = 0; i < SAMX * SAMY; i++)
+		if (PtInRect(&_btnTileRight, _ptMouse))
 		{
-			if (PtInRect(&_tileSample[i].rc, _ptMouse))
+			switch (_phaseSample.cur)
 			{
-				_curTile.x = _tileSample[i].frame.x;
-				_curTile.y = _tileSample[i].frame.y;
+			case SAM_TERRAIN:
+				++_phaseSample.token.x;
+				if (_phaseSample.token.x > _sample[SAM_TERRAIN]->getMaxFrameX()) _phaseSample.token.x = 0;
+				break;
+			case SAM_OBJECT:
+				++_phaseSample.token.x;
+				if (_phaseSample.token.x > 4 && _phaseSample.token.y == 4)
+				{
+					_phaseSample.token.x = 0;
+					++_phaseSample.token.y;
+				}
+				else if (_phaseSample.token.x > _sample[SAM_OBJECT]->getMaxFrameX())
+				{
+					_phaseSample.token.x = 0;
+					++_phaseSample.token.y;
+					if (_phaseSample.token.y > _sample[SAM_OBJECT]->getMaxFrameY()) _phaseSample.token.y = 0;
+				}
 				break;
 			}
+			
+		}
+
+		if (PtInRect(&_btnTileLeft, _ptMouse))
+		{
+			switch (_phaseSample.cur)
+			{
+			case SAM_TERRAIN:
+				--_phaseSample.token.x;
+				if (_phaseSample.token.x < 0) _phaseSample.token.x = _sample[SAM_OBJECT]->getMaxFrameX();
+				break;
+			case SAM_OBJECT:
+				--_phaseSample.token.x;
+				if (_phaseSample.token.x < 0 && _phaseSample.token.y == 5)
+				{
+					_phaseSample.token.x = 4;
+					--_phaseSample.token.y;
+				}
+				else if (_phaseSample.token.x < 0)
+				{
+					_phaseSample.token.x = _sample[SAM_OBJECT]->getMaxFrameX();
+					--_phaseSample.token.y;
+					if (_phaseSample.token.y < 0) _phaseSample.token.y = _sample[SAM_OBJECT]->getMaxFrameY();
+				}
+				break;
+			}
+			
+		}
+
+		if (PtInRect(&_sampleTile.rc, _ptMouse))
+		{
+			_curTile.x = _phaseSample.token.x;
+			_curTile.y = _phaseSample.token.y;
 		}
 	}
 
 	if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
 	{
-		if (PtInRect(&_phaseSample.rc, _ptMouse) && !_phaseSample.isMove)
-		{
-			_phaseSample.isMove = true;
-			_phaseSample.token.x = _ptMouse.x - _phaseSample.x;
-			_phaseSample.token.y = _ptMouse.y - _phaseSample.y;
-		}
-
 		for (int i = 0; i < TILEX * TILEY; i++) for (int j = 0; j < TILEZ; j++)
 		{		
 			if (_tile[i].clickCheck) continue;
@@ -214,25 +267,6 @@ void mapToolScene::setTile()
 			}		
 			DeleteObject(hRgn);
 		}
-	}
-	if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
-	{
-		_phaseSample.isMove = false;
-		_phaseSample.token.x = 0;
-		_phaseSample.token.y = 0;
-
-		for (int i = 0; i < TILEX * TILEY; i++)
-		{
-			if (_tile[i].clickCheck)
-			{
-				_tile[i].clickCheck = false;
-			}
-		}
-	}
-	if (_phaseSample.isMove)
-	{
-		_phaseSample.x = _ptMouse.x - _phaseSample.token.x;
-		_phaseSample.y = _ptMouse.y - _phaseSample.token.y;
 	}
 }
 void mapToolScene::drawTile()
@@ -299,12 +333,8 @@ void mapToolScene::drawTile()
 }
 void mapToolScene::drawSample()
 {
-	//for (int i = 0; i < SAMX * SAMY; i++) Rectangle(getMemDC(), _tileSample[i].rc.left, _tileSample[i].rc.top, _tileSample[i].rc.right, _tileSample[i].rc.bottom);
-	_sample[_phaseSample.cur]->render(_phaseSample.rc.left, _phaseSample.rc.top, false, 1.0f);
-
-	WCHAR str[128];
-	wsprintf(str, L"%d", _vertical);
-	DIRECT2D->drawTextD2D(DIRECT2D->_defaultBrush, str, 1555, 120, 1600, 140);
+	//_sample[_phaseSample.cur]->render(_phaseSample.rc.left, _phaseSample.rc.top, false, 1.0f);
+	_sample[_phaseSample.cur]->frameRender(_phaseSample.rc.left, _phaseSample.rc.top, _phaseSample.token.x, _phaseSample.token.y, false, 1.0f);
 }
 void mapToolScene::initButton()
 {
@@ -410,7 +440,9 @@ void mapToolScene::loadTile()
 TERRAIN_TYPE mapToolScene::terCreater(POINT tile)
 {
 	if (tile.x == 0 && tile.y == 0) return TER_VOID;
-	if (tile.x == 8 && tile.y == 3) return TER_WALL;
+	if (tile.x == 5 && tile.y == 0) return TER_WALL; //¿”Ω√∑Œ πŸ≤ﬁ
+
+	/*if (tile.x == 8 && tile.y == 3) return TER_WALL;
 	if (tile.x == 9 && tile.y == 3) return TER_WALL;
 	if (tile.x == 9 && tile.y == 4) return TER_WALL;
 	for (int i = 1; i < 9; i++)
@@ -420,7 +452,7 @@ TERRAIN_TYPE mapToolScene::terCreater(POINT tile)
 	for (int i = 0; i < 8; i++)
 	{
 		if (tile.x == i && tile.y == 1) return TER_WALL;
-	}
+	}*/
 	return TER_LOAD;
 }
 OBJECT_TYPE mapToolScene::objCreater(POINT tile)
