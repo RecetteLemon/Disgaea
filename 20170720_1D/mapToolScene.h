@@ -5,9 +5,9 @@
 #define TILEY 19
 #define TILEZ 6
 
-#define TILESIZEX 96
-#define TILESIZEY 48
-#define TILESIZEZ 48
+#define TILESIZEX 192
+#define TILESIZEY 96
+#define TILESIZEZ 96
 
 #define SAMX (_sample[_phaseSample.cur]->getMaxFrameX() + 1)
 #define SAMY (_sample[_phaseSample.cur]->getMaxFrameY() + 1)
@@ -95,10 +95,16 @@ private:
 	POINT _curTile;
 
 	int _vertical;
+	
+	tagSample _sampleTile;
+
+	RECT _btnTileRight;
+	RECT _btnTileLeft;
 
 public:
 	mapToolScene();
 	~mapToolScene();
+
 	HRESULT init();
 	void release();
 	void update();
