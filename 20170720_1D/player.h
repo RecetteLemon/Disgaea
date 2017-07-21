@@ -102,6 +102,7 @@ public:
 	virtual void move(void);
 	virtual void skill(void);
 
+	virtual void AstarMove(void);
 	
 
 	player();

@@ -104,7 +104,7 @@ void menuScene::keyDownSpace()
 	switch (_menu)
 	{
 	case MENU_START:
-		SCENEMANAGER->changeScene(L"TownScene");
+		SCENEMANAGER->changeScene(L"DungeonScene");
 		break;
 	case MENU_CONTINUE:
 		//SCENEMANAGER->changeScene();

@@ -1,10 +1,14 @@
 #pragma once
 #include "gameNode.h"
 #include "tile.h"
+#include "characterManager.h"
+
+
 class dungeonScene : public gameNode
 {
 private:
 	tagIso _tile[TILEX * TILEY];
+	characterManager* _cm;
 public:
 	dungeonScene();
 	~dungeonScene();

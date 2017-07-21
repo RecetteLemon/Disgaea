@@ -14,6 +14,10 @@ HRESULT dungeonScene::init()
 {
 	this->loadFile();
 
+	_cm = new characterManager;
+	_cm->init(2, 5);
+	_cm->selectPlayer(0);
+
 	return S_OK;
 }
 void dungeonScene::release()
@@ -24,10 +28,12 @@ void dungeonScene::update()
 {
 	this->camControl();
 	this->coordinateUpdate();
+	_cm->update();
 }
 void dungeonScene::render()
 {
 	this->drawTile();
+	_cm->render();
 }
 void dungeonScene::loadFile()
 {

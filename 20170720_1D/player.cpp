@@ -37,7 +37,7 @@ HRESULT player::init(const wchar_t* imageName, int x, int y)
 }
 void player::release(void)
 {
-
+	
 }
 void player::update(void) 
 {
@@ -58,6 +58,7 @@ void player::update(void)
 	this->hit();
 	this->throw_();
 	this->stand();
+	this->AstarMove();
 }
 
 void player::posSet(void) 
@@ -384,4 +385,13 @@ void player::control(void)
 	}
 
 	
+}
+
+void player::AstarMove(void)
+{
+	//a*********************************************
+
+
+
+
 }
