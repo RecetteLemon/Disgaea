@@ -210,6 +210,9 @@
     <ClInclude Include="Prinny.h">
       <Filter>Disgaea\Character\enemy</Filter>
     </ClInclude>
+    <ClInclude Include="aStarManager.h">
+      <Filter>2DGameFramework\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -322,6 +325,9 @@
     </ClCompile>
     <ClCompile Include="Prinny.cpp">
       <Filter>Disgaea\Character\enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="aStarManager.cpp">
+      <Filter>2DGameFramework\Manager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

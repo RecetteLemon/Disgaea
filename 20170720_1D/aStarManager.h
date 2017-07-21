@@ -1,6 +1,7 @@
 #pragma once
-#include "gameNode.h"
-#include "mapToolScene.h"
+#include "singletonBase.h"
+#include "tile.h"
+#include <vector>
 
 class aStarTile
 {
@@ -23,15 +24,15 @@ public:
 	int getIdX(void) { return _iso.x / TILESIZEX; }
 	int getIdY(void) { return _iso.y / TILESIZEY; }
 
-//	POINT getCenter(void) { return _center; }
+	//	POINT getCenter(void) { return _center; }
 
-//	TERRAIN_TYPE getAttribute() { return _iso.ter; }
+	//	TERRAIN_TYPE getAttribute() { return _iso.ter; }
 
 	// == getter, setter 함수들 == //
 
 	// 아이소 타일
 	void setIso(tagIso iso) { _iso = iso; }
-	tagIso getIso() { return _iso; }
+	tagIso &getIso() { return _iso; }
 	// 최종 코스트
 	void setTotalCost(float totalCost) { _totalCost = totalCost; }
 	float getTotalCost() { return _totalCost; }
@@ -49,13 +50,9 @@ public:
 	bool getIsOpen(void) { return _isOpen; }
 };
 
-class aStar : public gameNode
+class aStarManager : public singletonBase<aStarManager>
 {
 private:
-	// 전체 타일
-//	vector<aStarTile*> _vTotalList;
-//	vector<aStarTile*>::iterator _viTotalList;
-
 	// 찾을 범위 벡터
 	vector<aStarTile*> _vOpenList;
 	vector<aStarTile*>::iterator _viOpenList;
@@ -74,18 +71,26 @@ private:
 	aStarTile* _startTile;
 	aStarTile* _endTile;
 	aStarTile* _currentTile;
+
 public:
+	aStarManager() {};
+	~aStarManager() {};
+
 	HRESULT init();
 
 	void loadCurrentMap(tagIso* tiles);
-	vector<aStarTile*> addOpenList(aStarTile* currentTile);					// 검사할 타일 색출
-	void pathFinder(aStarTile* currentTile);								// 타일 검사
+	vector<aStarTile*> addOpenList(tagIso currentTile);		// 검사할 타일 색출
+	void pathFinder(tagIso currentTile);					// 타일 검사
 
-	void release();
-	void update();
 	void render();
 
-	aStar();
-	~aStar();
+	// getter setter 설정
+	inline void setStartTile(tagIso tile) { _startTile->setIso(tile); }
+	inline tagIso getStartTile() { return _startTile->getIso(); }
+
+	inline void setEndTile(tagIso tile) { _endTile->setIso(tile); }
+	inline tagIso getEndTile() { return _endTile->getIso(); }
+
+	inline vector<tagIso> &getMoveTile() { return _vMoveList; }
 };
 

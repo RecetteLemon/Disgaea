@@ -42,6 +42,7 @@
 #include "database.h"
 #include "direct2DManager.h"
 #include "cameraManager.h"
+#include "aStarManager.h"
 
 using namespace std;
 using namespace OMEGA_UTIL;
@@ -70,6 +71,7 @@ using namespace D2D1;
 #define DIRECT2D direct2DManager::getSingleton()
 #define SCENEMANAGER sceneManager::getSingleton()
 #define CAMERAMANAGER cameraManager::getSingleton()
+#define ASTARMANAGER aStarManager::getSingleton()
 
 //==================================
 // 매크로 함수 ##
