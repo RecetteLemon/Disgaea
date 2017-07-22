@@ -18,6 +18,11 @@ HRESULT dungeonScene::init()
 	_cm->init(2, 5);
 	_cm->selectPlayer(0);
 
+	//a* 알고리즘을 적용할 캐릭터 수 만큼 호출
+	//	ASTARMANAGER->addAStar(_tile, _cm->getName(), _cm->getPlayerX(), _cm->getPlayerY());
+	//							현재맵, 캐릭터명, 캐릭터 시작점
+
+
 	return S_OK;
 }
 void dungeonScene::release()
@@ -34,6 +39,10 @@ void dungeonScene::render()
 {
 	this->drawTile();
 	_cm->render();
+
+	//차례가 된 캐릭터(플레이어)의 moveList 표시
+	//ASTARMANAGER->findAStar(_cm->getName())->renderGoalList();
+	//적은 안표시요 
 }
 void dungeonScene::loadFile()
 {
