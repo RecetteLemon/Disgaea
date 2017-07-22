@@ -3,19 +3,51 @@
 #include "aStar.h"
 
 aStar::aStar()
-{}
+	: _startTile(NULL), _currentTile(NULL),
+	_goalTile(NULL)
+{
+}
 
 aStar::~aStar()
-{}
+{
+}
 
 
 HRESULT aStar::init(tagIso* currentMap, int startX, int startY)
 {
-	_currentMap = new tagIso[TILEX * TILEY];
-	_currentMap = currentMap;
+//	_currentMap = new tagIso[TILEX * TILEY];
+//	_currentMap = currentMap;
 
 	//받은 지점을 시작 타일로
-	_startTile->setIso(_currentMap[(startX / TILESIZEX) * (startY / TILESIZEY)]);
+//	_startTile->setIso(_currentMap[(startX / TILESIZEX) * (startY / TILESIZEY)]);
+
+	_vTotalList.clear();
+	_vOpenList.clear();
+	_vCloseList.clear();
+	_vMoveList.clear();
+
+	_startTile = NULL;
+	_currentTile = NULL;
+	_goalTile = NULL;
+
+	for (int i = 0; i < TILEX * TILEY; ++i)
+	{
+		aStarTile* node = new aStarTile;
+
+		node->setIso(currentMap[i]);
+		node->setTotalCost(0);
+		node->setCostFromStart(0);
+		node->setCostToGoal(0);
+		node->setIsOpen(1);
+
+		if (((startX / TILESIZEX) * (startY / TILESIZEY)) == i)
+		{
+			_startTile = node;
+			continue;
+		}
+
+		_vTotalList.push_back(node);
+	}
 
 	return S_OK;
 }
@@ -23,9 +55,10 @@ HRESULT aStar::init(tagIso* currentMap, int startX, int startY)
 void aStar::release()
 {
 	//가져온 맵 날리기 
-	SAFE_DELETE(_currentMap);
+//	SAFE_DELETE(_currentMap);
 
 	//벡터는 깔끔하게 정리
+	_vTotalList.clear();
 	_vOpenList.clear();
 	_vCloseList.clear();
 	_vMoveList.clear();
@@ -37,33 +70,40 @@ void aStar::release()
 }
 
 //갈 수 있는 길 색출
-vector<aStarTile*> aStar::addOpenList(tagIso currentTile)
+vector<aStarTile*> aStar::addOpenList(aStarTile* currentTile)
 {
-	int startX = currentTile.indexX - 1;			//검사 시작할 좌표 X
-	int startY = currentTile.indexY - 1;			//검사 시작할 좌표 Y
-	int floor = currentTile.floorZ;					//높이
+	int startX = currentTile->getIso().indexX - 1;	// 검사 시작할 좌표 X
+	int startY = currentTile->getIso().indexY - 1;	// 검사 시작할 좌표 Y
 
-	//int startZ = currentTile.z / TILESIZEZ - 1;	// 검사 시작할 좌표 Z
-	// 2D 평면에서는 자신의 주변, 총 3 * 3 의 타일을 검사했다면
-	// 아이소매트릭에서는 3D 큐브가 있다 치고 x, y 좌표뿐만이 아닌 z 좌표도 검사해야 하므로
-	// 자신의 좌표의 주변인 높이도 포함하여 총 3 * 3 * 3 의 27타일을 검사하게 됩니다.
-	for (int z = 0; z < 3; ++z) for (int y = 0; y < 3; ++y) for (int x = 0; x < 3; ++x)
+	// 자신의 주변타일을 검사해야되기 때문에 포문 두개 돌립니다.
+	for (int y = 0; y < 3; ++y) for (int x = 0; x < 3; ++x)
 	{
-		// 오픈리스트에 담을거
-		aStarTile* node = new aStarTile;
+		// 배열이 음수가 되거나 넘어가면 터져요.
+		if (startX + x < 0 || startY + y < 0) continue;
+		if (startX + x >= TILEX || startY + y >= TILEY) continue;
 
-		//		if (!node->getIsOpen()) continue;
-		//		if (node->getAttribute() == TR_START) continue;
-		//		if (node->getAttribute() == TR_WALL) continue;
+		// 대각선 막아주기 위한 예외처리입니다.
+		if (y == 0 && x == 0) continue;
+		if (y == 0 && x == 2) continue;
+		if (y == 2 && x == 0) continue;
+		if (y == 2 && x == 2) continue;
 
-		//		node->setIso(_currentMap[startX + k][startY + j][startZ + i]);
-		//		(startY * TILEX) + startX + j + (i * TILEX)
-		//		node->setIso(_currentMap[(startZ * TILEY * TILEX) + (startY * TILEX) + startX + x + (y * TILEX) + (z * TILEY * TILEX)]);
-		node->setIso(_currentMap[(startY * TILEX) + startX + x + (y * TILEX)]);
+		// 검사할 영역벡터에 넣을겁니다.
+		aStarTile* node = _vTotalList[(startY * TILEX) + startX + x + (y * TILEX)];
+
+		// 길 막혀있거나 시작지점이면 무조건 넘겨줍시다.
+		// 아까 하다가 이거때문에 애먹었어요.. (부모노드에 계속 똑같은거 담겨서 무한루프 된다던가 그런거..)
+		if (!node->getIsOpen()) continue;
+		if (node == _startTile) continue;
+
+		// 이제 부모노드에 현재타일 넣어줍시다.
+		// (밑 pathfinder 함수에서 _currentTile가 NULL 이면 While문 빠져나가니까 꼭 처음은 NULL로 초기화 해줘야합니다!)
+		node->setParentNode(_currentTile);
 
 		// 추가할건지 안할건지 검사할 임시변수
 		bool addObj = true;
 
+		// 만약에 똑같은 값이 들어가면 추가못하게 막아줍니다. (예외처리)
 		for (_viOpenList = _vOpenList.begin(); _viOpenList != _vOpenList.end(); ++_viOpenList)
 		{
 			if (*_viOpenList == node)
@@ -73,30 +113,39 @@ vector<aStarTile*> aStar::addOpenList(tagIso currentTile)
 			}
 		}
 
+		// 예외처리용
 		if (!addObj) continue;
 
+		// 다 검사를 했으니 벡터에 담아줍시다.
 		_vOpenList.push_back(node);
 	}
 
+	// 검사가 끝났으니 벡터 넘겨줍시다.
 	return _vOpenList;
 }
 
 //타일 검사
-void aStar::pathFinder(tagIso currentTile)
+void aStar::pathFinder(aStarTile* currentTile)
 {
+	// 검사나 임시로 담기위한 임시 변수들 입니다.
 	float tempTotalCost = 5000;
 	aStarTile* tempTile;
 
+	// 이 for문은 위에서 addOpenList() 함수에서 검출한 만큼만 돕니다.
+	// 검출한게 없으면 당연히 이 for문은 돌지 않겠죠? (돌지 않으면 임시변수 tempTile은 당연히 쓰레기값)
 	for (int i = 0; i < addOpenList(currentTile).size(); i++)
 	{
-		_vOpenList[i]->setCostToGoal((abs(_goalTile->getIdX() - _vOpenList[i]->getIdX())
-			+ abs(_goalTile->getIdY() - _vOpenList[i]->getIdY())) * 10);
+		// 검출한 좌표중에 도착지점까지의 비용을 구합니다.
+		_vOpenList[i]->setCostToGoal((abs(_goalTile->getIso().indexX - _vOpenList[i]->getIso().indexX)
+			+ abs(_goalTile->getIso().indexY - _vOpenList[i]->getIso().indexY)) * 10);
 
+		// 현재 좌표부터 검출한 좌표까지의 비용을 구합니다.
 		_vOpenList[i]->setCostFromStart(10);
 
+		// 둘을 더해서 최종 비용을 구합니다.
 		_vOpenList[i]->setTotalCost(_vOpenList[i]->getCostToGoal() + _vOpenList[i]->getCostFromStart());
 
-		//가장 비용이 작은 애를 색출
+		//가장 비용이 작은 값을 찾습니다.
 		if (tempTotalCost > _vOpenList[i]->getTotalCost())
 		{
 			tempTotalCost = _vOpenList[i]->getTotalCost();
@@ -104,7 +153,7 @@ void aStar::pathFinder(tagIso currentTile)
 		}
 
 		bool addObj = true;
-		//오픈리스트에 담긴 타일이 템프타일이면(가장 짧은 길이면)
+		// 검출한 벡터중에 tempTile과 같으면 추가하지 않습니다.
 		for (_viOpenList = _vOpenList.begin(); _viOpenList != _vOpenList.end(); ++_viOpenList)
 		{
 			if (*_viOpenList == tempTile)
@@ -115,6 +164,7 @@ void aStar::pathFinder(tagIso currentTile)
 			}
 		}
 
+		// 나중에 검출할때를 위해 막는것(예외처리)
 		_vOpenList[i]->setIsOpen(false);
 		if (!addObj) continue;
 		_vOpenList.push_back(tempTile);
@@ -122,20 +172,19 @@ void aStar::pathFinder(tagIso currentTile)
 
 	if (addOpenList(currentTile).size() == NULL)
 	{
-		_vOpenList.clear();
-		_vCloseList.clear();
+		vectorClear();
 		return;
 	}
 
 	//템프타일의 속성이 엔드 -> 도착했으면!
-	if (tempTile->getIso().ter == TER_WALL)
+	if (tempTile == _goalTile)
 	{
 		_vMoveList.insert(_vMoveList.begin(), tempTile->getIso());
 		//이때까지 지나온 타일을 색칠해라
-		while (_startTile->getParentNode() != NULL)
+		while (_currentTile->getParentNode() != NULL)
 		{
-			_vMoveList.insert(_vMoveList.begin(), _startTile->getIso());
-			_startTile = _startTile->getParentNode();
+			_vMoveList.insert(_vMoveList.begin(), _currentTile->getIso());
+			_currentTile = _currentTile->getParentNode();
 		}
 		return;
 	}
@@ -153,9 +202,9 @@ void aStar::pathFinder(tagIso currentTile)
 		}
 	}
 
-	_startTile = tempTile;
+	_currentTile = tempTile;
 
-	pathFinder(_startTile->getIso());
+	pathFinder(_currentTile);
 }
 
 //플레이어의 경우; 목표 타일이 될 수 있는 것들을 보여준다
@@ -184,7 +233,7 @@ void aStar::setMoveTile()
 			if (startX + j < 0 || startY + i < 0) continue;
 			if (startX + j > TILEX - 1 || startY + i > TILEY - 1) continue;
 
-			tagIso node = _currentMap[(startY * TILEX) + startX + j + (i * TILEX)];
+			tagIso node = _vTotalList[(startY * TILEX) + startX + j + (i * TILEX)]->getIso();
 
 			if (node.ter == 1) continue;//벽이라면 뜨지 않음
 
@@ -195,4 +244,11 @@ void aStar::setMoveTile()
 			}
 		}
 	}
+}
+
+void aStar::vectorClear()
+{
+	_vOpenList.clear();
+	_vCloseList.clear();
+	_vMoveList.clear();
 }

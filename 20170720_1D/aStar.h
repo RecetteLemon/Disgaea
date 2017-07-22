@@ -57,6 +57,10 @@ public:
 class aStar
 {
 private:
+	// 맵 전체
+	vector<aStarTile*> _vTotalList;
+	vector<aStarTile*>::iterator _viTotalList;
+
 	//지금 타일 기준으로 탐색한 갈 수 있는 길
 	vector<aStarTile*> _vOpenList;
 	vector<aStarTile*>::iterator _viOpenList;
@@ -70,7 +74,7 @@ private:
 	vector<tagIso>::iterator _viMoveList;
 
 	//현재 맵
-	tagIso* _currentMap;
+//	tagIso* _currentMap;
 
 	aStarTile* _startTile;		//시작 타일
 	aStarTile* _goalTile;		//목표 타일
@@ -83,10 +87,12 @@ public:
 	HRESULT init(tagIso* currentMap, int startX, int startY);
 	void release();
  
-	vector<aStarTile*> addOpenList(tagIso currentTile);		//갈 수 있는 길 색출
-	void pathFinder(tagIso currentTile);					//타일 검사
+	vector<aStarTile*> addOpenList(aStarTile* currentTile);	//갈 수 있는 길 색출
+	void pathFinder(aStarTile* currentTile);				//타일 검사
 
 	void renderGoalList();									//목표 타일이 될 수 있는 것들을 보여준다
+
+	void vectorClear();
 
 	// === gettter, setter === // 
 
