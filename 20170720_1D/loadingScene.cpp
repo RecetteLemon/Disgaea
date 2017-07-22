@@ -69,6 +69,97 @@ void loadingScene::loadingImage()
 	// 이펙트 이미지
 	_ld->loadFrameImage(L"PrinnyEffect", L"image/Effect/prinny_effect.png", 1704, 202, 8, 1);
 
+	//마을 인벤 관련
+	_ld->loadImage(L"아이템정보", L"Image/inven/itemInfo.png", 1474, 340);
+	_ld->loadImage(L"마을인벤", L"Image/inven/itemBag.png", 553, 480);
+	_ld->loadImage(L"마을인벤2", L"Image/inven/itemBagMove.png", 277, 190);
+	_ld->loadImage(L"마을인벤3", L"Image/inven/itemBagBlock.png", 40, 123);
+	_ld->loadImage(L"마을창고", L"Image/inven/wareHouse.png", 553, 480);
+	_ld->loadImage(L"마을창고2", L"Image/inven/wareHouseMove.png", 277, 190);
+	_ld->loadImage(L"마을창고3", L"Image/inven/wareHouseBlock.png", 40, 33);
+
+	//상점 관련
+	_ld->loadImage(L"shopMain", L"Image/shop/shopMain.png", 1600, 900);
+	_ld->loadImage(L"shopBuy", L"Image/shop/shopBuy.png", 1600, 900);
+	_ld->loadFrameImage(L"shopSell", L"Image/shop/shopSell.png", 1600, 1800, 1, 2);
+	_ld->loadImage(L"buy", L"Image/shop/buy.png", 374, 44);
+	_ld->loadImage(L"sell", L"Image/shop/sell.png", 374, 44);
+	_ld->loadImage(L"buyInfo", L"Image/inven/buy.png", 1446, 63);
+	_ld->loadImage(L"sellInfo", L"Image/inven/sell.png", 1446, 63);
+	_ld->loadImage(L"explanation", L"Image/inven/explanation.png", 1446, 63);
+	_ld->loadFrameImage(L"sellSort", L"Image/shop/sellSort.png", 560, 741, 2, 3);
+	_ld->loadImage(L"buyMessage", L"Image/shop/buyMessage.png", 540, 190);
+	//전투 인벤 이미지
+	_ld->loadImage(L"itemBag", L"Image/Inven/itemBag.png", 553, 480);
+	_ld->loadImage(L"moveBar", L"Image/Inven/itemBagBlock.png", 40, 123);
+	_ld->loadImage(L"upDirection", L"Image/Inven/upDirection.png", 51, 11);
+	_ld->loadImage(L"downDirection", L"Image/Inven/downDirection.png", 51, 11);
+	_ld->loadImage(L"cursor", L"Image/Inven/cursor.png", 52, 39);
+	_ld->loadFrameImage(L"sort", L"Image/Inven/sortwarehouse.png", 277, 399, 1, 3);
+	_ld->loadImage(L"infoBox", L"Image/Inven/infoBox.png", 1474, 77);
+	// 아이템 이미지
+	_ld->loadImage(L"none", L"Image/Item/none.png", 475, 50);
+	// 무기
+	_ld->loadImage(L"staff", L"Image/Item/weapon/BoneStaff/boneStaff.png", 474, 56);
+	_ld->loadImage(L"staff2", L"Image/Item/weapon/BoneStaff/boneStaff2.png", 664, 53);
+	_ld->loadImage(L"staffPrice", L"Image/Item/weapon/BoneStaff/boneStaff-shop.png", 834, 56);
+	_ld->loadImage(L"staffInfo", L"Image/Item/weapon/BoneStaff/boneStaffInfo.png", 1448, 64);
+	_ld->loadImage(L"glove", L"Image/Item/weapon/DoubleSlap/doubleSlap.png", 474, 56);
+	_ld->loadImage(L"glove2", L"Image/Item/weapon/DoubleSlap/doubleSlap2.png", 664, 53);
+	_ld->loadImage(L"glovePrice", L"Image/Item/weapon/DoubleSlap/doubleSlap-shop.png", 834, 56);
+	_ld->loadImage(L"gloveInfo", L"Image/Item/weapon/DoubleSlap/doubleSlapInfo.png", 1448, 64);
+	_ld->loadImage(L"rapier", L"Image/Item/weapon/Rapier/rapier.png", 474, 56);
+	_ld->loadImage(L"rapier2", L"Image/Item/weapon/Rapier/rapier2.png", 664, 53);
+	_ld->loadImage(L"rapierPrice", L"Image/Item/weapon/Rapier/rapier-shop.png", 834, 56);
+	_ld->loadImage(L"rapierInfo", L"Image/Item/weapon/Rapier/rapierInfo.png", 1448, 64);
+	_ld->loadImage(L"trumpet", L"Image/Item/weapon/Trumpet/trumpet.png", 474, 56);
+	_ld->loadImage(L"trumpet2", L"Image/Item/weapon/Trumpet/trumpet2.png", 664, 53);
+	_ld->loadImage(L"trumpetPrice", L"Image/Item/weapon/Trumpet/trumpet-shop.png", 834, 56);
+	_ld->loadImage(L"trumpetInfo", L"Image/Item/weapon/Trumpet/trumpetInfo.png", 1448, 64);
+	// 방어구
+	_ld->loadImage(L"buckler", L"Image/Item/armor/Buckler/Buckler.png", 474, 56);
+	_ld->loadImage(L"buckler2", L"Image/Item/armor/Buckler/Buckler2.png", 664, 53);
+	_ld->loadImage(L"bucklerPrice", L"Image/Item/armor/Buckler/Buckler-shop.png", 834, 56);
+	_ld->loadImage(L"bucklerInfo", L"Image/Item/armor/Buckler/BucklerInfo.png", 1448, 64);
+	_ld->loadImage(L"cloth", L"Image/Item/armor/Old Cloth/OldCloth.png", 474, 56);
+	_ld->loadImage(L"cloth2", L"Image/Item/armor/Old Cloth/OldCloth2.png", 664, 53);
+	_ld->loadImage(L"clothPrice", L"Image/Item/armor/Old Cloth/OldCloth-shop.png", 834, 56);
+	_ld->loadImage(L"clothInfo", L"Image/Item/armor/Old Cloth/OldClothInfo.png", 1448, 64);
+	_ld->loadImage(L"tunic", L"Image/Item/armor/Tunic/Tunic.png", 474, 56);
+	_ld->loadImage(L"tunic2", L"Image/Item/armor/Tunic/Tunic2.png", 664, 53);
+	_ld->loadImage(L"tunicPrice", L"Image/Item/armor/Tunic/Tunic-shop.png", 834, 56);
+	_ld->loadImage(L"tunicInfo", L"Image/Item/armor/Tunic/TunicInfo.png", 1448, 64);
+	// 그외 것들
+	_ld->loadImage(L"mintGum", L"Image/Item/general/mintGum/mintGum.png", 474, 56);
+	_ld->loadImage(L"mintGum2", L"Image/Item/general/mintGum/mintGum2.png", 664, 53);
+	_ld->loadImage(L"mintGumPrice", L"Image/Item/general/mintGum/mintGum-shop.png", 834, 56);
+	_ld->loadImage(L"mintGumInfo", L"Image/Item/general/mintGum/mintGumInfo.png", 1448, 64);
+	_ld->loadImage(L"water", L"Image/Item/general/water/water.png", 474, 56);
+	_ld->loadImage(L"water2", L"Image/Item/general/water/water2.png", 664, 53);
+	_ld->loadImage(L"waterPrice", L"Image/Item/general/water/water-shop.png", 834, 56);
+	_ld->loadImage(L"waterInfo", L"Image/Item/general/water/waterInfo.png", 1448, 64);
+	_ld->loadImage(L"soda", L"Image/Item/general/soda/soda.png", 474, 56);
+	_ld->loadImage(L"soda2", L"Image/Item/general/soda/soda2.png", 664, 53);
+	_ld->loadImage(L"sodaPrice", L"Image/Item/general/soda/soda-shop.png", 834, 56);
+	_ld->loadImage(L"sodaInfo", L"Image/Item/general/soda/sodaInfo.png", 1448, 64);
+	_ld->loadImage(L"candy", L"Image/Item/general/hardCandy/hardCandy.png", 474, 56);
+	_ld->loadImage(L"candy2", L"Image/Item/general/hardCandy/hardCandy2.png", 664, 53);
+	_ld->loadImage(L"candyPrice", L"Image/Item/general/hardCandy/hardCandy-shop.png", 834, 56);
+	_ld->loadImage(L"candyInfo", L"Image/Item/general/hardCandy/hardCandyInfo.png", 1448, 64);
+	_ld->loadImage(L"noneShop", L"Image/shop/none-shop.png", 834, 56);
+
+	// 숫자 이미지
+	_ld->loadImage(L"1", L"image/inven/1.png", 20, 25);
+	_ld->loadImage(L"2", L"image/inven/2.png", 20, 25);
+	_ld->loadImage(L"3", L"image/inven/3.png", 20, 25);
+	_ld->loadImage(L"4", L"image/inven/4.png", 20, 25);
+	_ld->loadImage(L"5", L"image/inven/5.png", 20, 25);
+	_ld->loadImage(L"6", L"image/inven/6.png", 20, 25);
+	_ld->loadImage(L"7", L"image/inven/7.png", 20, 25);
+	_ld->loadImage(L"8", L"image/inven/8.png", 20, 25);
+	_ld->loadImage(L"9", L"image/inven/9.png", 20, 25);
+	_ld->loadImage(L"0", L"image/inven/0.png", 20, 25);
+	_ld->loadImage(L"커서", L"image/inven/itemCursor.png", 52, 39);
 
 	// ?? 이미지
 

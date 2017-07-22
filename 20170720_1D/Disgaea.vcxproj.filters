@@ -82,6 +82,15 @@
     <Filter Include="Disgaea\Character\enemy">
       <UniqueIdentifier>{da9b83c6-1c38-456d-9554-c32c90bdb910}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Disgaea\ShopScene">
+      <UniqueIdentifier>{86b92ed1-c842-46cb-997d-e43272fd3510}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Disgaea\Character\player\inven">
+      <UniqueIdentifier>{e79a5d25-03a8-462e-9545-94af8fafc58c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Disgaea\item">
+      <UniqueIdentifier>{56d4490d-3192-406d-9524-0fada8aa9f05}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -213,6 +222,15 @@
     <ClInclude Include="aStarManager.h">
       <Filter>2DGameFramework\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="shopScene.h">
+      <Filter>Disgaea\ShopScene</Filter>
+    </ClInclude>
+    <ClInclude Include="inven.h">
+      <Filter>Disgaea\Character\player\inven</Filter>
+    </ClInclude>
+    <ClInclude Include="item.h">
+      <Filter>Disgaea\item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -328,6 +346,15 @@
     </ClCompile>
     <ClCompile Include="aStarManager.cpp">
       <Filter>2DGameFramework\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="shopScene.cpp">
+      <Filter>Disgaea\ShopScene</Filter>
+    </ClCompile>
+    <ClCompile Include="inven.cpp">
+      <Filter>Disgaea\Character\player\inven</Filter>
+    </ClCompile>
+    <ClCompile Include="item.cpp">
+      <Filter>Disgaea\item</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
