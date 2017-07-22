@@ -41,6 +41,26 @@ struct tagSample
 	RECT rc;
 	POINT frame;
 };
+
+// 현재 선택한 타일,  밑에 크기가 작은 타일 3개(이전 프레임 타일, 현재 프레임타일, 다음 프레임 타일)
+enum TIlE
+{
+	T_NOW,
+	T_BEFORE,
+	T_MNOW,
+	T_NEXT,
+	T_END
+};
+
+struct tagTileImage
+{
+	image* img[SAM_END];
+
+	float x, y;
+	int beforeFrameX[SAM_END], beforeFrameY[SAM_END];
+	int nextFrameX[SAM_END], nextFrameY[SAM_END];
+};
+
 class mapToolScene : public gameNode
 {
 private:
@@ -58,6 +78,10 @@ private:
 	RECT _btnTileRight;
 	RECT _btnTileLeft;
 	RECT _tileMonitor;
+
+	image* _iconImage;
+	RECT _iconRect;
+	tagTileImage _tileImage[T_END];
 
 public:
 	mapToolScene();

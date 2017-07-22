@@ -39,6 +39,8 @@ void loadingScene::loadingImage()
 	// 메뉴씬 이미지
 	_ld->loadImage(L"Menu", L"Image/Menu/M01.png", 1600, 900);
 	_ld->loadImage(L"MenuMouse", L"Image/Menu/MMouse.png", 50, 39);
+	
+	// 맵툴 이미지
 	_ld->loadFrameImage(L"StartButton", L"Image/MapTool/BtnBack.png", 100, 200, 1, 2);
 	_ld->loadFrameImage(L"SaveButton", L"Image/MapTool/BtnSave.png", 100, 200, 1, 2);
 	_ld->loadFrameImage(L"LoadButton", L"Image/MapTool/BtnLoad.png", 100, 200, 1, 2);
@@ -47,13 +49,25 @@ void loadingScene::loadingImage()
 	_ld->loadFrameImage(L"EraseButton", L"Image/MapTool/BtnEraser.png", 125, 64, 1, 2);
 	//_ld->loadFrameImage(L"IsoTerrain", L"Image/MapTool/isoTile.png", 480, 96, 5, 2);
 	//_ld->loadFrameImage(L"IsoTerrain", L"Image/MapTool/isoTile96.png", 1920, 960, 10, 5);
-	_ld->loadFrameImage(L"IsoTerrain", L"Image/MapTool/terrainTile.png", 1536, 192, 8, 1);
 	//_ld->loadFrameImage(L"IsoObject", L"Image/MapTool/isoObject2.png", 180, 160, 2, 1);
-	_ld->loadFrameImage(L"IsoObject", L"Image/MapTool/objTile.png", 1536, 672, 8, 7);
+
 	_ld->loadImage(L"IsoEraser", L"Image/MapTool/isoEraser.png", 128, 128);
 	_ld->loadImage(L"IsoEdge", L"Image/MapTool/Edge.png", 192, 96);
 	_ld->loadImage(L"IsoEdgeFrame", L"Image/MapTool/EdgeFrame.png", 1600, 900);
 	_ld->loadImage(L"IsoBackground", L"Image/MapTool/Background.png", 1600, 900);
+
+	_ld->loadFrameImage(L"objTile", L"Image/MapTool/objTile.png", 768, 672, 8, 7);
+	_ld->loadFrameImage(L"IsoObject", L"Image/MapTool/objTile2.png", 1536, 1344, 8, 7);
+	_ld->loadFrameImage(L"objSelectTile", L"Image/MapTool/objSelectTile.png", 576 / 2, 504 / 2, 8, 7);
+	_ld->loadFrameImage(L"objSelectTile2", L"Image/MapTool/objSelectTile2.png", 384 / 2, 336 / 2, 8, 7);
+
+	_ld->loadFrameImage(L"terrainTile", L"Image/MapTool/terrainTile.png", 768, 192, 8, 2);
+	_ld->loadFrameImage(L"IsoTerrain", L"Image/MapTool/terrainTile2.png", 1536, 384, 8, 2);
+	_ld->loadFrameImage(L"terrainSelectTile", L"Image/MapTool/terrainSelectTile.png", 576 / 2, 144 / 2, 8, 2);
+	_ld->loadFrameImage(L"terrainSelectTile2", L"Image/MapTool/terrainSelectTile2.png", 384 / 2, 96 / 2, 8, 2);
+
+
+	_ld->loadFrameImage(L"settingIcon", L"Image/MapTool/settingIcon.png", 150, 50, 3, 1);
 
 
 	// 캐릭터 관련 이미지

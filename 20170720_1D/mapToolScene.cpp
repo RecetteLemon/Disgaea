@@ -16,6 +16,7 @@ HRESULT mapToolScene::init()
 	ZeroMemory(&_tileSample, sizeof(tagSample) * TILEX * TILEY);
 	ZeroMemory(&_tile, sizeof(tagIso) * TILEX * TILEY);
 	ZeroMemory(&_phaseSample, sizeof(tagSamplePhase));
+	ZeroMemory(&_tileImage, sizeof(tagTileImage) * T_END);
 
 	_sample[SAM_TERRAIN] = IMAGEMANAGER->findImage(L"IsoTerrain");
 	_sample[SAM_OBJECT] = IMAGEMANAGER->findImage(L"IsoObject");
@@ -79,6 +80,55 @@ HRESULT mapToolScene::init()
 	_btnTileLeft = RectMake(1209, 250, 50, 50);
 	_tileMonitor = RectMake(22, 22, TILEMONITORSIZEW, TILEMONITORSIZEH);
 
+
+	// 정보 변경 UI
+	_iconImage = IMAGEMANAGER->findImage(L"settingIcon");
+	_iconImage->setFrameX(0);
+
+	_iconRect = RectMake(1534, 251, 50, 50);
+
+	_tileImage[T_NOW].img[SAM_TERRAIN] = IMAGEMANAGER->findImage(L"terrainTile");
+	_tileImage[T_NOW].img[SAM_OBJECT] = IMAGEMANAGER->findImage(L"objTile");
+	_tileImage[T_NOW].x = 1209 + (1509 - 1209) / 2 - _tileImage[T_NOW].img[SAM_TERRAIN]->getFrameWidth() / 2;
+	_tileImage[T_NOW].y = 22 + (208 - 22) / 2 - _tileImage[T_NOW].img[SAM_TERRAIN]->getFrameHeight() / 2;
+	for (int i = 0; i < SAM_OBJ_ERASER; i++)
+	{
+		_tileImage[T_NOW].img[i]->setFrameX(0);
+		_tileImage[T_NOW].img[i]->setFrameY(0);
+	}
+	_tileImage[T_MNOW].img[SAM_TERRAIN] = IMAGEMANAGER->findImage(L"terrainSelectTile");
+	_tileImage[T_MNOW].img[SAM_OBJECT] = IMAGEMANAGER->findImage(L"objSelectTile");
+	_tileImage[T_MNOW].x = 1273 + (1273 + 172 - 1273) / 2 - _tileImage[T_MNOW].img[SAM_TERRAIN]->getFrameWidth() / 2;
+	_tileImage[T_MNOW].y = 251 + (251 + 50 - 251) / 2 - _tileImage[T_MNOW].img[SAM_TERRAIN]->getFrameHeight() / 2;
+
+	for (int i = 0; i < SAM_OBJ_ERASER; i++)
+	{
+		_tileImage[T_MNOW].img[i]->setFrameX(0);
+		_tileImage[T_MNOW].img[i]->setFrameY(0);
+	}
+
+	_tileImage[T_BEFORE].img[SAM_TERRAIN] = IMAGEMANAGER->findImage(L"terrainSelectTile2");
+	_tileImage[T_BEFORE].img[SAM_OBJECT] = IMAGEMANAGER->findImage(L"objSelectTile2");
+	_tileImage[T_BEFORE].x = _tileImage[T_MNOW].x - _tileImage[T_BEFORE].img[SAM_TERRAIN]->getFrameWidth() - 10;
+	_tileImage[T_BEFORE].y = 251 + (251 + 50 - 251) / 2 - _tileImage[T_BEFORE].img[SAM_TERRAIN]->getFrameHeight() / 2;
+
+	for (int i = 0; i < SAM_OBJ_ERASER; i++)
+	{
+		_tileImage[T_NOW].beforeFrameX[i] = _tileImage[T_BEFORE].img[i]->getMaxFrameX();
+		_tileImage[T_NOW].beforeFrameY[i] = _tileImage[T_BEFORE].img[i]->getMaxFrameY();
+	}
+
+	_tileImage[T_NEXT].img[SAM_TERRAIN] = IMAGEMANAGER->findImage(L"terrainSelectTile2");
+	_tileImage[T_NEXT].img[SAM_OBJECT] = IMAGEMANAGER->findImage(L"objSelectTile2");
+	_tileImage[T_NEXT].x = _tileImage[T_MNOW].x + _tileImage[T_MNOW].img[SAM_TERRAIN]->getFrameWidth() + 10;
+	_tileImage[T_NEXT].y = 251 + (251 + 50 - 251) / 2 - _tileImage[T_NEXT].img[SAM_TERRAIN]->getFrameHeight() / 2;
+
+	for (int i = 0; i < SAM_OBJ_ERASER; i++)
+	{
+		_tileImage[T_NOW].nextFrameX[i] = 1;
+		_tileImage[T_NOW].nextFrameY[i] = 0;
+	}
+
 	return S_OK;
 }
 void mapToolScene::release()
@@ -87,6 +137,7 @@ void mapToolScene::release()
 	{
 		_btn[i]->release();
 	}
+	
 }
 void mapToolScene::update()
 {
@@ -164,23 +215,30 @@ void mapToolScene::setTile()
 				if (_phaseSample.token.x > _sample[SAM_TERRAIN]->getMaxFrameX())
 				{
 					_phaseSample.token.x = 0;
+					++_phaseSample.token.y;
 				}
+
+				if (_phaseSample.token.y > _sample[SAM_TERRAIN]->getMaxFrameY())
+				{
+					_phaseSample.token.y = 0;
+				}
+
+				
+				
+
 				_curTile.x = _phaseSample.token.x;
 				_curTile.y = _phaseSample.token.y;
 				break;
 			case SAM_OBJECT:
 				++_phaseSample.token.x;
-				if (_phaseSample.token.x > 4 && _phaseSample.token.y == 4)
-				{
-					_phaseSample.token.x = 0;
-					++_phaseSample.token.y;
-				}
-				else if (_phaseSample.token.x > _sample[SAM_OBJECT]->getMaxFrameX())
+
+				if (_phaseSample.token.x > _sample[SAM_OBJECT]->getMaxFrameX())
 				{
 					_phaseSample.token.x = 0;
 					++_phaseSample.token.y;
 					if (_phaseSample.token.y > _sample[SAM_OBJECT]->getMaxFrameY()) _phaseSample.token.y = 0;
 				}
+
 				_curTile.x = _phaseSample.token.x;
 				_curTile.y = _phaseSample.token.y;
 				break;
@@ -194,7 +252,15 @@ void mapToolScene::setTile()
 			{
 			case SAM_TERRAIN:
 				--_phaseSample.token.x;
-				if (_phaseSample.token.x < 0) _phaseSample.token.x = _sample[SAM_OBJECT]->getMaxFrameX();
+				if (_phaseSample.token.x < 0)
+				{
+					_phaseSample.token.x = _sample[SAM_OBJECT]->getMaxFrameX();
+					--_phaseSample.token.y;
+				}
+				if (_phaseSample.token.y < 0)
+				{
+					_phaseSample.token.y = _sample[SAM_TERRAIN]->getMaxFrameY();
+				}
 				_curTile.x = _phaseSample.token.x;
 				_curTile.y = _phaseSample.token.y;
 				break;
@@ -216,6 +282,108 @@ void mapToolScene::setTile()
 				break;
 			}
 			
+		}
+
+
+		if (PtInRect(&_iconRect, _ptMouse))
+		{
+			switch (_phaseSample.cur)
+			{
+			case SAM_TERRAIN:
+				_phaseSample.cur = SAM_OBJECT;
+				_iconImage->setFrameX(_iconImage->getFrameX() + 1);
+				break;
+
+			case SAM_OBJECT:
+				_phaseSample.cur = SAM_OBJ_ERASER;
+				_iconImage->setFrameX(_iconImage->getFrameX() + 1);
+				break;
+
+			case SAM_OBJ_ERASER:
+				_phaseSample.cur = SAM_TERRAIN;
+				_iconImage->setFrameX(0);
+				break;
+			}
+		}
+
+		// terrain
+		_tileImage[T_NOW].beforeFrameX[SAM_TERRAIN] = _phaseSample.token.x - 1;
+		_tileImage[T_NOW].beforeFrameY[SAM_TERRAIN] = _phaseSample.token.y;
+
+		_tileImage[T_NOW].nextFrameX[SAM_TERRAIN] = _phaseSample.token.x + 1;
+		_tileImage[T_NOW].nextFrameY[SAM_TERRAIN] = _phaseSample.token.y;
+
+		if (_tileImage[T_NOW].beforeFrameX[SAM_TERRAIN] > _sample[SAM_TERRAIN]->getMaxFrameX())
+		{
+			_tileImage[T_NOW].beforeFrameX[SAM_TERRAIN] = 0;
+			++_tileImage[T_NOW].beforeFrameY[SAM_TERRAIN];
+
+			if (_tileImage[T_NOW].beforeFrameY[SAM_TERRAIN] > _sample[SAM_TERRAIN]->getMaxFrameY())
+			{
+				_tileImage[T_NOW].beforeFrameY[SAM_TERRAIN] = 0;
+			}
+		}
+
+		if (_tileImage[T_NOW].beforeFrameX[SAM_TERRAIN] < 0)
+		{
+			_tileImage[T_NOW].beforeFrameX[SAM_TERRAIN] = _sample[SAM_TERRAIN]->getMaxFrameX();
+			--_tileImage[T_NOW].beforeFrameY[SAM_TERRAIN];
+
+			if (_tileImage[T_NOW].beforeFrameY[SAM_TERRAIN] < 0)
+			{
+				_tileImage[T_NOW].beforeFrameY[SAM_TERRAIN] = _sample[SAM_TERRAIN]->getMaxFrameY();
+			}
+		}
+
+		if (_tileImage[T_NOW].nextFrameX[SAM_TERRAIN] > _sample[SAM_TERRAIN]->getMaxFrameX())
+		{
+			_tileImage[T_NOW].nextFrameX[SAM_TERRAIN] = 0;
+			++_tileImage[T_NOW].nextFrameY[SAM_TERRAIN];
+
+			if (_tileImage[T_NOW].beforeFrameY[SAM_TERRAIN] > _sample[SAM_TERRAIN]->getMaxFrameY())
+			{
+				_tileImage[T_NOW].nextFrameY[SAM_TERRAIN] = 0;
+			}
+		}
+
+		// obj
+		_tileImage[T_NOW].beforeFrameX[SAM_OBJECT] = _phaseSample.token.x - 1;
+		_tileImage[T_NOW].beforeFrameY[SAM_OBJECT] = _phaseSample.token.y;
+
+		_tileImage[T_NOW].nextFrameX[SAM_OBJECT] = _phaseSample.token.x + 1;
+		_tileImage[T_NOW].nextFrameY[SAM_OBJECT] = _phaseSample.token.y;
+
+		if (_tileImage[T_NOW].beforeFrameX[SAM_OBJECT] > _sample[SAM_OBJECT]->getMaxFrameX())
+		{
+			_tileImage[T_NOW].beforeFrameX[SAM_OBJECT] = 0;
+			++_tileImage[T_NOW].beforeFrameY[SAM_OBJECT];
+
+			if (_tileImage[T_NOW].beforeFrameY[SAM_OBJECT] > _sample[SAM_OBJECT]->getMaxFrameY())
+			{
+				_tileImage[T_NOW].beforeFrameY[SAM_OBJECT] = 0;
+			}
+		}
+
+		if (_tileImage[T_NOW].beforeFrameX[SAM_OBJECT] < 0)
+		{
+			_tileImage[T_NOW].beforeFrameX[SAM_OBJECT] = _sample[SAM_OBJECT]->getMaxFrameX();
+			--_tileImage[T_NOW].beforeFrameY[SAM_OBJECT];
+
+			if (_tileImage[T_NOW].beforeFrameY[SAM_OBJECT] < 0)
+			{
+				_tileImage[T_NOW].beforeFrameY[SAM_OBJECT] = _sample[SAM_OBJECT]->getMaxFrameY();
+			}
+		}
+
+		if (_tileImage[T_NOW].nextFrameX[SAM_OBJECT] > _sample[SAM_OBJECT]->getMaxFrameX())
+		{
+			_tileImage[T_NOW].nextFrameX[SAM_OBJECT] = 0;
+			++_tileImage[T_NOW].nextFrameY[SAM_OBJECT];
+
+			if (_tileImage[T_NOW].nextFrameY[SAM_OBJECT] > _sample[SAM_OBJECT]->getMaxFrameY())
+			{
+				_tileImage[T_NOW].nextFrameY[SAM_OBJECT] = 0;
+			}
 		}
 
 		/*if (PtInRect(&_sampleTile.rc, _ptMouse))
@@ -363,7 +531,22 @@ void mapToolScene::drawTile()
 void mapToolScene::drawSample()
 {
 	//_sample[_phaseSample.cur]->render(_phaseSample.rc.left, _phaseSample.rc.top, false, 1.0f);
-	_sample[_phaseSample.cur]->frameRender(_phaseSample.rc.left, _phaseSample.rc.top, _phaseSample.token.x, _phaseSample.token.y, false, 1.0f);
+	//_sample[_phaseSample.cur]->frameRender(_phaseSample.rc.left, _phaseSample.rc.top, _phaseSample.token.x, _phaseSample.token.y, false, 1.0f);
+
+	if (_phaseSample.cur == SAM_OBJ_ERASER)
+	{
+		_sample[_phaseSample.cur]->frameRender(_phaseSample.rc.left, _phaseSample.rc.top, _phaseSample.token.x, _phaseSample.token.y, false, 1.0f);
+	}
+	else if (_phaseSample.cur != SAM_OBJ_ERASER)
+	{
+		_tileImage[T_NOW].img[_phaseSample.cur]->frameRender(_tileImage[T_NOW].x, _tileImage[T_NOW].y, _phaseSample.token.x, _phaseSample.token.y, false, 1.0f);
+		_tileImage[T_MNOW].img[_phaseSample.cur]->frameRender(_tileImage[T_MNOW].x, _tileImage[T_MNOW].y, _phaseSample.token.x, _phaseSample.token.y, false, 1.0f);
+		_tileImage[T_BEFORE].img[_phaseSample.cur]->frameRender(_tileImage[T_BEFORE].x, _tileImage[T_BEFORE].y, _tileImage[T_NOW].beforeFrameX[_phaseSample.cur], _tileImage[T_NOW].beforeFrameY[_phaseSample.cur], false, 1.0f);
+		_tileImage[T_NEXT].img[_phaseSample.cur]->frameRender(_tileImage[T_NEXT].x, _tileImage[T_NEXT].y, _tileImage[T_NOW].nextFrameX[_phaseSample.cur], _tileImage[T_NOW].nextFrameY[_phaseSample.cur], false, 1.0f);
+	}
+
+
+	_iconImage->frameRender(_iconRect.left, _iconRect.top, _iconImage->getFrameX(), _iconImage->getFrameY(), false, 1.0f);
 }
 void mapToolScene::initButton()
 {
