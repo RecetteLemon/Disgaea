@@ -11,8 +11,9 @@ enemy::~enemy()
 {
 }
 
-HRESULT enemy::init(const wchar_t* imageName, int x, int y)
+HRESULT enemy::init(const wstring characterName, const wchar_t* imageName, int x, int y)
 {
+	_enemy._enemyName = characterName;
 	_enemy.img = IMAGEMANAGER->findImage(imageName);
 	_enemy.x = x;
 	_enemy.y = y;

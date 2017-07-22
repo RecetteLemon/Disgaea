@@ -47,6 +47,7 @@ enum POSITION
 
 struct ENEMY_
 {
+	wstring _enemyName;
 	image* img;
 	animation* pos[ENEMY_POS_END];
 	STAT stat;
@@ -63,7 +64,7 @@ protected:
 
 public:
 
-	virtual HRESULT init(const wchar_t* imageName, int x, int y);
+	virtual HRESULT init(const wstring characterName, const wchar_t* imageName, int x, int y);
 	virtual void release(void);
 	virtual void update(void);
 	virtual void render(void);

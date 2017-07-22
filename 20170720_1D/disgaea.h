@@ -5,7 +5,7 @@
 #include "mapToolScene.h"
 #include "dungeonScene.h"
 #include "townScene.h"
-#include "shopScene.h"
+
 
 class disgaea : public gameNode
 {

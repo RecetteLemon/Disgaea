@@ -26,6 +26,7 @@ void townScene::release()
 }
 void townScene::update()
 {
+	this->playerTileCol();
 	this->camControl();
 	_cm->update();
 	
@@ -82,4 +83,38 @@ void townScene::loadTile()
 	file = CreateFile(L"Tile/Town/TownTile.map", GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	ReadFile(file, _tile, sizeof(tagIso) * TILEX * TILEY, &read, NULL);
 	CloseHandle(file);
+}
+void townScene::playerTileCol()
+{
+	for (int i = 0; i < TILEX * TILEY; i++)
+	{
+		HRGN hRgn = CreatePolygonRgn(_tile[i].line, 4, WINDING);
+
+		if (_tile[i].z > 0 || _tile[i].ter == TER_WALL)
+		{
+			if (PtInRegion(hRgn, _cm->getShadowRC().left, _cm->getShadowRC().bottom))
+			{
+				_cm->playerTileCol(0);
+				break;
+			}
+			else if (PtInRegion(hRgn, _cm->getShadowRC().right, _cm->getShadowRC().bottom))
+			{
+				_cm->playerTileCol(1);
+				break;
+			}
+			else if (PtInRegion(hRgn, _cm->getShadowRC().left, _cm->getShadowRC().top))
+			{
+				//_num = i;
+				_cm->playerTileCol(2);
+				break;
+			}
+			else if (PtInRegion(hRgn, _cm->getShadowRC().right, _cm->getShadowRC().top))
+			{
+				_cm->playerTileCol(3);
+				break;
+			}
+			else _cm->playerTileCol(4);
+		}
+		DeleteObject(hRgn);
+	}
 }

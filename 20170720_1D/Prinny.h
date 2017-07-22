@@ -4,7 +4,7 @@
 class Prinny : public enemy
 {
 public:
-	HRESULT init(const wchar_t* imageName, int x, int y);
+	HRESULT init(const wstring characternName ,const wchar_t* imageName, int x, int y);
 	void release(void);
 	void update(void);
 	void render(void);

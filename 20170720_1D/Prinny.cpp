@@ -11,9 +11,9 @@ Prinny::~Prinny()
 {
 }
 
-HRESULT Prinny::init(const wchar_t* imageName, int x, int y)
+HRESULT Prinny::init(const wstring characternName, const wchar_t* imageName, int x, int y)
 {
-	enemy::init(imageName, x, y);
+	enemy::init(characternName, imageName, x, y);
 
 	_enemy.stat = ENEMY_STAT_RT_STAND;
 	_enemy.pos[ENEMY_POS_RT_STAND]->start();

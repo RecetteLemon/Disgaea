@@ -21,7 +21,6 @@ HRESULT disgaea::init(void)
 	SCENEMANAGER->addScene(L"MapToolScene", new mapToolScene);
 	SCENEMANAGER->addScene(L"DungeonScene", new dungeonScene);
 	SCENEMANAGER->addScene(L"TownScene", new townScene);
-	SCENEMANAGER->addScene(L"ShopScene", new shopScene);
 	SCENEMANAGER->changeScene(L"LoadingScene");
 
 

@@ -12,10 +12,10 @@ player::~player()
 }
 
 
-HRESULT player::init(const wchar_t* imageName, int x, int y)
+HRESULT player::init(const wstring characterName, const wchar_t* imageName, int x, int y)
 {
 
-	
+	_player._characterName = characterName;
 	_player.x = x;
 	_player.y = y;
 	_player.shadowImg = IMAGEMANAGER->findImage(L"shadow");
@@ -29,6 +29,7 @@ HRESULT player::init(const wchar_t* imageName, int x, int y)
 			_player.img->getFrameWidth(), _player.img->getFrameHeight());
 	}
 	
+	_tileCol = PLAYER_NULL;
 
 	this->posSet();
 	
@@ -52,6 +53,7 @@ void player::update(void)
 
 	if(SCENEMANAGER->sceneCheck(L"TownScene"))this->control();
 	
+
 	this->move();
 	this->attack();
 	this->lift();
@@ -59,6 +61,9 @@ void player::update(void)
 	this->throw_();
 	this->stand();
 	this->AstarMove();
+
+	
+	
 }
 
 void player::posSet(void) 
@@ -72,7 +77,8 @@ void player::render(void)
 {
 	//상태별로 애니메이션 그려줌
 
-	DIRECT2D->drawRectangle(DIRECT2D->_defaultBrush, _player.rc.left, _player.rc.top, _player.rc.right, _player.rc.bottom, 10);
+	//DIRECT2D->drawRectangle(DIRECT2D->_defaultBrush, _player.rc.left, _player.rc.top, _player.rc.right, _player.rc.bottom, 10);
+	DIRECT2D->drawRectangle(DIRECT2D->_defaultBrush, _player.shadowRC.left, _player.shadowRC.top, _player.shadowRC.right, _player.shadowRC.bottom, 10);
 	IMAGEMANAGER->findImage(L"shadow")->render(_player.shadowRC.left, _player.shadowRC.top, true, 0.5f);
 	switch (_player.stat)
 	{
@@ -179,6 +185,7 @@ void player::render(void)
 			_player.img = NULL;
 		break;
 	}
+
 }
 
 void player::stand(void)
@@ -339,31 +346,57 @@ void player::skill(void)
 
 void player::control(void)
 {
-	if (KEYMANAGER->isStayKeyDown('W'))
-	{
-		_player.stat = PLAYER_STAT_RT_MOVE;
-		_player.x += 8;
-		_player.y -= 4;
-	}
-	else if (KEYMANAGER->isStayKeyDown('D'))
-	{
-		_player.stat = PLAYER_STAT_RB_MOVE;
-		_player.x += 8;
-		_player.y += 4;
-	}
+		if (KEYMANAGER->isStayKeyDown('W'))
+		{
+			_player.stat = PLAYER_STAT_RT_MOVE;
+			_player.x += 8;
+			_player.y -= 4;
 
-	else if (KEYMANAGER->isStayKeyDown('S'))
-	{
-		_player.stat = PLAYER_STAT_LB_MOVE;
-		_player.x -= 8;
-		_player.y += 4;
-	}
-	else if (KEYMANAGER->isStayKeyDown('A'))
-	{
-		_player.stat = PLAYER_STAT_LT_MOVE;
-		_player.x -= 8;
-		_player.y -= 4;
-	}
+			if (_tileCol == PLAYER_COL_RT)
+			{
+				_player.x -= 8;
+				_player.y += 4;
+			}
+		}
+		else if (KEYMANAGER->isStayKeyDown('D'))
+		{
+			_player.stat = PLAYER_STAT_RB_MOVE;
+			_player.x += 8;
+			_player.y += 4;
+
+			if (_tileCol == PLAYER_COL_RB)
+			{
+				_player.x -= 8;
+				_player.y -= 4;
+			}
+		}
+
+		else if (KEYMANAGER->isStayKeyDown('S'))
+		{
+			_player.stat = PLAYER_STAT_LB_MOVE;
+			_player.x -= 8;
+			_player.y += 4;
+
+			if (_tileCol == PLAYER_COL_LB)
+			{
+				_player.x += 8;
+				_player.y -= 4;
+			}
+		}
+		else if (KEYMANAGER->isStayKeyDown('A'))
+		{
+			_player.stat = PLAYER_STAT_LT_MOVE;
+			_player.x -= 8;
+			_player.y -= 4;
+
+			if (_tileCol == PLAYER_COL_LT)
+			{
+				_player.x += 8;
+				_player.y += 4;
+			}
+		}
+
+	
 
 	if (KEYMANAGER->isOnceKeyUp('W'))
 	{
@@ -395,3 +428,5 @@ void player::AstarMove(void)
 
 
 }
+
+

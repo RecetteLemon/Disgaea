@@ -13,9 +13,9 @@ rozalin::~rozalin()
 }
 
 
-HRESULT rozalin::init(const wchar_t* imageName, int x, int y)
+HRESULT rozalin::init(const wstring characterName,const wchar_t* imageName, int x, int y)
 {
-	player::init(imageName, x, y);
+	player::init(characterName,imageName, x, y);
 
 
 	_player.stat = PLAYER_STAT_RB_STAND;

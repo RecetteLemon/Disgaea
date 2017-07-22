@@ -9,9 +9,9 @@ Adell::~Adell()
 {
 }
 
-HRESULT Adell::init(const wchar_t* imageName, int x, int y)
+HRESULT Adell::init(const wstring characterName,const wchar_t* imageName, int x, int y)
 {
-	player::init(imageName, x, y);
+	player::init(characterName, imageName, x, y);
 
 	_player.stat = PLAYER_STAT_RT_STAND;
 	if (!_player.pos[PLAYER_POS_RT_STAND]->isPlay())_player.pos[PLAYER_POS_RT_STAND]->start();

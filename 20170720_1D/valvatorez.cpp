@@ -11,9 +11,9 @@ valvatorez::~valvatorez()
 {
 }
 
-HRESULT valvatorez::init(const wchar_t* imageName, int x, int y)
+HRESULT valvatorez::init(const wstring characternNme, const wchar_t* imageName, int x, int y)
 {
-	player::init(imageName, x, y);
+	player::init(characternNme,imageName, x, y);
 
 
 	//처음행동

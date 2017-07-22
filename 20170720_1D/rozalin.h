@@ -4,7 +4,7 @@ class rozalin : public player
 {
 public:
 
-	HRESULT init(const wchar_t* imageName, int x, int y);
+	HRESULT init(const wstring characterName,const wchar_t* imageName, int x, int y);
 	void release(void);
 	void update(void);
 	void render(void);

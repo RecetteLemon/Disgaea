@@ -12,7 +12,6 @@ protected:
 		CHARACTER1, CHARACTER2,
 		CHARACTER3, CHARACTER4,
 		CHARACTER5, CHARACTER_END
-
 	};
 	//플레이어 상태값
 	enum PLAYERSTAT
@@ -65,9 +64,17 @@ protected:
 		PLAYER_POS_END
 	};
 
+	enum playerCol
+	{
+		PLAYER_COL_LB,
+		PLAYER_COL_RB,
+		PLAYER_COL_LT,
+		PLAYER_COL_RT,
+		PLAYER_NULL		
+	};
 	struct PLAYER
 	{
-
+		wstring _characterName;
 		animation* pos[PLAYER_POS_END];
 		PLAYERSTAT stat;
 		image* shadowImg;
@@ -75,16 +82,18 @@ protected:
 		RECT rc;
 		RECT shadowRC;
 		int x, y;
-		
+	
 	};
 	
 	PLAYER _player;
-	
-	int _kind;
 
+	playerCol _tileCol;
+
+	int _kind;
+	
 
 public:
-	virtual HRESULT init(const wchar_t* imageName, int x, int y);
+	virtual HRESULT init(const wstring characterName ,const wchar_t* imageName, int x, int y);
 	virtual void release(void);
 	virtual void update(void);
 	virtual void render(void);
@@ -103,7 +112,11 @@ public:
 	virtual void skill(void);
 
 	virtual void AstarMove(void);
-	
+
+
+	inline RECT getShadowRect() { return _player.shadowRC; }
+
+	 void setPlayerCol(int stat) { _tileCol = (playerCol)stat; }
 
 	player();
 	~player();

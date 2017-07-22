@@ -20,5 +20,6 @@ public:
 	void loadTile();
 	void drawTile();
 	void camControl();
+	void playerTileCol();
 };
 

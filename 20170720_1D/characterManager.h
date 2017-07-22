@@ -33,6 +33,8 @@ private:
 	enemy* _enemy;
 	int _x, _y;	
 
+	RECT _shadowRc;
+
 public:
 	HRESULT init(int x, int y);
 	void release(void);
@@ -42,6 +44,11 @@ public:
 	void selectPlayer(int kind);
 	void selectEnemy(int kind);
 
+	void playerTileCol(int num);
+
+	inline RECT getShadowRC() { return _shadowRc; }
+
+	
 
 	characterManager();
 	~characterManager();
