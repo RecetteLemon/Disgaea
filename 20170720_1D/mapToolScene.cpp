@@ -147,6 +147,7 @@ void mapToolScene::update()
 
 	this->coordinateUpdate();
 }
+
 void mapToolScene::render()
 {
 	this->drawTile();
@@ -154,6 +155,7 @@ void mapToolScene::render()
 
 	this->drawButton();
 }
+
 void mapToolScene::coordinateUpdate()
 {
 	for (int i = 0; i < SAMY; i++) for (int j = 0; j < SAMX; j++)
@@ -223,9 +225,6 @@ void mapToolScene::setTile()
 					_phaseSample.token.y = 0;
 				}
 
-				
-				
-
 				_curTile.x = _phaseSample.token.x;
 				_curTile.y = _phaseSample.token.y;
 				break;
@@ -264,6 +263,7 @@ void mapToolScene::setTile()
 				_curTile.x = _phaseSample.token.x;
 				_curTile.y = _phaseSample.token.y;
 				break;
+
 			case SAM_OBJECT:
 				--_phaseSample.token.x;
 				if (_phaseSample.token.x < 0 && _phaseSample.token.y == 5)
@@ -283,7 +283,6 @@ void mapToolScene::setTile()
 			}
 			
 		}
-
 
 		if (PtInRect(&_iconRect, _ptMouse))
 		{
@@ -455,6 +454,7 @@ void mapToolScene::setTile()
 			DeleteObject(hRgn);
 		}
 	}
+	
 	if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
 	{
 		for (int i = 0; i < TILEX * TILEY; i++)
