@@ -8,6 +8,8 @@
 #define SAMSIZEY _sample[_phaseSample.cur]->getFrameHeight()
 #define SAMMAXSIZEX SAMSIZEX * SAMX
 #define SAMMAXSIZEY SAMSIZEY * SAMY
+#define TILEMONITORSIZEW 1167
+#define TILEMONITORSIZEH 860
 enum BUTTON_TYPE
 {
 	BTN_START,

@@ -77,7 +77,7 @@ HRESULT mapToolScene::init()
 
 	_btnTileRight = RectMake(1459, 250, 50, 50);
 	_btnTileLeft = RectMake(1209, 250, 50, 50);
-	_tileMonitor = RectMake(22, 22, 1167, 624);
+	_tileMonitor = RectMake(22, 22, TILEMONITORSIZEW, TILEMONITORSIZEH);
 
 	return S_OK;
 }
@@ -86,7 +86,6 @@ void mapToolScene::release()
 	for (int i = 0; i < BTN_END; i++)
 	{
 		_btn[i]->release();
-		SAFE_DELETE(_btn[i]);
 	}
 }
 void mapToolScene::update()
@@ -306,9 +305,9 @@ void mapToolScene::drawTile()
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
 		if (-CAMERAMANAGER->getX() + _tile[i].x + TILESIZEX / 2 < 22) continue;
-		if (-CAMERAMANAGER->getX() + _tile[i].x - TILESIZEX / 2 > 22 + 1167) continue;
+		if (-CAMERAMANAGER->getX() + _tile[i].x - TILESIZEX / 2 > 22 + TILEMONITORSIZEW) continue;
 		if (-CAMERAMANAGER->getY() + _tile[i].y + TILESIZEY / 2 < 22) continue;
-		if (-CAMERAMANAGER->getY() + _tile[i].y - TILESIZEY / 2 > 22 + 624) continue;
+		if (-CAMERAMANAGER->getY() + _tile[i].y - TILESIZEY / 2 > 22 + TILEMONITORSIZEH) continue;
 
 		for (int j = 0; j < _tile[i].z + 1; j++)
 		{
@@ -329,12 +328,12 @@ void mapToolScene::drawTile()
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
 		if (-CAMERAMANAGER->getX() + _tile[i].x + TILESIZEX / 2 < 22) continue;
-		if (-CAMERAMANAGER->getX() + _tile[i].x - TILESIZEX / 2 > 22 + 1167) continue;
+		if (-CAMERAMANAGER->getX() + _tile[i].x - TILESIZEX / 2 > 22 + TILEMONITORSIZEW) continue;
 		if (-CAMERAMANAGER->getY() + _tile[i].y + TILESIZEY / 2 < 22) continue;
-		if (-CAMERAMANAGER->getY() + _tile[i].y - TILESIZEY / 2 > 22 + 624) continue;
+		if (-CAMERAMANAGER->getY() + _tile[i].y - TILESIZEY / 2 > 22 + TILEMONITORSIZEH) continue;
 		if (_tile[i].obj == OBJ_ERASE) continue;
 		IMAGEMANAGER->findImage(L"IsoObject")->frameRender(_tile[i].x - TILESIZEX / 2 - IMAGEMANAGER->findImage(L"IsoObject")->getFrameWidth() + TILESIZEX,
-			_tile[i].y - _tile[i].z - IMAGEMANAGER->findImage(L"IsoObject")->getFrameHeight() + TILESIZEY,
+			_tile[i].y - _tile[i].z - IMAGEMANAGER->findImage(L"IsoObject")->getFrameHeight() - TILESIZEY * (_tile[i].z - 1),
 			_tile[i].objFrame.x, _tile[i].objFrame.y, true, 1.0f);
 	}
 
@@ -373,9 +372,9 @@ void mapToolScene::initButton()
 		_btn[(SAMPLE_TYPE)i] = new button;
 	}
 
-	_btn[BTN_LOAD]->init(L"LoadButton", IMAGEMANAGER->findImage(L"SaveButton")->getFrameWidth() * 3 - IMAGEMANAGER->findImage(L"SaveButton")->getFrameWidth() / 2 + 22 * 3, WINSIZEY - IMAGEMANAGER->findImage(L"SaveButton")->getFrameHeight() + IMAGEMANAGER->findImage(L"SaveButton")->getFrameHeight() / 2 - 22, { 0, 1 }, { 0, 0 });
-	_btn[BTN_SAVE]->init(L"SaveButton", IMAGEMANAGER->findImage(L"SaveButton")->getFrameWidth() * 2 - IMAGEMANAGER->findImage(L"SaveButton")->getFrameWidth() / 2 + 22 * 2, WINSIZEY - IMAGEMANAGER->findImage(L"SaveButton")->getFrameHeight() + IMAGEMANAGER->findImage(L"SaveButton")->getFrameHeight() / 2 - 22, { 0, 1 }, { 0, 0 });
-	_btn[BTN_START]->init(L"StartButton", IMAGEMANAGER->findImage(L"SaveButton")->getFrameWidth() - IMAGEMANAGER->findImage(L"SaveButton")->getFrameWidth() / 2 + 22, WINSIZEY - IMAGEMANAGER->findImage(L"SaveButton")->getFrameHeight() + IMAGEMANAGER->findImage(L"SaveButton")->getFrameHeight() / 2 - 22, { 0, 1 }, { 0, 0 });
+	_btn[BTN_LOAD]->init(L"LoadButton", WINSIZEX - 22 - 100 + 40, 348 + 50, { 0, 1 }, { 0, 0 });
+	_btn[BTN_SAVE]->init(L"SaveButton", WINSIZEX - 22 - 100 - 22 - 100 + 40, 348 + 50, { 0, 1 }, { 0, 0 });
+	_btn[BTN_START]->init(L"StartButton", WINSIZEX - 22 - 100 - 22 - 100 - 22 - 100 + 40, 348 + 50, { 0, 1 }, { 0, 0 });
 	_btn[BTN_TERRAIN]->init(L"TerrainButton", WINSIZEX - IMAGEMANAGER->findImage(L"TerrainButton")->getFrameWidth() + IMAGEMANAGER->findImage(L"TerrainButton")->getFrameWidth() / 2, WINSIZEY - IMAGEMANAGER->findImage(L"TerrainButton")->getFrameHeight() / 2 - IMAGEMANAGER->findImage(L"SaveButton")->getFrameHeight(), { 0, 1 }, { 0, 0 });
 	_btn[BTN_OBJECT]->init(L"ObjectButton", WINSIZEX - IMAGEMANAGER->findImage(L"ObjectButton")->getFrameWidth() + IMAGEMANAGER->findImage(L"ObjectButton")->getFrameWidth() / 2, WINSIZEY - IMAGEMANAGER->findImage(L"ObjectButton")->getFrameHeight() - IMAGEMANAGER->findImage(L"ObjectButton")->getFrameHeight() / 2 - IMAGEMANAGER->findImage(L"SaveButton")->getFrameHeight(), { 0, 1 }, { 0, 0 });
 	_btn[BTN_ERASER]->init(L"EraseButton", WINSIZEX - IMAGEMANAGER->findImage(L"EraseButton")->getFrameWidth() + IMAGEMANAGER->findImage(L"EraseButton")->getFrameWidth() / 2, WINSIZEY - IMAGEMANAGER->findImage(L"EraseButton")->getFrameHeight() * 2 - IMAGEMANAGER->findImage(L"EraseButton")->getFrameHeight() / 2 - IMAGEMANAGER->findImage(L"SaveButton")->getFrameHeight(), { 0, 1 }, { 0, 0 });
@@ -383,9 +382,19 @@ void mapToolScene::initButton()
 void mapToolScene::updateButton()
 {
 	for (int i = 0; i < BTN_END; i++) _btn[(SAMPLE_TYPE)i]->update();
-	if (_btn[BTN_TERRAIN]->getPush() == TRUE) _phaseSample.cur = SAM_TERRAIN;
-	if (_btn[BTN_OBJECT]->getPush() == TRUE) _phaseSample.cur = SAM_OBJECT;
-	if (_btn[BTN_ERASER]->getPush() == TRUE) _phaseSample.cur = SAM_OBJ_ERASER;
+	if (_btn[BTN_TERRAIN]->getPush() == TRUE)
+	{
+		_phaseSample.cur = SAM_TERRAIN;
+		_phaseSample.token.x = 0;
+		_phaseSample.token.y = 0;
+	}
+	if (_btn[BTN_OBJECT]->getPush() == TRUE)
+	{
+		_phaseSample.cur = SAM_OBJECT;
+		_phaseSample.token.x = 0;
+		_phaseSample.token.y = 0;
+	}
+	if (_btn[BTN_ERASER]->getPush() == TRUE) _phaseSample.cur = SAM_OBJ_ERASER; 
 	if (_btn[BTN_START]->getPush() == TRUE) this->startTile();
 	if (_btn[BTN_SAVE]->getPush() == TRUE) this->saveTile();
 	if (_btn[BTN_LOAD]->getPush() == TRUE) this->loadTile();
@@ -396,13 +405,12 @@ void mapToolScene::drawButton()
 }
 void mapToolScene::startTile()
 {
-	CAMERAMANAGER->setPosition(INITX - WINSIZEX / 2, INITY + 22);
 	HANDLE file;
 	DWORD write;
 	file = CreateFile(L"CurFile.map", GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 	WriteFile(file, _tile, sizeof(tagIso) * TILEX * TILEY, &write, NULL);
 	CloseHandle(file);
-	SCENEMANAGER->changeScene(L"DungeonScene");
+	SCENEMANAGER->changeScene(L"MenuScene");
 }
 void mapToolScene::saveTile()
 {

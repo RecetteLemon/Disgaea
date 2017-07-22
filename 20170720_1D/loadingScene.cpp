@@ -39,9 +39,9 @@ void loadingScene::loadingImage()
 	// 메뉴씬 이미지
 	_ld->loadImage(L"Menu", L"Image/Menu/M01.png", 1600, 900);
 	_ld->loadImage(L"MenuMouse", L"Image/Menu/MMouse.png", 50, 39);
-	_ld->loadFrameImage(L"StartButton", L"Image/MapTool/buttonStart.png", 243, 258, 1, 2);
-	_ld->loadFrameImage(L"SaveButton", L"Image/MapTool/buttonSave.png", 243, 258, 1, 2);
-	_ld->loadFrameImage(L"LoadButton", L"Image/MapTool/buttonLoad.png", 243, 258, 1, 2);
+	_ld->loadFrameImage(L"StartButton", L"Image/MapTool/BtnBack.png", 100, 200, 1, 2);
+	_ld->loadFrameImage(L"SaveButton", L"Image/MapTool/BtnSave.png", 100, 200, 1, 2);
+	_ld->loadFrameImage(L"LoadButton", L"Image/MapTool/BtnLoad.png", 100, 200, 1, 2);
 	_ld->loadFrameImage(L"TerrainButton", L"Image/MapTool/BtnTerrain.png", 125, 64, 1, 2);
 	_ld->loadFrameImage(L"ObjectButton", L"Image/MapTool/BtnObject.png", 125, 64, 1, 2);
 	_ld->loadFrameImage(L"EraseButton", L"Image/MapTool/BtnEraser.png", 125, 64, 1, 2);
