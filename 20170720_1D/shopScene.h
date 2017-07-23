@@ -1,6 +1,7 @@
 #pragma once
 #include "gameNode.h"
 #include "item.h"
+#include "statDataBase.h"
 #include <vector>
 //샵 페이지
 enum shopPage
@@ -55,8 +56,11 @@ private:
 	//창고
 	vector<Item> _vWareHouse;
 private:
+	//플레이어
+	statDataBase* _cd;
 	shopPage _page;
 	item* _item;
+	unsigned int _playerMoney;
 	//공용
 	RECT _cursor;
 	RECT _bar;
@@ -80,6 +84,7 @@ private:
 	image* _infoImage;
 	//판매용
 	bool _isSelling;
+	bool _isSellInfo;
 	RECT _invenSlot[24];
 	image* _invenSImage[24];
 	int _slotIdx[24];

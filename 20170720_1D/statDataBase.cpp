@@ -27,7 +27,7 @@ statDataBase::statDataBase()
 		_plStat[i]._thr = 5;
 		_plStat[i]._counter = 3;
 	}	
-	_money = 0;
+	_money = 1000;
 }
 
 

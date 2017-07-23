@@ -11,6 +11,9 @@ shopScene::~shopScene()
 
 HRESULT shopScene::init()
 {
+	//플레이어 초기값
+	_cd = new statDataBase;
+	_playerMoney = _cd->getMoney();
 	//페이지 초기값
 	_page = SHOP_MAIN;
 	//아이템 가져오기
@@ -30,7 +33,7 @@ HRESULT shopScene::init()
 		_invenSImage[i] = IMAGEMANAGER->findImage(L"noneShop");
 	}
 	_togle = false;
-	_isBuyInfo = _isBuying = _isSelling = false;
+	_isBuyInfo = _isBuying = _isSelling = _isSellInfo = false;
 
 	_sortNum = 0;
 
@@ -49,16 +52,21 @@ void shopScene::update()
 }
 void shopScene::render()
 {
+	WCHAR str[128];
+
 	switch (_page)
 	{
 		//메인
 	case 0:
 		IMAGEMANAGER->findImage(L"shopMain")->render(0, 0, false, 1.0f);
-
 		IMAGEMANAGER->findImage(L"buy")->render(_buy.left, _buy.top, false, 1.0f);
 		IMAGEMANAGER->findImage(L"sell")->render(_sell.left, _sell.top, false, 1.0f);
 		IMAGEMANAGER->findImage(L"cursor")->render(_cursor.left, _cursor.top, false, 1.0f);
 		_menuInfo->render(77, WINSIZEY - 109, false, 1.0f);
+
+		swprintf_s(str, L"%d", _playerMoney);
+		DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(255, 255, 255), 1), L"고딕", 40, str, WINSIZEX - 276, 701, WINSIZEX - 77, 761);
+
 		break;
 		//구매
 	case 1:
@@ -103,6 +111,8 @@ void shopScene::render()
 				_item->getVItem()[_changeNum + (int)_buySlot].Image->render(WINSIZEX - 590, 246, false, 1.0f);
 			}
 		}
+		swprintf_s(str, L"%d", _playerMoney);
+		DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(255, 255, 255), 1), L"고딕", 40, str, WINSIZEX - 280, 443, WINSIZEX - 77, 503);
 		break;
 		//판매
 	case 2:
@@ -131,6 +141,14 @@ void shopScene::render()
 			IMAGEMANAGER->findImage(L"sellMessage")->render(WINSIZEX - 553, -3, false, 1.0f);
 			_item->getVItem()[_changeNum + (int)_sellSlot].Image->render(WINSIZEX - 541, 253, false, 1.0f);
 		}
+		//정보이미지 출력
+		if (_isSellInfo)
+		{
+			IMAGEMANAGER->findImage(L"infoBox")->render(63, WINSIZEY - 117, false, 1.0f);
+			_infoImage->render(76, WINSIZEY - 110, false, 1.0f);
+		}
+		swprintf_s(str, L"%d", _playerMoney);
+		DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(255, 255, 255), 1), L"고딕", 40, str, WINSIZEX - 280, 450, WINSIZEX - 77, 510);
 		break;
 	}
 }
@@ -191,7 +209,18 @@ void shopScene::buyPage()
 	else if (_isBuying)
 	{
 		if (KEYMANAGER->isOnceKeyDown('L')) _isBuying = false;
-		if (KEYMANAGER->isOnceKeyDown('K')) buyingItem();
+		if (KEYMANAGER->isOnceKeyDown('K'))
+		{
+			//돈이 되면
+			if (_item->getVItem()[_changeNum + (int)_buySlot].Price <= _playerMoney)
+			{
+				buyingItem();
+				_cd->setMoney(_playerMoney - _item->getVItem()[_changeNum + (int)_buySlot].Price);
+				_playerMoney = _cd->getMoney();
+			}
+			//안되면 빠꾸징
+			if (_item->getVItem()[_changeNum + (int)_buySlot].Price > _playerMoney) _isBuying = false;
+		}
 	}
 	//슬롯 만들기
 	for (int i = 0; i < 11; i++)
@@ -539,6 +568,18 @@ void shopScene::sellPage()
 		}
 	}
 
+	//정보 이미지 나오게하는 조건
+	RECT tempRC;
+	if (IntersectRect(&tempRC, &RectMake(_cursor.left - 20, _cursor.top + 10, _cursor.right + 10, _cursor.bottom - 20), &_invenSlot[_changeNum + (int)_sellSlot]))
+	{
+		if (_invenSImage[_changeNum + (int)_sellSlot] != IMAGEMANAGER->findImage(L"noneShop"))
+		{
+			_isSellInfo = true;
+			_infoImage = _vInven[_changeNum + (int)_sellSlot].info;
+		}
+		else _isSellInfo = false;
+	}
+
 	//슬롯당 커서
 	switch (_sellSlot)
 	{
@@ -597,6 +638,8 @@ void shopScene::buyingItem()
 
 void shopScene::sellingItem()
 {
+	_cd->setMoney(_playerMoney + _vInven[_changeNum + (int)_sellSlot].Price);
+	_playerMoney = _cd->getMoney();
 	//아이템이 한개만 있을때
 	if (_vInven.size() == 1)
 	{
