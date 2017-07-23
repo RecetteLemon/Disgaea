@@ -92,7 +92,7 @@ void loading::render()
 	_background->render(false, 1.0f);
 	_loadingBar->render(false, 1.0f);
 
-	DIRECT2D->drawTextD2D(DIRECT2D->_defaultBrush, _loadingFileName, 100, 50, 200, 70);
+	DIRECT2D->drawTextD2D(DIRECT2D->_defaultBrush, L"¸¼Àº °íµñ", 20, _loadingFileName, 10, WINSIZEY - 100, 800, WINSIZEY);
 }
 
 

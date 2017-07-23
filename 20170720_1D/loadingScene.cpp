@@ -71,13 +71,13 @@ void loadingScene::loadingImage()
 
 
 	// 캐릭터 관련 이미지
-	_ld->loadFrameImage(L"Valvatorez", L"image/player/Valvatorez.png", 2964, 2873, 12, 13);
-	_ld->loadFrameImage(L"Rozalin", L"image/player/rozalin.png", 1536, 2380, 12, 14);
-	_ld->loadFrameImage(L"Cleric", L"image/player/Cleric.png", 1476, 1630, 12, 10);
-	_ld->loadFrameImage(L"Adell", L"image/player/Adell.png", 1320, 1920, 12, 12);
-	_ld->loadFrameImage(L"Pram", L"image/player/Pram.png", 2136, 2340, 12, 12);
-	_ld->loadFrameImage(L"Prinny", L"image/player/prinny.png", 3744, 854, 32, 7);
-	_ld->loadImage(L"shadow", L"image/player/shadow.png", 100, 40);
+	_ld->loadFrameImage(L"Valvatorez", L"Image/player/Valvatorez.png", 2964, 2873, 12, 13);
+	_ld->loadFrameImage(L"Rozalin", L"Image/player/rozalin.png", 1536, 2380, 12, 14);
+	_ld->loadFrameImage(L"Cleric", L"Image/player/Cleric.png", 1476, 1630, 12, 10);
+	_ld->loadFrameImage(L"Adell", L"Image/player/Adell.png", 1320, 1920, 12, 12);
+	_ld->loadFrameImage(L"Pram", L"Image/player/Pram.png", 2136, 2340, 12, 12);
+	_ld->loadFrameImage(L"Prinny", L"Image/player/prinny.png", 3744, 854, 32, 7);
+	_ld->loadImage(L"shadow", L"Image/player/shadow.png", 100, 40);
 
 
 	// 이펙트 이미지
@@ -164,17 +164,17 @@ void loadingScene::loadingImage()
 	_ld->loadImage(L"noneShop", L"Image/shop/none-shop.png", 834, 56);
 
 	// 숫자 이미지
-	_ld->loadImage(L"1", L"image/inven/1.png", 20, 25);
-	_ld->loadImage(L"2", L"image/inven/2.png", 20, 25);
-	_ld->loadImage(L"3", L"image/inven/3.png", 20, 25);
-	_ld->loadImage(L"4", L"image/inven/4.png", 20, 25);
-	_ld->loadImage(L"5", L"image/inven/5.png", 20, 25);
-	_ld->loadImage(L"6", L"image/inven/6.png", 20, 25);
-	_ld->loadImage(L"7", L"image/inven/7.png", 20, 25);
-	_ld->loadImage(L"8", L"image/inven/8.png", 20, 25);
-	_ld->loadImage(L"9", L"image/inven/9.png", 20, 25);
-	_ld->loadImage(L"0", L"image/inven/0.png", 20, 25);
-	_ld->loadImage(L"커서", L"image/inven/itemCursor.png", 52, 39);
+	_ld->loadImage(L"1", L"Image/Inven/1.png", 20, 25);
+	_ld->loadImage(L"2", L"Image/Inven/2.png", 20, 25);
+	_ld->loadImage(L"3", L"Image/Inven/3.png", 20, 25);
+	_ld->loadImage(L"4", L"Image/Inven/4.png", 20, 25);
+	_ld->loadImage(L"5", L"Image/Inven/5.png", 20, 25);
+	_ld->loadImage(L"6", L"Image/Inven/6.png", 20, 25);
+	_ld->loadImage(L"7", L"Image/Inven/7.png", 20, 25);
+	_ld->loadImage(L"8", L"Image/Inven/8.png", 20, 25);
+	_ld->loadImage(L"9", L"Image/Inven/9.png", 20, 25);
+	_ld->loadImage(L"0", L"Image/Inven/0.png", 20, 25);
+	_ld->loadImage(L"커서", L"Image/Inven/itemCursor.png", 52, 39);
 
 	// ?? 이미지
 
@@ -188,8 +188,20 @@ void loadingScene::loadingSound()
 	// 메뉴 쏴운드
 
 
-	// ?? Sound
-
+	// Effect Sound
+	_ld->loadSound(L"Back", L"Sound/DisgaeaBack.mp3", false, false);
+	_ld->loadSound(L"Decision", L"Sound/DisgaeaDecision.mp3", false, false);
+	_ld->loadSound(L"Heal_0", L"Sound/DisgaeaHeal_0.mp3", false, false);
+	_ld->loadSound(L"Heal_1", L"Sound/DisgaeaHeal_1.mp3", false, false);
+	_ld->loadSound(L"ItemGain_0", L"Sound/DisgaeaItemGain_0.mp3", false, false);
+	_ld->loadSound(L"ItemGain_1", L"Sound/DisgaeaItemGain_1.mp3", false, false);
+	_ld->loadSound(L"Laser_0", L"Sound/DisgaeaLaser_0.mp3", false, false);
+	_ld->loadSound(L"Laser_1", L"Sound/DisgaeaLaser_1.mp3", false, false);
+	_ld->loadSound(L"Laser_2", L"Sound/DisgaeaLaser_2.mp3", false, false);
+	_ld->loadSound(L"LavelUp", L"Sound/DisgaeaLavelUp.mp3", false, false);
+	_ld->loadSound(L"StageClear", L"Sound/DisgaeaClear.mp3", false, false);
+	_ld->loadSound(L"UnitDead", L"Sound/DisgaeaUnitDead.mp3", false, false);
+	
 
 	// ?? Sound
 

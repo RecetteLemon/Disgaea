@@ -83,7 +83,7 @@ void progressBar::release()
 
 void progressBar::update() 
 {
-	_rcProgress = RectMakeCenter(_x, _y,
+	_rcProgress = RectMake(_x, _y,
 		_progressBarBottom->getWidth(), _progressBarBottom->getHeight());
 }
 
@@ -101,11 +101,11 @@ void progressBar::render(bool onCamera, float opacity)
 	//	0, 0,
 	//	_width, _progressBarTop->getHeight());
 
-	_progressBarBottom->render(_rcProgress.left, _y, 0, 0,
+	_progressBarBottom->render(_rcProgress.left, _rcProgress.top, 0, 0,
 		_progressBarBottom->getWidth(),
 		_progressBarBottom->getHeight(), onCamera, opacity);
 
-	_progressBarTop->render(_rcProgress.left, _y, 0, 0,
+	_progressBarTop->render(_rcProgress.left, _rcProgress.top, 0, 0,
 		_width,
 		_progressBarTop->getHeight(), onCamera, opacity);
 
