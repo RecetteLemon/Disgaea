@@ -86,6 +86,7 @@ public:
 
 	HRESULT init(tagIso* currentMap, int startX, int startY);
 	void release();
+	void render();
  
 	vector<aStarTile*> addOpenList(aStarTile* currentTile);	//갈 수 있는 길 색출
 	void pathFinder(aStarTile* currentTile);				//타일 검사
@@ -93,20 +94,21 @@ public:
 	void renderGoalList();									//목표 타일이 될 수 있는 것들을 보여준다
 
 	void vectorClear();
+	void moveListUpdate();
 
 	// === gettter, setter === // 
 
 	//시작 타일
-	inline void setStartTile(tagIso tile) { _startTile->setIso(tile); }
+	inline void setStartTile(int arrNum) { _startTile = _vTotalList[arrNum]; }
 //	inline void setStartTile(int x, int y) { x / TILESIZEX + y / TILESIZEY; } 좌표 기준으로 셋팅...
-	inline tagIso getStartTile() { return _startTile->getIso(); }
+	aStarTile* getStartTile() { return _startTile; }
 
 	//목표 타일
-	inline void setGoalTile(tagIso tile) { _goalTile->setIso(tile); }
+	inline void setGoalTile(int arrNum) { _goalTile = _vTotalList[arrNum]; }
 //	inline void setStartTile(int x, int y) { x / TILESIZEX + y / TILESIZEY; } 좌표 기준으로 셋팅...
-	inline tagIso getGoalTile() { return _goalTile->getIso(); }
+	aStarTile* getGoalTile() { return _goalTile; }
 
 	//이동가능한 타일
-	inline void setMoveTile();
+	void setMoveTile(tagIso tile);
 	inline vector<tagIso> &getMoveTile() { return _vMoveList; }	//캐릭터에게 이동할 길을 넘겨준다
 };

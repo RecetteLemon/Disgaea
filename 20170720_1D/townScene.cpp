@@ -15,9 +15,10 @@ HRESULT townScene::init()
 	_cm = new characterManager;
 	_cm->init(2, 5);
 	_cm->selectPlayer(3);
-
-	
+	_tileNum = 0;
 	this->loadTile();
+	ASTARMANAGER->addAStar(_tile, L"캐릭터", _cm->getCenter().x, _cm->getCenter().y);
+
 	return S_OK;
 }
 void townScene::release()
@@ -28,15 +29,123 @@ void townScene::update()
 {
 	this->playerTileCol();
 	this->camControl();
+	this->aStarMove();
 	_cm->update();
-	
 }
 void townScene::render()
 {
 	this->drawTile();
 	_cm->render();
-	
+	ASTARMANAGER->findAStar(L"캐릭터")->render();
+	ASTARMANAGER->findAStar(L"캐릭터")->renderGoalList();
 }
+
+void townScene::aStarMove()
+{
+	bool isStart = false;
+	for (int i = 0; i < TILEX * TILEY; i++)
+	{
+		HRGN hRgn = CreatePolygonRgn(_tile[i].line, 4, WINDING);
+		HRGN playerTile = CreatePolygonRgn(_tile[i].line, 4, WINDING);
+
+		//실시간으로 플레이어 위치를 받아서 스타트타일 셋팅
+		if (PtInRegion(playerTile, _cm->getCenter().x, _cm->getCenter().y))
+		{
+			ASTARMANAGER->findAStar(L"캐릭터")->setStartTile(i);
+		}
+
+		if (PtInRegion(hRgn, _ptMouse.x + CAMERAMANAGER->getX(), _ptMouse.y + CAMERAMANAGER->getY()))
+		{
+			_tile[i].edgePaint = true;
+
+			if (KEYMANAGER->isOnceKeyDown(VK_RBUTTON))
+			{
+				ASTARMANAGER->findAStar(L"캐릭터")->setGoalTile(i);
+				ASTARMANAGER->findAStar(L"캐릭터")->pathFinder(ASTARMANAGER->findAStar(L"캐릭터")->getStartTile());
+			}
+		}
+		else _tile[i].edgePaint = false;
+
+		DeleteObject(hRgn);
+		DeleteObject(playerTile);
+	}
+
+	if (ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile().size() != NULL)
+	{
+		if ((int)_cm->getCenter().x < ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile()[_tileNum].centerX &&
+			(int)_cm->getCenter().y < ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile()[_tileNum].centerY)
+		{
+			_cm->setState(PLAYER_STAT_RB_MOVE);
+			_cm->moveOn();
+		}
+		if ((int)_cm->getCenter().x > ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile()[_tileNum].centerX &&
+			(int)_cm->getCenter().y < ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile()[_tileNum].centerY)
+		{
+			_cm->setState(PLAYER_STAT_LB_MOVE);
+			_cm->moveOn();
+		}
+		if ((int)_cm->getCenter().x < ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile()[_tileNum].centerX &&
+			(int)_cm->getCenter().y > ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile()[_tileNum].centerY)
+		{
+			_cm->setState(PLAYER_STAT_RT_MOVE);
+			_cm->moveOn();
+		}
+		if ((int)_cm->getCenter().x > ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile()[_tileNum].centerX &&
+			(int)_cm->getCenter().y > ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile()[_tileNum].centerY)
+		{
+			_cm->setState(PLAYER_STAT_LT_MOVE);
+			_cm->moveOn();
+		}
+
+		switch (_cm->getStat())
+		{
+		case PLAYER_STAT_RB_MOVE:
+			if (_cm->getCenter().x >= ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile()[_tileNum].centerX &&
+				_cm->getCenter().y >= ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile()[_tileNum].centerY)
+			{
+				_cm->setState(PLAYER_STAT_RB_STAND);
+				++_tileNum;
+			}
+			break;
+		case PLAYER_STAT_LB_MOVE:
+			if (_cm->getCenter().x <= ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile()[_tileNum].centerX &&
+				_cm->getCenter().y >= ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile()[_tileNum].centerY)
+			{
+				_cm->setState(PLAYER_STAT_LB_STAND);
+				++_tileNum;
+			}
+			break;
+		case PLAYER_STAT_RT_MOVE:
+			if (_cm->getCenter().x >= ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile()[_tileNum].centerX &&
+				_cm->getCenter().y <= ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile()[_tileNum].centerY)
+			{
+				_cm->setState(PLAYER_STAT_RT_STAND);
+				++_tileNum;
+			}
+			break;
+		case PLAYER_STAT_LT_MOVE:
+			if (_cm->getCenter().x <= ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile()[_tileNum].centerX &&
+				_cm->getCenter().y <= ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile()[_tileNum].centerY)
+			{
+				_cm->setState(PLAYER_STAT_LT_STAND);
+				++_tileNum;
+			}
+			break;
+		}
+		if (_tileNum >= ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile().size())
+		{
+			_tileNum = 0;
+		}
+
+		if (ASTARMANAGER->findAStar(L"캐릭터")->getStartTile() == ASTARMANAGER->findAStar(L"캐릭터")->getGoalTile())
+		{
+			ASTARMANAGER->findAStar(L"캐릭터")->vectorClear();
+			ASTARMANAGER->findAStar(L"캐릭터")->moveListUpdate();
+		}
+	}
+}
+
+
 void townScene::drawTile()
 {
 	for (int i = 0; i < TILEX * TILEY; i++)
@@ -66,6 +175,19 @@ void townScene::drawTile()
 				IMAGEMANAGER->findImage(L"IsoObject")->frameRender(_tile[i].x - TILESIZEX / 2 - IMAGEMANAGER->findImage(L"IsoObject")->getFrameWidth() + TILESIZEX,
 					_tile[i].y - _tile[i].z - IMAGEMANAGER->findImage(L"IsoObject")->getFrameHeight() - TILESIZEY * (_tile[i].z - 1),
 					_tile[i].objFrame.x, _tile[i].objFrame.y, true, 1.0f);
+			}
+		}
+		if (_tile[i].edgePaint)
+		{
+			if (_tile[i].z >= 0)
+			{
+				IMAGEMANAGER->findImage(L"IsoEdge")->render(_tile[i].x - TILESIZEX / 2,
+					_tile[i].y - _tile[i].z * TILESIZEZ, true, 1);
+			}
+			else if (_tile[i].z < 0)
+			{
+				IMAGEMANAGER->findImage(L"IsoEdge")->render(_tile[i].x - TILESIZEX / 2,
+					_tile[i].y, true, 1);
 			}
 		}
 	}

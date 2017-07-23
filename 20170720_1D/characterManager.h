@@ -51,6 +51,11 @@ public:
 
 	inline RECT getShadowRC() { return _shadowRc; }
 
+	POINT getCenter() { return PointMake(_player->getX(), _player->getY()); }
+	PLAYERSTAT getStat() { return _player->getStat(); }
+
+	void setState(PLAYERSTAT ps) { _player->setStat(ps); }
+	void moveOn() { _player->move(); }
 	
 
 	characterManager();

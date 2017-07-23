@@ -8,7 +8,7 @@ class townScene : public gameNode
 private:
 	tagIso _tile[TILEX * TILEY];
 	characterManager* _cm;
-	
+	int _tileNum;
 	
 public:
 	townScene();
@@ -21,5 +21,6 @@ public:
 	void drawTile();
 	void camControl();
 	void playerTileCol();
+	void aStarMove();
 };
 

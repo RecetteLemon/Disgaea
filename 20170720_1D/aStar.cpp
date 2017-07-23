@@ -172,7 +172,7 @@ void aStar::pathFinder(aStarTile* currentTile)
 
 	if (addOpenList(currentTile).size() == NULL)
 	{
-		vectorClear();
+		//vectorClear();
 		return;
 	}
 
@@ -219,11 +219,33 @@ void aStar::renderGoalList()
 	}
 }
 
-//이동가능한 타일을 설정한다 
-void aStar::setMoveTile()
+void aStar::render()
 {
-	int startX = _startTile->getIdX() - 5;//-5칸 -5칸부터 주르륵 검색하는 것...
-	int startY = _startTile->getIdY() - 5;
+	if (_goalTile)
+	{
+		WCHAR str[126];
+		swprintf(str, L"%d %d", _goalTile->getIso().indexX, _goalTile->getIso().indexY);
+		DIRECT2D->drawTextD2D(DIRECT2D->_defaultBrush, str, 500, 0, 550, 10);
+	}
+	if (_startTile)
+	{
+		WCHAR str[128];
+		swprintf(str, L"%d %d", _startTile->getIso().indexX, _startTile->getIso().indexY);
+		DIRECT2D->drawTextD2D(DIRECT2D->_defaultBrush, str, 600, 0, 650, 10);
+	}
+	for (int i = 0; i < _vMoveList.size(); i++)
+	{
+		WCHAR str[128];
+		swprintf(str, L"%d %d", _vMoveList[i].indexX, _vMoveList[i].indexY);
+		DIRECT2D->drawTextD2D(DIRECT2D->_defaultBrush, str, _vMoveList[i].centerX, _vMoveList[i].centerY, _vMoveList[i].centerX + 30, _vMoveList[i].centerY + 30);
+	}
+}
+
+//이동가능한 타일을 설정한다 
+void aStar::setMoveTile(tagIso tile)
+{
+	int startX = tile.indexX - 5;//-5칸 -5칸부터 주르륵 검색하는 것...
+	int startY = tile.indexY - 5;
 
 	for (int i = 0; i < 11; i++)
 	{
@@ -250,5 +272,9 @@ void aStar::vectorClear()
 {
 	_vOpenList.clear();
 	_vCloseList.clear();
+}
+
+void aStar::moveListUpdate()
+{
 	_vMoveList.clear();
 }
