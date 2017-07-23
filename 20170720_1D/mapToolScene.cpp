@@ -214,19 +214,14 @@ void mapToolScene::setTile()
 			{
 			case SAM_TERRAIN:
 				++_phaseSample.token.x;
+
 				if (_phaseSample.token.x > _sample[SAM_TERRAIN]->getMaxFrameX())
 				{
 					_phaseSample.token.x = 0;
 					++_phaseSample.token.y;
 				}
 
-				if (_phaseSample.token.y > _sample[SAM_TERRAIN]->getMaxFrameY())
-				{
-					_phaseSample.token.y = 0;
-				}
-
-				_curTile.x = _phaseSample.token.x;
-				_curTile.y = _phaseSample.token.y;
+				if (_phaseSample.token.y > _sample[SAM_TERRAIN]->getMaxFrameY()) _phaseSample.token.y = 0;
 				break;
 			case SAM_OBJECT:
 				++_phaseSample.token.x;
@@ -235,13 +230,13 @@ void mapToolScene::setTile()
 				{
 					_phaseSample.token.x = 0;
 					++_phaseSample.token.y;
-					if (_phaseSample.token.y > _sample[SAM_OBJECT]->getMaxFrameY()) _phaseSample.token.y = 0;
 				}
 
-				_curTile.x = _phaseSample.token.x;
-				_curTile.y = _phaseSample.token.y;
+				if (_phaseSample.token.y > _sample[SAM_OBJECT]->getMaxFrameY()) _phaseSample.token.y = 0;
 				break;
 			}
+			_curTile.x = _phaseSample.token.x;
+			_curTile.y = _phaseSample.token.y;
 			
 		}
 
@@ -256,32 +251,25 @@ void mapToolScene::setTile()
 					_phaseSample.token.x = _sample[SAM_OBJECT]->getMaxFrameX();
 					--_phaseSample.token.y;
 				}
-				if (_phaseSample.token.y < 0)
-				{
-					_phaseSample.token.y = _sample[SAM_TERRAIN]->getMaxFrameY();
-				}
-				_curTile.x = _phaseSample.token.x;
-				_curTile.y = _phaseSample.token.y;
-				break;
 
+				if (_phaseSample.token.y < 0) _phaseSample.token.y = _sample[SAM_TERRAIN]->getMaxFrameY();
+
+				break;
 			case SAM_OBJECT:
 				--_phaseSample.token.x;
-				if (_phaseSample.token.x < 0 && _phaseSample.token.y == 5)
-				{
-					_phaseSample.token.x = 4;
-					--_phaseSample.token.y;
-				}
-				else if (_phaseSample.token.x < 0)
+				if (_phaseSample.token.x < 0)
 				{
 					_phaseSample.token.x = _sample[SAM_OBJECT]->getMaxFrameX();
 					--_phaseSample.token.y;
-					if (_phaseSample.token.y < 0) _phaseSample.token.y = _sample[SAM_OBJECT]->getMaxFrameY();
 				}
-				_curTile.x = _phaseSample.token.x;
-				_curTile.y = _phaseSample.token.y;
+
+				if (_phaseSample.token.y < 0) _phaseSample.token.y = _sample[SAM_OBJECT]->getMaxFrameY();
+
 				break;
 			}
-			
+
+			_curTile.x = _phaseSample.token.x;
+			_curTile.y = _phaseSample.token.y;
 		}
 
 		if (PtInRect(&_iconRect, _ptMouse))
@@ -303,6 +291,8 @@ void mapToolScene::setTile()
 				_iconImage->setFrameX(0);
 				break;
 			}
+			_curTile.x = _phaseSample.token.x = 0;
+			_curTile.y = _phaseSample.token.y = 0;
 		}
 
 		// terrain
