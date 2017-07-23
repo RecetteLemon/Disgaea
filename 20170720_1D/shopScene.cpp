@@ -12,8 +12,7 @@ shopScene::~shopScene()
 HRESULT shopScene::init()
 {
 	//플레이어 초기값
-	_cd = new statDataBase;
-	_playerMoney = _cd->getMoney();
+	_playerMoney = STATMANAGER->getMoney();
 	//페이지 초기값
 	_page = SHOP_MAIN;
 	//아이템 가져오기
@@ -103,6 +102,9 @@ void shopScene::render()
 			{
 				IMAGEMANAGER->findImage(L"infoBox")->render(63, WINSIZEY - 117, false, 1.0f);
 				_infoImage->render(76, WINSIZEY - 110, false, 1.0f);
+				IMAGEMANAGER->findImage(L"backBlack")->render(63, 523, false, 0.1f);
+				IMAGEMANAGER->findImage(L"itemStat")->render(63, 523, false, 1.0f);
+				_infoImage2->render(69, 532, false, 1.0f);
 			}
 			//살건지 물어보는 것 출력
 			if (_isBuying)
@@ -215,8 +217,8 @@ void shopScene::buyPage()
 			if (_item->getVItem()[_changeNum + (int)_buySlot].Price <= _playerMoney)
 			{
 				buyingItem();
-				_cd->setMoney(_playerMoney - _item->getVItem()[_changeNum + (int)_buySlot].Price);
-				_playerMoney = _cd->getMoney();
+				STATMANAGER->setMoney(_playerMoney - _item->getVItem()[_changeNum + (int)_buySlot].Price);
+				_playerMoney = STATMANAGER->getMoney();
 			}
 			//안되면 빠꾸징
 			if (_item->getVItem()[_changeNum + (int)_buySlot].Price > _playerMoney) _isBuying = false;
@@ -303,6 +305,7 @@ void shopScene::buyPage()
 		{
 			_isBuyInfo = true;
 			_infoImage = _item->getVItem()[_changeNum + (int)_buySlot].info;
+			_infoImage2 = _item->getVItem()[_changeNum + (int)_buySlot].Image2;
 		}
 		else _isBuyInfo = false;
 	}
@@ -638,8 +641,8 @@ void shopScene::buyingItem()
 
 void shopScene::sellingItem()
 {
-	_cd->setMoney(_playerMoney + _vInven[_changeNum + (int)_sellSlot].Price);
-	_playerMoney = _cd->getMoney();
+	STATMANAGER->setMoney(_playerMoney + _vInven[_changeNum + (int)_sellSlot].Price);
+	_playerMoney = STATMANAGER->getMoney();
 	//아이템이 한개만 있을때
 	if (_vInven.size() == 1)
 	{

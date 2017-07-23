@@ -114,6 +114,9 @@ void loadingScene::loadingImage()
 	_ld->loadFrameImage(L"sellSort", L"Image/shop/sellSort.png", 560, 741, 2, 3);
 	_ld->loadImage(L"buyMessage", L"Image/shop/buyMessage.png", 540, 190);
 	_ld->loadImage(L"sellMessage", L"Image/shop/sellMessage.png", 490, 430);
+	_ld->loadImage(L"itemStat", L"Image/shop/itemStat.png", 1474, 258);
+	_ld->loadImage(L"backBlack", L"Image/shop/black.png", 1474, 255);
+
 	//전투 인벤 이미지
 	_ld->loadImage(L"itemBag", L"Image/Inven/itemBag.png", 553, 480);
 	_ld->loadImage(L"moveBar", L"Image/Inven/itemBagBlock.png", 40, 123);
