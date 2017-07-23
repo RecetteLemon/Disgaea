@@ -44,6 +44,8 @@
 #include "cameraManager.h"
 #include "aStarManager.h"
 
+#include "statDataBase.h"
+
 using namespace std;
 using namespace OMEGA_UTIL;
 using namespace D2D1;
@@ -72,6 +74,8 @@ using namespace D2D1;
 #define SCENEMANAGER sceneManager::getSingleton()
 #define CAMERAMANAGER cameraManager::getSingleton()
 #define ASTARMANAGER aStarManager::getSingleton()
+
+#define STATMANAGER statDataBase::getSingleton()
 
 //==================================
 // 매크로 함수 ##

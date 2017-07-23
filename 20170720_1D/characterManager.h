@@ -6,6 +6,7 @@
 #include "Adell.h"
 #include "Pram.h"
 #include "Prinny.h"
+#include "statUi.h"
 
 enum PLAYER
 {
@@ -32,6 +33,8 @@ private:
 	player* _player;
 	enemy* _enemy;
 	int _x, _y;	
+
+	statUi* _sUI;
 
 	RECT _shadowRc;
 

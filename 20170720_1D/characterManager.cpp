@@ -19,6 +19,8 @@ HRESULT characterManager::init(int x, int y)
 
 	_playerKind = PLAYER_END;
 	_enemyKind = ENEMY_END;
+	_sUI = new statUi;
+	_sUI->init();
 	return S_OK;
 }
 void characterManager::release(void)
@@ -30,11 +32,13 @@ void characterManager::update(void)
 	if (_playerKind != PLAYER_END ) _player->update();
 	if (_enemyKind != ENEMY_END) _enemy->update();
 	_shadowRc = _player->getShadowRect();
+	_sUI->update();
 }
 void characterManager::render(void)
 {
 	if (_playerKind != PLAYER_END ) _player->render();
 	if (_enemyKind != ENEMY_END) _enemy->render();
+	_sUI->render();
 }
 
 void characterManager::selectPlayer(int kind)
