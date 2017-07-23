@@ -94,6 +94,9 @@
     <Filter Include="2DGameFramework\A%2a Algorithm">
       <UniqueIdentifier>{36a39bce-f771-4e1e-a2dd-443100d17b56}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Disgaea\UI">
+      <UniqueIdentifier>{7f02e153-f74e-416e-8376-d9cc1eb5fc72}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -237,6 +240,9 @@
     <ClInclude Include="aStar.h">
       <Filter>2DGameFramework\A%2a Algorithm</Filter>
     </ClInclude>
+    <ClInclude Include="statUi.h">
+      <Filter>Disgaea\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -364,6 +370,9 @@
     </ClCompile>
     <ClCompile Include="aStar.cpp">
       <Filter>2DGameFramework\A%2a Algorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="statUi.cpp">
+      <Filter>Disgaea\UI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

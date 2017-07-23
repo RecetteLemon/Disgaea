@@ -78,7 +78,17 @@ void loadingScene::loadingImage()
 	_ld->loadFrameImage(L"Pram", L"Image/player/Pram.png", 2136, 2340, 12, 12);
 	_ld->loadFrameImage(L"Prinny", L"Image/player/prinny.png", 3744, 854, 32, 7);
 	_ld->loadImage(L"shadow", L"Image/player/shadow.png", 100, 40);
+	_ld->loadImage(L"ValvatorezFace", L"Image/face/1.png", 98, 98);
+	_ld->loadImage(L"PramFace", L"Image/face/2.png", 98, 98);
+	_ld->loadImage(L"ClericFace", L"Image/face/3.png", 98, 98);
+	_ld->loadImage(L"AdellFace", L"Image/face/5.png", 98, 98);
+	_ld->loadImage(L"RozalinFace", L"Image/face/6.png", 98, 98);
 
+
+	//스탯UI 이미지
+	_ld->loadImage(L"StatUI", L"Image/UI/statUI.png", 1600, 300);
+	_ld->loadImage(L"StatUI1", L"Image/UI/statUI1.png", 1600, 300);
+	_ld->loadImage(L"StatMain", L"Image/UI/stat_main.png", 800, 450);
 
 	// 이펙트 이미지
 	_ld->loadFrameImage(L"PrinnyEffect", L"image/Effect/prinny_effect.png", 1704, 202, 8, 1);

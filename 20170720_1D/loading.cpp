@@ -67,7 +67,7 @@ HRESULT loading::init()
 	_background = IMAGEMANAGER->addImage(L"LoadingBackground", L"Image/Loading/L01.png", WINSIZEX, WINSIZEY);
 
 	_loadingBar = new progressBar;
-	_loadingBar->init(L"LBarCur", L"LBarMax", 0, WINSIZEY - 60, WINSIZEX, 60);
+	_loadingBar->init(L"Loading/LBarCur", L"Loading/LBarMax", 0, WINSIZEY - 60, WINSIZEX, 60);
 	_loadingBar->setGauge(0, 0);
 
 	_currentGauge = 0;

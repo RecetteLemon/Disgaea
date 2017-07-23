@@ -65,8 +65,8 @@ HRESULT progressBar::init(WCHAR* topImage, WCHAR* bottomImage, float x, float y,
 	ZeroMemory(strTopImageName, sizeof(strTopImageName));
 	ZeroMemory(strBottomImageName, sizeof(strBottomImageName));
 
-	swprintf_s(strTopImageName, L"Image/Loading/%s.png", topImage);
-	swprintf_s(strBottomImageName, L"Image/Loading/%s.png", bottomImage);
+	swprintf_s(strTopImageName, L"Image/%s.png", topImage);
+	swprintf_s(strBottomImageName, L"Image/%s.png", bottomImage);
 
 	_progressBarBottom = IMAGEMANAGER->addImage(bottomImage, strBottomImageName, width, height);
 	_progressBarTop = IMAGEMANAGER->addImage(topImage, strTopImageName, width, height);
@@ -83,7 +83,7 @@ void progressBar::release()
 
 void progressBar::update() 
 {
-	_rcProgress = RectMake(_x, _y,
+	_rcProgress = RectMakeCenter(_x, _y,
 		_progressBarBottom->getWidth(), _progressBarBottom->getHeight());
 }
 
@@ -101,11 +101,11 @@ void progressBar::render(bool onCamera, float opacity)
 	//	0, 0,
 	//	_width, _progressBarTop->getHeight());
 
-	_progressBarBottom->render(_rcProgress.left, _rcProgress.top, 0, 0,
+	_progressBarBottom->render(_rcProgress.left, _y, 0, 0,
 		_progressBarBottom->getWidth(),
 		_progressBarBottom->getHeight(), onCamera, opacity);
 
-	_progressBarTop->render(_rcProgress.left, _rcProgress.top, 0, 0,
+	_progressBarTop->render(_rcProgress.left, _y, 0, 0,
 		_width,
 		_progressBarTop->getHeight(), onCamera, opacity);
 
