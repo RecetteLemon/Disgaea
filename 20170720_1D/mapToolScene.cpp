@@ -81,7 +81,7 @@ HRESULT mapToolScene::init()
 	_tileMonitor = RectMake(22, 22, TILEMONITORSIZEW, TILEMONITORSIZEH);
 
 
-	// Á¤º¸ º¯°æ UI
+	// ì •ë³´ ë³€ê²½ UI
 	_iconImage = IMAGEMANAGER->findImage(L"settingIcon");
 	_iconImage->setFrameX(0);
 
@@ -472,37 +472,33 @@ void mapToolScene::drawTile()
 
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
-		if (-CAMERAMANAGER->getX() + _tile[i].x + TILESIZEX / 2 < 22) continue;
-		if (-CAMERAMANAGER->getX() + _tile[i].x - TILESIZEX / 2 > 22 + TILEMONITORSIZEW) continue;
-		if (-CAMERAMANAGER->getY() + _tile[i].y + TILESIZEY / 2 < 22) continue;
-		if (-CAMERAMANAGER->getY() + _tile[i].y - TILESIZEY / 2 > 22 + TILEMONITORSIZEH) continue;
-
-		for (int j = 0; j < _tile[i].z + 1; j++)
+		if ((-CAMERAMANAGER->getX() + _tile[i].x + TILESIZEX / 2 > 22 ||
+			-CAMERAMANAGER->getX() + _tile[i].x - TILESIZEX / 2 < 22 + TILEMONITORSIZEW ||
+			-CAMERAMANAGER->getY() + _tile[i].y + TILESIZEY / 2 < 22 ||
+			-CAMERAMANAGER->getY() + _tile[i].y - TILESIZEY / 2 > 22 + TILEMONITORSIZEH))
 		{
-			IMAGEMANAGER->findImage(L"IsoTerrain")->frameRender(_tile[i].x - TILESIZEX / 2,
-				_tile[i].y - j * TILESIZEZ,
-				_tile[i].terFrame.x, _tile[i].terFrame.y, true, 1.0f);
-		}
+			for (int j = 0; j < _tile[i].z + 1; j++)
+			{
+				IMAGEMANAGER->findImage(L"IsoTerrain")->frameRender(_tile[i].x - TILESIZEX / 2,
+					_tile[i].y - j * TILESIZEZ,
+					_tile[i].terFrame.x, _tile[i].terFrame.y, true, 1.0f);
+			}
 
-		if (_tile[i].z <= 0)
-		{
-			DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[0].x, _tile[i].line[0].y, _tile[i].line[1].x, _tile[i].line[1].y, true, 1);
-			DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[1].x, _tile[i].line[1].y, _tile[i].line[2].x, _tile[i].line[2].y, true, 1);
-			DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[2].x, _tile[i].line[2].y, _tile[i].line[3].x, _tile[i].line[3].y, true, 1);
-			DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[3].x, _tile[i].line[3].y, _tile[i].line[0].x, _tile[i].line[0].y, true, 1);
-		}
-	}
+			if (_tile[i].z <= 0)
+			{
+				DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[0].x, _tile[i].line[0].y, _tile[i].line[1].x, _tile[i].line[1].y, true, 1);
+				DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[1].x, _tile[i].line[1].y, _tile[i].line[2].x, _tile[i].line[2].y, true, 1);
+				DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[2].x, _tile[i].line[2].y, _tile[i].line[3].x, _tile[i].line[3].y, true, 1);
+				DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[3].x, _tile[i].line[3].y, _tile[i].line[0].x, _tile[i].line[0].y, true, 1);
+			}
 
-	for (int i = 0; i < TILEX * TILEY; i++)
-	{
-		if (-CAMERAMANAGER->getX() + _tile[i].x + TILESIZEX / 2 < 22) continue;
-		if (-CAMERAMANAGER->getX() + _tile[i].x - TILESIZEX / 2 > 22 + TILEMONITORSIZEW) continue;
-		if (-CAMERAMANAGER->getY() + _tile[i].y + TILESIZEY / 2 < 22) continue;
-		if (-CAMERAMANAGER->getY() + _tile[i].y - TILESIZEY / 2 > 22 + TILEMONITORSIZEH) continue;
-		if (_tile[i].obj == OBJ_ERASE) continue;
-		IMAGEMANAGER->findImage(L"IsoObject")->frameRender(_tile[i].x - TILESIZEX / 2 - IMAGEMANAGER->findImage(L"IsoObject")->getFrameWidth() + TILESIZEX,
-			_tile[i].y - _tile[i].z - IMAGEMANAGER->findImage(L"IsoObject")->getFrameHeight() - TILESIZEY * (_tile[i].z - 1),
-			_tile[i].objFrame.x, _tile[i].objFrame.y, true, 1.0f);
+			if (_tile[i].obj != OBJ_ERASE)
+			{
+				IMAGEMANAGER->findImage(L"IsoObject")->frameRender(_tile[i].x - TILESIZEX / 2 - IMAGEMANAGER->findImage(L"IsoObject")->getFrameWidth() + TILESIZEX,
+					_tile[i].y - _tile[i].z - IMAGEMANAGER->findImage(L"IsoObject")->getFrameHeight() - TILESIZEY * (_tile[i].z - 1),
+					_tile[i].objFrame.x, _tile[i].objFrame.y, true, 1.0f);
+			}
+		}
 	}
 
 	for (int i = 0; i < TILEX * TILEY; i++)
@@ -609,7 +605,7 @@ void mapToolScene::saveTile()
 	save.nMaxFileTitle = NULL;
 	save.lpstrInitialDir = NULL;
 	save.lpstrDefExt = L"*.map";
-	save.lpstrFilter = L"¸Ê ÆÄÀÏ(*.map)\0*.map\0¸ðµç ÆÄÀÏ(*.*)\0*.*";
+	save.lpstrFilter = L"ë§µ íŒŒì¼(*.map)\0*.map\0ëª¨ë“  íŒŒì¼(*.*)\0*.*";
 	save.Flags = OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR;
 	if (GetSaveFileName(&save) == FALSE) return;
 	WCHAR temp[1028];
@@ -640,7 +636,7 @@ void mapToolScene::loadTile()
 	ofn.lpstrFileTitle = NULL;
 	ofn.nMaxFileTitle = NULL;
 	ofn.lpstrInitialDir = NULL;
-	ofn.lpstrFilter = L"¸Ê ÆÄÀÏ(*.map)\0*.map\0¸ðµç ÆÄÀÏ(*.*)\0*.*";
+	ofn.lpstrFilter = L"ë§µ íŒŒì¼(*.map)\0*.map\0ëª¨ë“  íŒŒì¼(*.*)\0*.*";
 	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
 	if (GetOpenFileName(&ofn) == FALSE) return;
 	WCHAR temp[1028];
@@ -661,7 +657,7 @@ void mapToolScene::loadTile()
 TERRAIN_TYPE mapToolScene::terCreater(POINT tile)
 {
 	if (tile.x == 0 && tile.y == 0) return TER_VOID;
-	if (tile.x == 5 && tile.y == 0) return TER_WALL; //ÀÓ½Ã·Î ¹Ù²Þ
+	if (tile.x == 5 && tile.y == 0) return TER_WALL; //ìž„ì‹œë¡œ ë°”ê¿ˆ
 
 	/*if (tile.x == 8 && tile.y == 3) return TER_WALL;
 	if (tile.x == 9 && tile.y == 3) return TER_WALL;
