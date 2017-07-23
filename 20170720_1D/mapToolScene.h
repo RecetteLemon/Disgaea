@@ -8,8 +8,6 @@
 #define SAMSIZEY _sample[_phaseSample.cur]->getFrameHeight()
 #define SAMMAXSIZEX SAMSIZEX * SAMX
 #define SAMMAXSIZEY SAMSIZEY * SAMY
-#define TILEMONITORSIZEW 1167
-#define TILEMONITORSIZEH 860
 enum BUTTON_TYPE
 {
 	BTN_START,
@@ -42,7 +40,7 @@ struct tagSample
 	POINT frame;
 };
 
-// ÇöÀç ¼±ÅÃÇÑ Å¸ÀÏ,  ¹Ø¿¡ Å©±â°¡ ÀÛÀº Å¸ÀÏ 3°³(ÀÌÀü ÇÁ·¹ÀÓ Å¸ÀÏ, ÇöÀç ÇÁ·¹ÀÓÅ¸ÀÏ, ´ÙÀ½ ÇÁ·¹ÀÓ Å¸ÀÏ)
+// í˜„ìž¬ ì„ íƒí•œ íƒ€ì¼,  ë°‘ì— í¬ê¸°ê°€ ìž‘ì€ íƒ€ì¼ 3ê°œ(ì´ì „ í”„ë ˆìž„ íƒ€ì¼, í˜„ìž¬ í”„ë ˆìž„íƒ€ì¼, ë‹¤ìŒ í”„ë ˆìž„ íƒ€ì¼)
 enum TIlE
 {
 	T_NOW,
