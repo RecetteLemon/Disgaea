@@ -18,9 +18,9 @@ HRESULT dungeonScene::init()
 	_cm->init(2, 5);
 	_cm->selectPlayer(0);
 
-	//a* æÀ∞Ì∏Æ¡Ú¿ª ¿˚øÎ«“ ƒ≥∏Ø≈Õ ºˆ ∏∏≈≠ »£√‚
+	//a* ÏïåÍ≥†Î¶¨Ï¶òÏùÑ Ï†ÅÏö©Ìï† Ï∫êÎ¶≠ÌÑ∞ Ïàò ÎßåÌÅº Ìò∏Ï∂ú
 	//	ASTARMANAGER->addAStar(_tile, _cm->getName(), _cm->getPlayerX(), _cm->getPlayerY());
-	//							«ˆ¿Á∏ , ƒ≥∏Ø≈Õ∏Ì, ƒ≥∏Ø≈Õ Ω√¿€¡°
+	//							ÌòÑÏû¨Îßµ, Ï∫êÎ¶≠ÌÑ∞Î™Ö, Ï∫êÎ¶≠ÌÑ∞ ÏãúÏûëÏ†ê
 
 
 	return S_OK;
@@ -40,9 +40,9 @@ void dungeonScene::render()
 	this->drawTile();
 	_cm->render();
 
-	//¬˜∑ ∞° µ» ƒ≥∏Ø≈Õ(«√∑π¿ÃæÓ)¿« moveList «•Ω√
+	//Ï∞®Î°ÄÍ∞Ä Îêú Ï∫êÎ¶≠ÌÑ∞(ÌîåÎ†àÏù¥Ïñ¥)Ïùò moveList ÌëúÏãú
 	//ASTARMANAGER->findAStar(_cm->getName())->renderGoalList();
-	//¿˚¿∫ æ»«•Ω√ø‰ 
+	//Ï†ÅÏùÄ ÏïàÌëúÏãúÏöî 
 }
 void dungeonScene::loadFile()
 {
@@ -56,20 +56,33 @@ void dungeonScene::drawTile()
 {
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
-		for (int j = 0; j <= _tile[i].z; j++)
+		if ((-CAMERAMANAGER->getX() + _tile[i].x + TILESIZEX / 2 > 22 ||
+			-CAMERAMANAGER->getX() + _tile[i].x - TILESIZEX / 2 < 22 + TILEMONITORSIZEW ||
+			-CAMERAMANAGER->getY() + _tile[i].y + TILESIZEY / 2 < 22 ||
+			-CAMERAMANAGER->getY() + _tile[i].y - TILESIZEY / 2 > 22 + TILEMONITORSIZEH))
 		{
-			IMAGEMANAGER->findImage(L"IsoTerrain")->frameRender(_tile[i].x - TILESIZEX / 2,
-				_tile[i].y - j * TILESIZEZ,
-				_tile[i].terFrame.x, _tile[i].terFrame.y, true, 1.0f);
-		}
+			for (int j = 0; j < _tile[i].z + 1; j++)
+			{
+				IMAGEMANAGER->findImage(L"IsoTerrain")->frameRender(_tile[i].x - TILESIZEX / 2,
+					_tile[i].y - j * TILESIZEZ,
+					_tile[i].terFrame.x, _tile[i].terFrame.y, true, 1.0f);
+			}
 
-	}
-	for (int i = 0; i < TILEX * TILEY; i++)
-	{
-		if (_tile[i].obj == OBJ_ERASE) continue;
-		IMAGEMANAGER->findImage(L"IsoObject")->frameRender(_tile[i].x - TILESIZEX / 2 - IMAGEMANAGER->findImage(L"IsoObject")->getFrameWidth() + TILESIZEX,
-			_tile[i].y - _tile[i].z - IMAGEMANAGER->findImage(L"IsoObject")->getFrameHeight() + TILESIZEY,
-			_tile[i].objFrame.x, _tile[i].objFrame.y, true, 1.0f);
+			if (_tile[i].z <= 0)
+			{
+				DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[0].x, _tile[i].line[0].y, _tile[i].line[1].x, _tile[i].line[1].y, true, 1);
+				DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[1].x, _tile[i].line[1].y, _tile[i].line[2].x, _tile[i].line[2].y, true, 1);
+				DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[2].x, _tile[i].line[2].y, _tile[i].line[3].x, _tile[i].line[3].y, true, 1);
+				DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[3].x, _tile[i].line[3].y, _tile[i].line[0].x, _tile[i].line[0].y, true, 1);
+			}
+
+			if (_tile[i].obj != OBJ_ERASE)
+			{
+				IMAGEMANAGER->findImage(L"IsoObject")->frameRender(_tile[i].x - TILESIZEX / 2 - IMAGEMANAGER->findImage(L"IsoObject")->getFrameWidth() + TILESIZEX,
+					_tile[i].y - _tile[i].z - IMAGEMANAGER->findImage(L"IsoObject")->getFrameHeight() - TILESIZEY * (_tile[i].z - 1),
+					_tile[i].objFrame.x, _tile[i].objFrame.y, true, 1.0f);
+			}
+		}
 	}
 }
 void dungeonScene::camControl()
