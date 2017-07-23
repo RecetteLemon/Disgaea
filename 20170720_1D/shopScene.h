@@ -47,14 +47,19 @@ enum SELLSLOT
 class shopScene : public gameNode
 {
 private:
+	//인벤
 	vector<Item> _vInven;
-	vector<Item> _vTemp;
 	vector<Item>::iterator _viInven;
+	vector<Item> _vTemp;
+	vector<Item>::iterator _viTemp;
+	//창고
+	vector<Item> _vWareHouse;
 private:
 	shopPage _page;
 	item* _item;
 	//공용
 	RECT _cursor;
+	RECT _bar;
 	//메인용
 	RECT _buy;
 	RECT _sell;

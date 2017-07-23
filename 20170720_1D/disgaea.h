@@ -4,6 +4,7 @@
 #include "menuScene.h"
 #include "mapToolScene.h"
 #include "dungeonScene.h"
+#include "shopScene.h"
 #include "townScene.h"
 
 
