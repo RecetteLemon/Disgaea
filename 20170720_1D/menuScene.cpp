@@ -116,7 +116,7 @@ void menuScene::keyDownSpace()
 		SCENEMANAGER->changeScene(L"MapToolScene");
 		break;
 	case MENU_EXIT:
-		//SCENEMANAGER->changeScene();
+		SCENEMANAGER->changeScene(L"DungeonScene");
 		break;
 	}
 }
