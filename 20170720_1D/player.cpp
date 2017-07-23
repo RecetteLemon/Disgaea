@@ -21,6 +21,11 @@ HRESULT player::init(const wstring characterName, const wchar_t* imageName, int 
 	_player.shadowImg = IMAGEMANAGER->findImage(L"shadow");
 	_player.img = IMAGEMANAGER->findImage(imageName);
 
+	//인벤틀 생성
+	_townInven = new townInven;
+	_townInven->init();
+	_invenOn = _shopOn = false;
+
 	//애니메이션초기화해줌!
 	for (int i = 0; i < PLAYER_POS_END; i++)
 	{
@@ -62,7 +67,18 @@ void player::update(void)
 	this->stand();
 	this->AstarMove();
 
-	
+	if (KEYMANAGER->isOnceKeyDown('O'))
+	{
+		if (_invenOn) _invenOn = false;
+		else _invenOn = true;
+	}
+	if (KEYMANAGER->isOnceKeyDown('P'))
+	{
+		if (_shopOn) _shopOn = false;
+		else _shopOn = true;
+	}
+	if (_invenOn) _townInven->update();
+	if (_shopOn) SCENEMANAGER->changeScene(L"ShopScene");
 	
 }
 
@@ -185,7 +201,7 @@ void player::render(void)
 			_player.img = NULL;
 		break;
 	}
-
+	if (_invenOn) _townInven->render();
 }
 
 void player::stand(void)

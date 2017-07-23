@@ -1,6 +1,6 @@
 #pragma once
 #include "gameNode.h"
-
+#include "townInven.h"
 
 
 class player : public gameNode
@@ -91,6 +91,9 @@ protected:
 
 	int _kind;
 	
+	townInven* _townInven;
+	bool _invenOn;
+	bool _shopOn;
 
 public:
 	virtual HRESULT init(const wstring characterName ,const wchar_t* imageName, int x, int y);

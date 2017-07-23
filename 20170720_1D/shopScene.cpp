@@ -47,6 +47,7 @@ void shopScene::update()
 {
 	//페이지 전환
 	pageChange();
+	if (KEYMANAGER->isOnceKeyDown('P')) SCENEMANAGER->changeScene(L"TownScene");
 
 }
 void shopScene::render()
@@ -390,47 +391,47 @@ void shopScene::sellPage()
 		switch (_sortNum)
 		{
 		case 0:
-			_vInven.swap(_vTemp);
-			_vInven.clear();
+			INVENMANAGER->getVItem().swap(_vTemp);
+			INVENMANAGER->getVItem().clear();
 			for (int i = 0; i < _vTemp.size(); i++)
 			{
-				if (_vTemp[i].Type == GENERAL) _vInven.push_back(_vTemp[i]);
+				if (_vTemp[i].Type == GENERAL) INVENMANAGER->getVItem().push_back(_vTemp[i]);
 
 			}
 			for (int i = 0; i < _vTemp.size(); i++)
 			{
-				if (_vTemp[i].Type == ARMOR)_vInven.push_back(_vTemp[i]);
-				else if (_vTemp[i].Type == WEAPON)_vInven.push_back(_vTemp[i]);
+				if (_vTemp[i].Type == ARMOR)INVENMANAGER->getVItem().push_back(_vTemp[i]);
+				else if (_vTemp[i].Type == WEAPON)INVENMANAGER->getVItem().push_back(_vTemp[i]);
 			}
 			_vTemp.clear();
 			break;
 		case 1:
-			_vInven.swap(_vTemp);
-			_vInven.clear();
+			INVENMANAGER->getVItem().swap(_vTemp);
+			INVENMANAGER->getVItem().clear();
 			for (int i = 0; i < _vTemp.size(); i++)
 			{
-				if (_vTemp[i].Type == WEAPON) _vInven.push_back(_vTemp[i]);
+				if (_vTemp[i].Type == WEAPON) INVENMANAGER->getVItem().push_back(_vTemp[i]);
 
 			}
 			for (int i = 0; i < _vTemp.size(); i++)
 			{
-				if (_vTemp[i].Type == GENERAL)_vInven.push_back(_vTemp[i]);
-				else if (_vTemp[i].Type == ARMOR)_vInven.push_back(_vTemp[i]);
+				if (_vTemp[i].Type == GENERAL)INVENMANAGER->getVItem().push_back(_vTemp[i]);
+				else if (_vTemp[i].Type == ARMOR)INVENMANAGER->getVItem().push_back(_vTemp[i]);
 			}
 			_vTemp.clear();
 			break;
 		case 2:
-			_vInven.swap(_vTemp);
-			_vInven.clear();
+			INVENMANAGER->getVItem().swap(_vTemp);
+			INVENMANAGER->getVItem().clear();
 			for (int i = 0; i < _vTemp.size(); i++)
 			{
-				if (_vTemp[i].Type == ARMOR) _vInven.push_back(_vTemp[i]);
+				if (_vTemp[i].Type == ARMOR) INVENMANAGER->getVItem().push_back(_vTemp[i]);
 
 			}
 			for (int i = 0; i < _vTemp.size(); i++)
 			{
-				if (_vTemp[i].Type == WEAPON)_vInven.push_back(_vTemp[i]);
-				else if (_vTemp[i].Type == GENERAL)_vInven.push_back(_vTemp[i]);
+				if (_vTemp[i].Type == WEAPON)INVENMANAGER->getVItem().push_back(_vTemp[i]);
+				else if (_vTemp[i].Type == GENERAL)INVENMANAGER->getVItem().push_back(_vTemp[i]);
 			}
 			_vTemp.clear();
 			break;
@@ -439,12 +440,12 @@ void shopScene::sellPage()
 		for (int i = 0; i < 24; i++)
 		{
 			//있는 배열 범위까지만 아이템의 이미지를 넣어준다
-			if (_vInven.size() > i)
+			if (INVENMANAGER->getVItem().size() > i)
 			{
-				_invenSImage[i] = _vInven[i].priceImage;
+				_invenSImage[i] = INVENMANAGER->getVItem()[i].priceImage;
 			}
 			//없는 배열에는 논 이미지를 넣어준다
-			else if (_vInven.size() <= i)
+			else if (INVENMANAGER->getVItem().size() <= i)
 			{
 				_invenSImage[i] = IMAGEMANAGER->findImage(L"noneShop");
 			}
@@ -578,7 +579,7 @@ void shopScene::sellPage()
 		if (_invenSImage[_changeNum + (int)_sellSlot] != IMAGEMANAGER->findImage(L"noneShop"))
 		{
 			_isSellInfo = true;
-			_infoImage = _vInven[_changeNum + (int)_sellSlot].info;
+			_infoImage = INVENMANAGER->getVItem()[_changeNum + (int)_sellSlot].info;
 		}
 		else _isSellInfo = false;
 	}
@@ -613,24 +614,24 @@ void shopScene::sellPage()
 void shopScene::buyingItem()
 {
 	//인벤 칸이 꽉차면 창고로 아이템이 들어감
-	if (_vInven.size() > 24)
+	if (INVENMANAGER->getVItem().size() > 24)
 	{
 		_vWareHouse.push_back(_item->getVItem()[_changeNum + (int)_buySlot]);
 	}
 	//인벤칸 공간이 여유있으면 인벤으로 아이템을 넣어준다
 	else
 	{
-		_vInven.push_back(_item->getVItem()[_changeNum + (int)_buySlot]);
+		INVENMANAGER->pushBackVItem(_changeNum + (int)_buySlot, _item->getVItem());//.push_back(_item->getVItem()[_changeNum + (int)_buySlot]);
 	}
 	for (int i = 0; i < 24; i++)
 	{
 		//있는 배열 범위까지만 아이템의 이미지를 넣어준다
-		if (_vInven.size() > i)
+		if (INVENMANAGER->getVItem().size() > i)
 		{
-			_invenSImage[i] = _vInven[i].priceImage;
+			_invenSImage[i] = INVENMANAGER->getVItem()[i].priceImage;
 		}
 		//없는 배열에는 논 이미지를 넣어준다
-		else if (_vInven.size() <= i)
+		else if (INVENMANAGER->getVItem().size() <= i)
 		{
 			_invenSImage[i] = IMAGEMANAGER->findImage(L"noneShop");
 		}
@@ -641,35 +642,35 @@ void shopScene::buyingItem()
 
 void shopScene::sellingItem()
 {
-	STATMANAGER->setMoney(_playerMoney + _vInven[_changeNum + (int)_sellSlot].Price);
+	STATMANAGER->setMoney(_playerMoney + INVENMANAGER->getVItem()[_changeNum + (int)_sellSlot].Price);
 	_playerMoney = STATMANAGER->getMoney();
 	//아이템이 한개만 있을때
-	if (_vInven.size() == 1)
+	if (INVENMANAGER->getVItem().size() == 1)
 	{
-		_vInven.erase(_vInven.begin() + (_changeNum + (int)_sellSlot), _vInven.end());
+		INVENMANAGER->eraseVItem(_changeNum + (int)_sellSlot);
 	}
 	//아이템이 한개를 초과했을때
-	else //if (_vInven.size() > 1)
+	else
 	{
 		//즉 마지막꺼 지울때
-		if (_changeNum + (int)_sellSlot == _vInven.size() - 1)
+		if (_changeNum + (int)_sellSlot == INVENMANAGER->getVItem().size() - 1)
 		{
-			_vInven.erase(_vInven.begin() + (_changeNum + (int)_sellSlot));
+			INVENMANAGER->erase2VItem(_changeNum + (int)_sellSlot);
 		}
 		//마지막이 아닌 다른거 지울때
 		else
 		{
 			//임시 벡터에 인벤 벡터를 넣어주고
-			for (int i = _changeNum + (int)_sellSlot + 1; i < _vInven.size(); i++)
+			for (int i = _changeNum + (int)_sellSlot + 1; i < INVENMANAGER->getVItem().size(); i++)
 			{
-				_vTemp.push_back(_vInven[i]);
+				_vTemp.push_back(INVENMANAGER->getVItem()[i]);
 			}
 			//팔려는 아이템 벡터 부터 끝까지 다 지워준다.
-			_vInven.erase(_vInven.begin() + (_changeNum + (int)_sellSlot), _vInven.end());
+			INVENMANAGER->eraseVItem(_changeNum + (int)_sellSlot);
 			//임시벡터에서 다시 인벤 벡터에 팔린 아이템 다음꺼 부터 다시 넣어준다
 			for (int i = 0; i < _vTemp.size(); i++)
 			{
-				_vInven.push_back(_vTemp[i]);
+				INVENMANAGER->pushBackVItem(i, _vTemp);
 			}
 			//임시벡터는 클리어해준다
 			_vTemp.clear();
@@ -680,12 +681,12 @@ void shopScene::sellingItem()
 	for (int i = 0; i < 24; i++)
 	{
 		//있는 배열 범위까지만 아이템의 이미지를 넣어준다
-		if (_vInven.size() > i)
+		if (INVENMANAGER->getVItem().size() > i)
 		{
-			_invenSImage[i] = _vInven[i].priceImage;
+			_invenSImage[i] = INVENMANAGER->getVItem()[i].priceImage;
 		}
 		//없는 배열에는 논 이미지를 넣어준다
-		else if (_vInven.size() <= i)
+		else if (INVENMANAGER->getVItem().size() <= i)
 		{
 			_invenSImage[i] = IMAGEMANAGER->findImage(L"noneShop");
 		}

@@ -94,6 +94,7 @@
     <ClInclude Include="image.h" />
     <ClInclude Include="imageManager.h" />
     <ClInclude Include="inven.h" />
+    <ClInclude Include="invenDataBase.h" />
     <ClInclude Include="item.h" />
     <ClInclude Include="keyManager.h" />
     <ClInclude Include="loading.h" />
@@ -119,6 +120,7 @@
     <ClInclude Include="tile.h" />
     <ClInclude Include="timeManager.h" />
     <ClInclude Include="timer.h" />
+    <ClInclude Include="townInven.h" />
     <ClInclude Include="townScene.h" />
     <ClInclude Include="txtData.h" />
     <ClInclude Include="utils.h" />
@@ -143,6 +145,7 @@
     <ClCompile Include="image.cpp" />
     <ClCompile Include="imageManager.cpp" />
     <ClCompile Include="inven.cpp" />
+    <ClCompile Include="invenDataBase.cpp" />
     <ClCompile Include="item.cpp" />
     <ClCompile Include="keyManager.cpp" />
     <ClCompile Include="loading.cpp" />
@@ -166,6 +169,7 @@
     </ClCompile>
     <ClCompile Include="timeManager.cpp" />
     <ClCompile Include="timer.cpp" />
+    <ClCompile Include="townInven.cpp" />
     <ClCompile Include="townScene.cpp" />
     <ClCompile Include="txtData.cpp" />
     <ClCompile Include="utils.cpp" />

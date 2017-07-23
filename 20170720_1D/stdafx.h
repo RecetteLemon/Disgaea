@@ -45,6 +45,7 @@
 #include "aStarManager.h"
 
 #include "statDataBase.h"
+#include "invenDataBase.h"
 
 using namespace std;
 using namespace OMEGA_UTIL;
@@ -76,6 +77,7 @@ using namespace D2D1;
 #define ASTARMANAGER aStarManager::getSingleton()
 
 #define STATMANAGER statDataBase::getSingleton()
+#define INVENMANAGER invenDataBase::getSingleton()
 
 //==================================
 // 매크로 함수 ##

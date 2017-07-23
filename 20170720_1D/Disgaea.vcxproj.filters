@@ -85,9 +85,6 @@
     <Filter Include="Disgaea\ShopScene">
       <UniqueIdentifier>{86b92ed1-c842-46cb-997d-e43272fd3510}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Disgaea\Character\player\inven">
-      <UniqueIdentifier>{e79a5d25-03a8-462e-9545-94af8fafc58c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Disgaea\item">
       <UniqueIdentifier>{56d4490d-3192-406d-9524-0fada8aa9f05}</UniqueIdentifier>
     </Filter>
@@ -96,6 +93,9 @@
     </Filter>
     <Filter Include="Disgaea\UI">
       <UniqueIdentifier>{7f02e153-f74e-416e-8376-d9cc1eb5fc72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Disgaea\inven">
+      <UniqueIdentifier>{e79a5d25-03a8-462e-9545-94af8fafc58c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -232,7 +232,7 @@
       <Filter>Disgaea\ShopScene</Filter>
     </ClInclude>
     <ClInclude Include="inven.h">
-      <Filter>Disgaea\Character\player\inven</Filter>
+      <Filter>Disgaea\inven</Filter>
     </ClInclude>
     <ClInclude Include="item.h">
       <Filter>Disgaea\item</Filter>
@@ -242,6 +242,12 @@
     </ClInclude>
     <ClInclude Include="statUi.h">
       <Filter>Disgaea\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="invenDataBase.h">
+      <Filter>Disgaea\inven</Filter>
+    </ClInclude>
+    <ClInclude Include="townInven.h">
+      <Filter>Disgaea\inven</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -363,7 +369,7 @@
       <Filter>Disgaea\ShopScene</Filter>
     </ClCompile>
     <ClCompile Include="inven.cpp">
-      <Filter>Disgaea\Character\player\inven</Filter>
+      <Filter>Disgaea\inven</Filter>
     </ClCompile>
     <ClCompile Include="item.cpp">
       <Filter>Disgaea\item</Filter>
@@ -373,6 +379,12 @@
     </ClCompile>
     <ClCompile Include="statUi.cpp">
       <Filter>Disgaea\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="invenDataBase.cpp">
+      <Filter>Disgaea\inven</Filter>
+    </ClCompile>
+    <ClCompile Include="townInven.cpp">
+      <Filter>Disgaea\inven</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
