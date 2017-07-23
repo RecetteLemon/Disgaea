@@ -391,47 +391,44 @@ void shopScene::sellPage()
 		switch (_sortNum)
 		{
 		case 0:
-			INVENMANAGER->getVItem().swap(_vTemp);
-			INVENMANAGER->getVItem().clear();
+			_vTemp.swap(INVENMANAGER->getVItem());
+			INVENMANAGER->clearVItem();
 			for (int i = 0; i < _vTemp.size(); i++)
 			{
-				if (_vTemp[i].Type == GENERAL) INVENMANAGER->getVItem().push_back(_vTemp[i]);
-
+				if (_vTemp[i].Type == GENERAL) INVENMANAGER->pushBackVItem(i, _vTemp);
 			}
 			for (int i = 0; i < _vTemp.size(); i++)
 			{
-				if (_vTemp[i].Type == ARMOR)INVENMANAGER->getVItem().push_back(_vTemp[i]);
-				else if (_vTemp[i].Type == WEAPON)INVENMANAGER->getVItem().push_back(_vTemp[i]);
+				if (_vTemp[i].Type == ARMOR)INVENMANAGER->pushBackVItem(i, _vTemp);
+				else if (_vTemp[i].Type == WEAPON)INVENMANAGER->pushBackVItem(i, _vTemp);
 			}
 			_vTemp.clear();
 			break;
 		case 1:
-			INVENMANAGER->getVItem().swap(_vTemp);
-			INVENMANAGER->getVItem().clear();
+			_vTemp.swap(INVENMANAGER->getVItem());
+			INVENMANAGER->clearVItem();
 			for (int i = 0; i < _vTemp.size(); i++)
 			{
-				if (_vTemp[i].Type == WEAPON) INVENMANAGER->getVItem().push_back(_vTemp[i]);
-
+				if (_vTemp[i].Type == WEAPON) INVENMANAGER->pushBackVItem(i, _vTemp);
 			}
 			for (int i = 0; i < _vTemp.size(); i++)
 			{
-				if (_vTemp[i].Type == GENERAL)INVENMANAGER->getVItem().push_back(_vTemp[i]);
-				else if (_vTemp[i].Type == ARMOR)INVENMANAGER->getVItem().push_back(_vTemp[i]);
+				if (_vTemp[i].Type == ARMOR)INVENMANAGER->pushBackVItem(i, _vTemp);
+				else if (_vTemp[i].Type == GENERAL)INVENMANAGER->pushBackVItem(i, _vTemp);
 			}
 			_vTemp.clear();
 			break;
 		case 2:
-			INVENMANAGER->getVItem().swap(_vTemp);
-			INVENMANAGER->getVItem().clear();
+			_vTemp.swap(INVENMANAGER->getVItem());
+			INVENMANAGER->clearVItem();
 			for (int i = 0; i < _vTemp.size(); i++)
 			{
-				if (_vTemp[i].Type == ARMOR) INVENMANAGER->getVItem().push_back(_vTemp[i]);
-
+				if (_vTemp[i].Type == ARMOR) INVENMANAGER->pushBackVItem(i, _vTemp);
 			}
 			for (int i = 0; i < _vTemp.size(); i++)
 			{
-				if (_vTemp[i].Type == WEAPON)INVENMANAGER->getVItem().push_back(_vTemp[i]);
-				else if (_vTemp[i].Type == GENERAL)INVENMANAGER->getVItem().push_back(_vTemp[i]);
+				if (_vTemp[i].Type == GENERAL)INVENMANAGER->pushBackVItem(i, _vTemp);
+				else if (_vTemp[i].Type == WEAPON)INVENMANAGER->pushBackVItem(i, _vTemp);
 			}
 			_vTemp.clear();
 			break;

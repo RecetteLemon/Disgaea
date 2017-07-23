@@ -19,6 +19,8 @@ public:
 	void erase2VItem(int i) { _vInvenItem.erase(_vInvenItem.begin() + i); }
 	//클리어
 	void clearVItem() { _vInvenItem.clear(); }
+	//스왑
+	void swapVItem(vector<Item> Item) { _vInvenItem.swap(Item); }
 
 
 	invenDataBase();
