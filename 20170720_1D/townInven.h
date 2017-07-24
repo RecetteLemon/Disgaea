@@ -77,6 +77,10 @@ private:
 
 	int num;
 	int _test;
+	int _test1;
+
+	int _wareNum;
+	int _slotNum;
 	bool _wareHouseCheck;
 
 	bool _swap;
