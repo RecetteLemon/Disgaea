@@ -15,8 +15,9 @@ private:
 public:
 	void release(void);
 
-	//A* 알고리즘을 적용할 캐릭터나 적 추가(적용할 맵, 이름, 시작지점)
-	aStar* addAStar(tagIso* currentMap, wstring strKey, int startX, int startY);
+	//A* 알고리즘을 적용할 캐릭터나 적 추가(이름)
+	//aStar* addAStar(tagIso* currentMap, wstring strKey, int startX, int startY); 에서 아래로 변경(민수)
+	aStar* addAStar(wstring strKey);
 
 	//A* 알고리즘을 적용할 캐릭터 찾기 
 	aStar* findAStar(wstring strKey);

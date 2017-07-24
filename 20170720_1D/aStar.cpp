@@ -2,9 +2,17 @@
 #include "aStarManager.h"
 #include "aStar.h"
 
+aStarTile::aStarTile()
+	: _totalCost(0), _costFromStart(0),
+	_costToGoal(0), _parentNode(NULL)
+{
+}
+
+aStarTile::~aStarTile()
+{
+}
+
 aStar::aStar()
-	: _startTile(NULL), _currentTile(NULL),
-	_goalTile(NULL)
 {
 }
 
@@ -13,60 +21,60 @@ aStar::~aStar()
 }
 
 
-HRESULT aStar::init(tagIso* currentMap, int startX, int startY)
+HRESULT aStar::init()
 {
-//	_currentMap = new tagIso[TILEX * TILEY];
-//	_currentMap = currentMap;
-
-	//받은 지점을 시작 타일로
-//	_startTile->setIso(_currentMap[(startX / TILESIZEX) * (startY / TILESIZEY)]);
-
-	_vTotalList.clear();
-	_vOpenList.clear();
-	_vCloseList.clear();
-	_vMoveList.clear();
-
 	_startTile = NULL;
 	_currentTile = NULL;
 	_goalTile = NULL;
-
-	for (int i = 0; i < TILEX * TILEY; ++i)
-	{
-		aStarTile* node = new aStarTile;
-
-		node->setIso(currentMap[i]);
-		node->setTotalCost(0);
-		node->setCostFromStart(0);
-		node->setCostToGoal(0);
-		node->setIsOpen(1);
-
-		if (((startX / TILESIZEX) * (startY / TILESIZEY)) == i)
-		{
-			_startTile = node;
-			continue;
-		}
-
-		_vTotalList.push_back(node);
-	}
 
 	return S_OK;
 }
 
 void aStar::release()
 {
-	//가져온 맵 날리기 
-//	SAFE_DELETE(_currentMap);
-
 	//벡터는 깔끔하게 정리
 	_vTotalList.clear();
 	_vOpenList.clear();
 	_vCloseList.clear();
 	_vMoveList.clear();
+	_vMovableList.clear();
 
 	//타일들 날리기
 	SAFE_DELETE(_startTile);
 	SAFE_DELETE(_goalTile);
 	SAFE_DELETE(_currentTile);
+}
+
+void aStar::setCurrentMap(tagIso* currentMap, int tileNum)
+{
+	_vTotalList.clear();
+	_startTile = NULL;
+	_goalTile = NULL;
+	_currentTile = NULL;
+
+	// 현재 맵을 다 담아줄 겁니다.
+	for (int i = 0; i < TILEX * TILEY; ++i)
+	{
+		//temp변수 하나 선언해서
+		aStarTile* node = new aStarTile;
+
+		//싹 DA~
+		//초기화 시켜줍니다!
+		node->setIso(currentMap[i]);
+		node->setTotalCost(0);
+		node->setCostFromStart(0);
+		node->setCostToGoal(0);
+
+		//지나갈수 있는지 없는지는
+		//타일의 속성값이나 캐릭터가 있을때
+		//못가게 막아줍시다!
+		if (node->getIso().ter == TER_LOAD) node->setIsOpen(1);
+		else node->setIsOpen(0);
+
+		_vTotalList.push_back(node);
+	}
+
+	setStartTile(tileNum);
 }
 
 //갈 수 있는 길 색출
@@ -75,7 +83,7 @@ vector<aStarTile*> aStar::addOpenList(aStarTile* currentTile)
 	int startX = currentTile->getIso().indexX - 1;	// 검사 시작할 좌표 X
 	int startY = currentTile->getIso().indexY - 1;	// 검사 시작할 좌표 Y
 
-	// 자신의 주변타일을 검사해야되기 때문에 포문 두개 돌립니다.
+													// 자신의 주변타일을 검사해야되기 때문에 포문 두개 돌립니다.
 	for (int y = 0; y < 3; ++y) for (int x = 0; x < 3; ++x)
 	{
 		// 배열이 음수가 되거나 넘어가면 터져요.
@@ -139,6 +147,7 @@ void aStar::pathFinder(aStarTile* currentTile)
 		_vOpenList[i]->setCostToGoal((abs(_goalTile->getIso().indexX - _vOpenList[i]->getIso().indexX)
 			+ abs(_goalTile->getIso().indexY - _vOpenList[i]->getIso().indexY)) * 10);
 
+
 		// 현재 좌표부터 검출한 좌표까지의 비용을 구합니다.
 		_vOpenList[i]->setCostFromStart(10);
 
@@ -172,20 +181,22 @@ void aStar::pathFinder(aStarTile* currentTile)
 
 	if (addOpenList(currentTile).size() == NULL)
 	{
-		//vectorClear();
+		vectorClear();
 		return;
 	}
 
-	//템프타일의 속성이 엔드 -> 도착했으면!
+	//tempTile이 도착할 타일에 도착했으면
 	if (tempTile == _goalTile)
 	{
+		// 도착지점까지 움직이도록 움직여야할 리스트에 담아주고
 		_vMoveList.insert(_vMoveList.begin(), tempTile->getIso());
-		//이때까지 지나온 타일을 색칠해라
+		//이때까지 지나온 타일을 담아줍시다~
 		while (_currentTile->getParentNode() != NULL)
 		{
 			_vMoveList.insert(_vMoveList.begin(), _currentTile->getIso());
 			_currentTile = _currentTile->getParentNode();
 		}
+
 		return;
 	}
 
@@ -237,44 +248,52 @@ void aStar::render()
 	{
 		WCHAR str[128];
 		swprintf(str, L"%d %d", _vMoveList[i].indexX, _vMoveList[i].indexY);
-		DIRECT2D->drawTextD2D(DIRECT2D->_defaultBrush, str, _vMoveList[i].centerX, _vMoveList[i].centerY, _vMoveList[i].centerX + 30, _vMoveList[i].centerY + 30);
+		DIRECT2D->drawTextD2D(DIRECT2D->_defaultBrush, str,
+			_vMoveList[i].centerX - CAMERAMANAGER->getX(),
+			_vMoveList[i].centerY - CAMERAMANAGER->getY(),
+			_vMoveList[i].centerX + 30 - CAMERAMANAGER->getX(),
+			_vMoveList[i].centerY + 30 - CAMERAMANAGER->getY());
 	}
 }
 
-//이동가능한 타일을 설정한다 
-void aStar::setMoveTile(tagIso tile)
+/*
+//이동가능한 타일을 설정한다
+void aStar::setMoveTile(tagIso tile)  <- 이 함수를 아래와 같이 변경함.(민수)
 {
-	int startX = tile.indexX - 5;//-5칸 -5칸부터 주르륵 검색하는 것...
-	int startY = tile.indexY - 5;
+int startX = tile.indexX - 5;//-5칸 -5칸부터 주르륵 검색하는 것...
+int startY = tile.indexY - 5;
 
-	for (int i = 0; i < 11; i++)
-	{
-		for (int j = 0; j < 11; j++)
-		{
-			//일단 범위밖은 뜨지 않음
-			if (startX + j < 0 || startY + i < 0) continue;
-			if (startX + j > TILEX - 1 || startY + i > TILEY - 1) continue;
+for (int i = 0; i < 11; i++)
+{
+for (int j = 0; j < 11; j++)
+{
+//일단 범위밖은 뜨지 않음
+if (startX + j < 0 || startY + i < 0) continue;
+if (startX + j > TILEX - 1 || startY + i > TILEY - 1) continue;
 
-			tagIso node = _vTotalList[(startY * TILEX) + startX + j + (i * TILEX)]->getIso();
+tagIso node = _vTotalList[(startY * TILEX) + startX + j + (i * TILEX)]->getIso();
 
-			if (node.ter == 1) continue;//벽이라면 뜨지 않음
+if (node.ter == 1) continue;//벽이라면 뜨지 않음
 
-			if (abs(node.indexX - _startTile->getIso().indexX) + abs(node.indexY - _startTile->getIso().indexY) <= 5)
-			{
-				//타일 이미지를 띄운다 
-				_vMoveList.push_back(node);//니가 움직일 수 있는 존나 요만큼의 공간 
-			}
-		}
-	}
+if (abs(node.indexX - _startTile->getIso().indexX) + abs(node.indexY - _startTile->getIso().indexY) <= 5)
+{
+//타일 이미지를 띄운다
+_vMoveList.push_back(node);//니가 움직일 수 있는 존나 요만큼의 공간
+}
+}
+}
+}
+*/
+
+//이동가능한 타일을 설정한다
+void aStar::getMovablePath(tagIso tile)
+{
+
 }
 
 void aStar::vectorClear()
 {
 	_vOpenList.clear();
 	_vCloseList.clear();
-}
-
-void aStar::moveListUpdate()
-{
 	_vMoveList.clear();
 }

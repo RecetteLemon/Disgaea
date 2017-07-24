@@ -13,7 +13,8 @@ void aStarManager::release(void)
 }
 
 //A* 알고리즘을 적용할 캐릭터 추가
-aStar* aStarManager::addAStar(tagIso* currentMap, wstring strKey, int startX, int startY)
+//aStar* aStarManager::addAStar(tagIso* currentMap, wstring strKey, int startX, int startY) 에서 아래처럼 변경(민수)
+aStar* aStarManager::addAStar(wstring strKey)
 {
 	//동일한 키 값이 있는지 검색
 	aStar* as = findAStar(strKey);
@@ -25,7 +26,7 @@ aStar* aStarManager::addAStar(tagIso* currentMap, wstring strKey, int startX, in
 	as = new aStar;
 
 	//초기화하고 실패했을 경우 메모리 해제
-	if (FAILED(as->init(currentMap, startX, startY)))
+	if (FAILED(as->init()))
 	{
 		SAFE_DELETE(as);
 
@@ -34,7 +35,7 @@ aStar* aStarManager::addAStar(tagIso* currentMap, wstring strKey, int startX, in
 
 	//맵에 추가
 	_mAStarList.insert(make_pair(strKey, as));
-	
+
 	return as;
 }
 

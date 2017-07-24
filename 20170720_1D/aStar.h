@@ -1,5 +1,4 @@
 #pragma once
-#include "singletonBase.h"
 #include "tile.h"
 #include <vector>
 
@@ -7,7 +6,7 @@
 class aStarTile
 {
 private:
-	tagIso _iso;				
+	tagIso _iso;
 
 	//f = g + h
 	float _totalCost;			//f
@@ -19,12 +18,8 @@ private:
 	aStarTile* _parentNode;		//이 타일의 상위노드(계속 갱신 되는)
 
 public:
-	//이 타일의 인덱스 
-	int getIdX(void) { return _iso.x / TILESIZEX; }		
-	int getIdY(void) { return _iso.y / TILESIZEY; }
-
-	//POINT getCenter(void) { return _center; }
-	//TERRAIN_TYPE getAttribute() { return _iso.ter; }
+	aStarTile();
+	~aStarTile();
 
 	// === getter, setter === //
 
@@ -51,9 +46,9 @@ public:
 	//갈 수 있는 길?
 	void setIsOpen(bool isOpen) { _isOpen = isOpen; }
 	bool getIsOpen(void) { return _isOpen; }
-
 };
 
+// 이게 ㄹㅇ 에이스타 클래스
 class aStar
 {
 private:
@@ -73,8 +68,12 @@ private:
 	vector<tagIso> _vMoveList;
 	vector<tagIso>::iterator _viMoveList;
 
-	//현재 맵
-//	tagIso* _currentMap;
+	//갈 수 있는 타일
+	vector<tagIso> _vMovableList;
+	vector<tagIso>::iterator _viMovableList;
+
+	//현재 맵 <-- 안쓸꺼임!!! 저어어얼대로!!!!
+	//	tagIso* _currentMap;
 
 	aStarTile* _startTile;		//시작 타일
 	aStarTile* _goalTile;		//목표 타일
@@ -84,31 +83,50 @@ public:
 	aStar();
 	~aStar();
 
-	HRESULT init(tagIso* currentMap, int startX, int startY);
+	HRESULT init();
 	void release();
 	void render();
- 
-	vector<aStarTile*> addOpenList(aStarTile* currentTile);	//갈 수 있는 길 색출
-	void pathFinder(aStarTile* currentTile);				//타일 검사
 
-	void renderGoalList();									//목표 타일이 될 수 있는 것들을 보여준다
+	//여기서 맵을 가져옵니다!!
+	void setCurrentMap(tagIso* currentMap, int tileNum);
 
+	//길을 찾을때 필요한 함수입니다!
+	//pathFinder안에서 쓰입니다!
+	vector<aStarTile*> addOpenList(aStarTile* currentTile);
+
+	//길을 찾을때 쓰는 함수입니다!
+	//찾은 값들은 마지막에 _vMoveList안에 저장됩니다!
+	void pathFinder(aStarTile* currentTile);
+
+	void renderGoalList();
+
+	//벡터들을 전부 지워줍니다!
+	//길을 다 찾고 난 뒤에 캐릭터가 도착하면 그때 써줍시다!
 	void vectorClear();
-	void moveListUpdate();
 
-	// === gettter, setter === // 
+	// === inline, gettter, setter === // 
 
 	//시작 타일
-	inline void setStartTile(int arrNum) { _startTile = _vTotalList[arrNum]; }
-//	inline void setStartTile(int x, int y) { x / TILESIZEX + y / TILESIZEY; } 좌표 기준으로 셋팅...
+	inline void setStartTile(int arrNum)
+	{
+		_startTile = _vTotalList[arrNum];
+		_currentTile = _startTile;
+	}
 	aStarTile* getStartTile() { return _startTile; }
 
 	//목표 타일
 	inline void setGoalTile(int arrNum) { _goalTile = _vTotalList[arrNum]; }
-//	inline void setStartTile(int x, int y) { x / TILESIZEX + y / TILESIZEY; } 좌표 기준으로 셋팅...
 	aStarTile* getGoalTile() { return _goalTile; }
 
-	//이동가능한 타일
-	void setMoveTile(tagIso tile);
-	inline vector<tagIso> &getMoveTile() { return _vMoveList; }	//캐릭터에게 이동할 길을 넘겨준다
+	//시작지점을 기준으로 길찾기를 시작합니다!
+	inline void startPathFinder() { pathFinder(_startTile); }
+
+	//플레이어가 이동 가능한 타일(아직 안만듬)
+	//	void setMoveTile(tagIso tile); <- 이 함수를 아래와 같이 변경함.(민수)
+	void getMovablePath(tagIso tile);
+
+	//캐릭터에게 이동해야될 길을 넘겨준다
+	//이 함수는 캐릭터한테 갈 수 있는 길을 넘겨주는게 아니라,
+	//캐릭터가 도착지점까지 어떻게 도착해야하는지 넘겨주는 것이다.
+	inline vector<tagIso> &getMoveTile() { return _vMoveList; }
 };

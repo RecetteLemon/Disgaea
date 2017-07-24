@@ -10,6 +10,10 @@ private:
 	tagIso _tile[TILEX * TILEY];
 	characterManager* _cm;
 	int _tileIndex;
+
+	//에이스타용
+	int _tileNum;
+	bool _isMoveStart;
 public:
 	dungeonScene();
 	~dungeonScene();
@@ -21,6 +25,7 @@ public:
 	void loadFile();
 	void drawTile();
 	void camControl();
+	void aStarMove();
 
 	void coordinateUpdate();
 };
