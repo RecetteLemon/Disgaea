@@ -1,7 +1,7 @@
 #pragma once
 #include "stdafx.h"
-#define TILEX 19
-#define TILEY 19
+#define TILEX 21
+#define TILEY 21
 #define TILEZ 6
 #define TILESIZEX 192
 #define TILESIZEY 96
@@ -28,6 +28,7 @@ enum OBJECT_TYPE
 	OBJ_NPC,
 	OBJ_HOUSERENDER,
 	OBJ_HOUSE,
+	OBJ_PLAYER,
 	OBJ_ERASE,
 	OBJ_END
 };
