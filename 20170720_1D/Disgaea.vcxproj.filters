@@ -246,6 +246,9 @@
     <ClInclude Include="statUi.h">
       <Filter>Disgaea\UI</Filter>
     </ClInclude>
+    <ClInclude Include="equip.h">
+      <Filter>Disgaea\inven</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -382,6 +385,9 @@
     </ClCompile>
     <ClCompile Include="statUi.cpp">
       <Filter>Disgaea\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="equip.cpp">
+      <Filter>Disgaea\inven</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

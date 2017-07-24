@@ -19,6 +19,9 @@ HRESULT menuUI::init()
 	//인벤소환
 	_townInven = new townInven;
 	_townInven->init();
+	//장비창 소환
+	_equip = new equip;
+	_equip->init();
 
 	_turnMenu = false;
 	_invenOn = false;
@@ -43,6 +46,7 @@ void menuUI::update()
 	control();
 	if(_showui)_sUI->update();
 	if (_invenOn) _townInven->update();
+	if (_equipOn) _equip->update();
 }
 
 void menuUI::render() 
@@ -54,11 +58,12 @@ void menuUI::render()
 	}
 	if (_showui)_sUI->render();
 	if (_invenOn) _townInven->render();
+	if (_equipOn) _equip->render();
 }
 
 void menuUI::control()
 {
-	if (KEYMANAGER->isOnceKeyDown('I') && (!_showui || !_invenOn || !_turnMenu)) _turnMenu = true;
+	if (KEYMANAGER->isOnceKeyDown('I') && (!_showui || !_invenOn || !_turnMenu || !_equipOn)) _turnMenu = true;
 
 	if (KEYMANAGER->isOnceKeyDown('L'))
 	{
@@ -72,6 +77,11 @@ void menuUI::control()
 		{
 			_turnMenu = true;
 			_invenOn = false;
+		}
+		else if (_equipOn && !_turnMenu)
+		{
+			_turnMenu = true;
+			_equipOn = false;
 		}
 	}
 
@@ -99,6 +109,8 @@ void menuUI::control()
 				_invenOn = true;
 				break;
 			case SLOT_EQUIP:
+				_turnMenu = false;
+				_equipOn = true;
 				break;
 			case SLOT_STATUS:
 				_turnMenu = false;

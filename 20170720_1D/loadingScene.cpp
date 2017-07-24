@@ -103,6 +103,9 @@ void loadingScene::loadingImage()
 	_ld->loadImage(L"마을창고", L"Image/inven/wareHouse.png", 553, 480);
 	_ld->loadImage(L"마을창고2", L"Image/inven/wareHouseMove.png", 277, 190);
 	_ld->loadImage(L"마을창고3", L"Image/inven/wareHouseBlock.png", 40, 33);
+	_ld->loadFrameImage(L"equipSort", L"Image/equip/sort.png", 748, 812, 2, 4);
+	_ld->loadImage(L"other", L"Image/equip/other.png", 564, 54);
+	_ld->loadImage(L"weapon", L"Image/equip/weapon.png", 564, 54);
 
 	//상점 관련
 	_ld->loadImage(L"shopMain", L"Image/shop/shopMain.png", 1600, 900);
@@ -127,6 +130,8 @@ void loadingScene::loadingImage()
 	_ld->loadImage(L"cursor", L"Image/Inven/cursor.png", 52, 39);
 	_ld->loadFrameImage(L"sort", L"Image/Inven/sortwarehouse.png", 277, 399, 1, 3);
 	_ld->loadImage(L"infoBox", L"Image/Inven/infoBox.png", 1474, 77);
+	_ld->loadImage(L"miniInfo", L"Image/shop/miniInfo.png", 677, 253);
+	_ld->loadImage(L"miniBlack", L"Image/shop/miniBlack.png", 677, 253);
 	// 아이템 이미지
 	_ld->loadImage(L"none", L"Image/Item/none.png", 475, 50);
 	// 무기
