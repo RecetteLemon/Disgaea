@@ -77,7 +77,6 @@
   <ItemGroup>
     <ClInclude Include="Adell.h" />
     <ClInclude Include="animation.h" />
-    <ClInclude Include="aStar.h" />
     <ClInclude Include="aStarManager.h" />
     <ClInclude Include="button.h" />
     <ClInclude Include="cameraManager.h" />
@@ -130,7 +129,6 @@
   <ItemGroup>
     <ClCompile Include="Adell.cpp" />
     <ClCompile Include="animation.cpp" />
-    <ClCompile Include="aStar.cpp" />
     <ClCompile Include="aStarManager.cpp" />
     <ClCompile Include="button.cpp" />
     <ClCompile Include="cameraManager.cpp" />

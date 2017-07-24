@@ -24,9 +24,6 @@ HRESULT dungeonScene::init()
 	//	ASTARMANAGER->addAStar(_tile, _cm->getName(), _cm->getPlayerX(), _cm->getPlayerY());
 	//							현재맵, 캐릭터명, 캐릭터 시작점
 
-	//에이스타용
-	ASTARMANAGER->addAStar(L"Character");
-
 	_tileNum = 0;
 	_isMoveStart = false;
 
@@ -34,7 +31,7 @@ HRESULT dungeonScene::init()
 }
 void dungeonScene::release()
 {
-
+	
 }
 void dungeonScene::update()
 {
@@ -52,8 +49,8 @@ void dungeonScene::render()
 	//ASTARMANAGER->findAStar(_cm->getName())->renderGoalList();
 	//적은 안표시요 
 
-	ASTARMANAGER->findAStar(L"Character")->render();
-	ASTARMANAGER->findAStar(L"Character")->renderGoalList();
+	ASTARMANAGER->render();
+	ASTARMANAGER->renderGoalList();
 }
 void dungeonScene::loadFile()
 {
@@ -153,28 +150,28 @@ void dungeonScene::coordinateUpdate()
 void dungeonScene::aStarMove()
 {
 	//움직일때(예외처리)
-	if (ASTARMANAGER->findAStar(L"Character")->getMoveTile().size() != NULL && _isMoveStart)
+	if (ASTARMANAGER->getMoveTile().size() != NULL && _isMoveStart)
 	{
-		if ((int)_cm->getPlayerCenter().x < ASTARMANAGER->findAStar(L"Character")->getMoveTile()[_tileNum].centerX &&
-			(int)_cm->getPlayerCenter().y < ASTARMANAGER->findAStar(L"Character")->getMoveTile()[_tileNum].centerY)
+		if ((int)_cm->getPlayerCenter().x < ASTARMANAGER->getMoveTile()[_tileNum].centerX &&
+			(int)_cm->getPlayerCenter().y < ASTARMANAGER->getMoveTile()[_tileNum].centerY)
 		{
 			_cm->setPlayerState(PLAYER_STAT_RB_MOVE);
 			_cm->moveOn();
 		}
-		if ((int)_cm->getPlayerCenter().x > ASTARMANAGER->findAStar(L"Character")->getMoveTile()[_tileNum].centerX &&
-			(int)_cm->getPlayerCenter().y < ASTARMANAGER->findAStar(L"Character")->getMoveTile()[_tileNum].centerY)
+		else if ((int)_cm->getPlayerCenter().x > ASTARMANAGER->getMoveTile()[_tileNum].centerX &&
+			(int)_cm->getPlayerCenter().y < ASTARMANAGER->getMoveTile()[_tileNum].centerY)
 		{
 			_cm->setPlayerState(PLAYER_STAT_LB_MOVE);
 			_cm->moveOn();
 		}
-		if ((int)_cm->getPlayerCenter().x < ASTARMANAGER->findAStar(L"Character")->getMoveTile()[_tileNum].centerX &&
-			(int)_cm->getPlayerCenter().y > ASTARMANAGER->findAStar(L"Character")->getMoveTile()[_tileNum].centerY)
+		else if ((int)_cm->getPlayerCenter().x < ASTARMANAGER->getMoveTile()[_tileNum].centerX &&
+			(int)_cm->getPlayerCenter().y > ASTARMANAGER->getMoveTile()[_tileNum].centerY)
 		{
 			_cm->setPlayerState(PLAYER_STAT_RT_MOVE);
 			_cm->moveOn();
 		}
-		if ((int)_cm->getPlayerCenter().x > ASTARMANAGER->findAStar(L"Character")->getMoveTile()[_tileNum].centerX &&
-			(int)_cm->getPlayerCenter().y > ASTARMANAGER->findAStar(L"Character")->getMoveTile()[_tileNum].centerY)
+		else if ((int)_cm->getPlayerCenter().x > ASTARMANAGER->getMoveTile()[_tileNum].centerX &&
+			(int)_cm->getPlayerCenter().y > ASTARMANAGER->getMoveTile()[_tileNum].centerY)
 		{
 			_cm->setPlayerState(PLAYER_STAT_LT_MOVE);
 			_cm->moveOn();
@@ -183,41 +180,41 @@ void dungeonScene::aStarMove()
 		switch (_cm->getPlayerStat())
 		{
 		case PLAYER_STAT_RB_MOVE:
-			if (_cm->getPlayerCenter().x >= ASTARMANAGER->findAStar(L"Character")->getMoveTile()[_tileNum].centerX &&
-				_cm->getPlayerCenter().y >= ASTARMANAGER->findAStar(L"Character")->getMoveTile()[_tileNum].centerY)
+			if (_cm->getPlayerCenter().x >= ASTARMANAGER->getMoveTile()[_tileNum].centerX &&
+				_cm->getPlayerCenter().y >= ASTARMANAGER->getMoveTile()[_tileNum].centerY)
 			{
 				_cm->setPlayerState(PLAYER_STAT_RB_STAND);
 				++_tileNum;
 			}
 			break;
 		case PLAYER_STAT_LB_MOVE:
-			if (_cm->getPlayerCenter().x <= ASTARMANAGER->findAStar(L"Character")->getMoveTile()[_tileNum].centerX &&
-				_cm->getPlayerCenter().y >= ASTARMANAGER->findAStar(L"Character")->getMoveTile()[_tileNum].centerY)
+			if (_cm->getPlayerCenter().x <= ASTARMANAGER->getMoveTile()[_tileNum].centerX &&
+				_cm->getPlayerCenter().y >= ASTARMANAGER->getMoveTile()[_tileNum].centerY)
 			{
 				_cm->setPlayerState(PLAYER_STAT_LB_STAND);
 				++_tileNum;
 			}
 			break;
 		case PLAYER_STAT_RT_MOVE:
-			if (_cm->getPlayerCenter().x >= ASTARMANAGER->findAStar(L"Character")->getMoveTile()[_tileNum].centerX &&
-				_cm->getPlayerCenter().y <= ASTARMANAGER->findAStar(L"Character")->getMoveTile()[_tileNum].centerY)
+			if (_cm->getPlayerCenter().x >= ASTARMANAGER->getMoveTile()[_tileNum].centerX &&
+				_cm->getPlayerCenter().y <= ASTARMANAGER->getMoveTile()[_tileNum].centerY)
 			{
 				_cm->setPlayerState(PLAYER_STAT_RT_STAND);
 				++_tileNum;
 			}
 			break;
 		case PLAYER_STAT_LT_MOVE:
-			if (_cm->getPlayerCenter().x <= ASTARMANAGER->findAStar(L"Character")->getMoveTile()[_tileNum].centerX &&
-				_cm->getPlayerCenter().y <= ASTARMANAGER->findAStar(L"Character")->getMoveTile()[_tileNum].centerY)
+			if (_cm->getPlayerCenter().x <= ASTARMANAGER->getMoveTile()[_tileNum].centerX &&
+				_cm->getPlayerCenter().y <= ASTARMANAGER->getMoveTile()[_tileNum].centerY)
 			{
 				_cm->setPlayerState(PLAYER_STAT_LT_STAND);
 				++_tileNum;
 			}
 			break;
 		}
-		if (_tileNum >= ASTARMANAGER->findAStar(L"Character")->getMoveTile().size())
+		if (_tileNum >= ASTARMANAGER->getMoveTile().size())
 		{
-			ASTARMANAGER->findAStar(L"Character")->vectorClear();
+			ASTARMANAGER->vectorClear();
 			_tileNum = 0;
 			_isMoveStart = false;
 		}
@@ -235,7 +232,7 @@ void dungeonScene::aStarMove()
 			if (PtInRegion(playerTile, _cm->getPlayerCenter().x, _cm->getPlayerCenter().y))
 			{
 				//키 값에 현재 맵 값과 시작좌표(타일배열번호)를 넘겨줍니다!
-				ASTARMANAGER->findAStar(L"Character")->setCurrentMap(_tile, i);
+				ASTARMANAGER->setCurrentMap(_tile, i);
 			}
 
 			if (PtInRegion(hRgn, _ptMouse.x + CAMERAMANAGER->getX(), _ptMouse.y + CAMERAMANAGER->getY()))
@@ -245,9 +242,9 @@ void dungeonScene::aStarMove()
 				if (KEYMANAGER->isOnceKeyDown(VK_RBUTTON))
 				{
 					//키 값에 도착좌표(타일배열번호)를 넘겨줍니다!
-					ASTARMANAGER->findAStar(L"Character")->setGoalTile(i);
+					ASTARMANAGER->setGoalTile(i);
 					//키 값에 길찾기를 시작합니다!
-					ASTARMANAGER->findAStar(L"Character")->startPathFinder();
+					ASTARMANAGER->startPathFinder();
 					_isMoveStart = true;
 				}
 			}

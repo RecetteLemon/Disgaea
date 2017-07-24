@@ -35,7 +35,7 @@ HRESULT gameNode::init(bool managerInit)
 		TXTDATA->init();
 		DATABASE->init();
 		CAMERAMANAGER->init();
-//		ASTARMANAGER->init();
+		ASTARMANAGER->init();
 	}
 
 	return S_OK;
