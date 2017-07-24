@@ -41,7 +41,7 @@ HRESULT townInven::init()
 	}
 	for (int i = 0; i < 512; i++)
 	{
-		r_wareSlot[i] = RectMake(62, 103 + (i * 57), 474, 56);
+		r_wareSlot[i] = RectMake(_wareHouse.left + 13, 103 + (i * 57), 474, 56);
 	}
 
 
@@ -54,7 +54,9 @@ HRESULT townInven::init()
 	_test = 0;
 	_wareHouseCheck = false;
 
+	_tagItemStat = ITEM_WEAPON;
 
+	_swap = false;
 
 	return S_OK;
 }
@@ -125,11 +127,6 @@ void townInven::update()
 
 	}
 
-	if (KEYMANAGER->isOnceKeyUp('W'))
-	{
-
-	}
-
 	if (KEYMANAGER->isOnceKeyDown('S'))
 	{
 		if (num < 6) num++;
@@ -187,13 +184,44 @@ void townInven::update()
 	{
 		SCENEMANAGER->changeScene(L"MenuScene");
 	}
-
+	//아이템 스왑용
+	if (KEYMANAGER->isOnceKeyDown('I'))
+	{
+		sortItem();
+		switch (_tagItemStat)
+		{
+		case 0:
+			_tagItemStat = ITEM_ARMOR;
+			break;
+		case 1:
+			_tagItemStat = ITEM_POTION;
+			break;
+		case 2:
+			_tagItemStat = ITEM_WEAPON;
+			break;
+		}
+	}
+	//아이템 보내기
+	if (KEYMANAGER->isOnceKeyDown('J'))
+	{
+		//스왑온
+		for (int i = _test; i < _test + 7; i++)
+		{
+			if (i_itemSlot[i] != IMAGEMANAGER->findImage(L"none") || i_wareSlot[i] != IMAGEMANAGER->findImage(L"none"))
+			{
+				if (!_swap) _swap = true;
+			}
+		}
+		//스왑온이면 스왑 진행
+		if (_swap) SendItem();
+	}
 
 	slotMove();
 }
 
 void townInven::render()
 {
+	IMAGEMANAGER->findImage(L"backBlack")->render(_itemInfo.left, _itemInfo.top, false, 0.4f);
 	IMAGEMANAGER->findImage(L"아이템정보")->render(_itemInfo.left, _itemInfo.top, false, 1.0f);
 	IMAGEMANAGER->findImage(L"마을인벤")->render(_itemBag.left, _itemBag.top, false, 1.0f);
 	IMAGEMANAGER->findImage(L"마을인벤3")->render(_itemBagBlock.left, _itemBagBlock.top, false, 1.0f);
@@ -209,7 +237,7 @@ void townInven::render()
 		IMAGEMANAGER->findImage(L"마을인벤2")->render(_itemMove.left, _itemMove.top, false, 1.0f);
 	}
 
-
+	//인벤
 	for (int i = _test; i < _test + 7; i++)
 	{
 		if (INVENMANAGER->getVItem().size() == 0)
@@ -229,26 +257,26 @@ void townInven::render()
 		}
 		i_itemSlot[i]->render(r_itemSlot[i].left, r_itemSlot[i].top, false, 1.0f);
 	}
-	//인벤 관련
-	//for (int i = _test; i < _test + 7; i++)
-	//{
-	//	if (_item->getVItem().size() == 0)
-	//	{
-	//		i_itemSlot[i] = IMAGEMANAGER->findImage(L"none");
-	//	}
-	//	else
-	//	{
-	//		if (_item->getVItem().size() > i)
-	//		{
-	//			i_itemSlot[i] = _item->getVItem()[i].Image;
-	//		}
-	//		else if (_item->getVItem().size() <= i)
-	//		{
-	//			i_itemSlot[i] = IMAGEMANAGER->findImage(L"none");
-	//		}
-	//	}
-	//	i_itemSlot[i]->render(r_itemSlot[i].left, r_itemSlot[i].top, false, 1.0f);
-	//}
+	//창고 관련
+	for (int i = _test; i < _test + 7; i++)
+	{
+		if (INVENMANAGER->getVWareHouse().size() == 0)
+		{
+			i_wareSlot[i] = IMAGEMANAGER->findImage(L"none");
+		}
+		else
+		{
+			if (INVENMANAGER->getVWareHouse().size() > i)
+			{
+				i_wareSlot[i] = INVENMANAGER->getVWareHouse()[i].Image;
+			}
+			else if (INVENMANAGER->getVWareHouse().size() <= i)
+			{
+				i_wareSlot[i] = IMAGEMANAGER->findImage(L"none");
+			}
+		}
+		i_wareSlot[i]->render(r_wareSlot[i].left, r_wareSlot[i].top, false, 1.0f);
+	}
 
 	IMAGEMANAGER->findImage(L"커서")->render(_itemCursor.left, _itemCursor.top, false, 1.0f);
 
@@ -344,4 +372,130 @@ void townInven::slotMove()
 		}
 	}
 
+}
+//아이템 정렬
+void townInven::sortItem()
+{
+	switch (_tagItemStat)
+	{
+	case 0:
+		_vTemp.swap(INVENMANAGER->getVItem());
+		INVENMANAGER->clearVItem();
+		for (int i = 0; i < _vTemp.size(); i++)
+		{
+			if (_vTemp[i].Type == WEAPON) INVENMANAGER->pushBackVItem(i, _vTemp);
+		}
+		for (int i = 0; i < _vTemp.size(); i++)
+		{
+			if (_vTemp[i].Type == ARMOR)INVENMANAGER->pushBackVItem(i, _vTemp);
+			else if (_vTemp[i].Type == GENERAL)INVENMANAGER->pushBackVItem(i, _vTemp);
+		}
+		_vTemp.clear();
+		break;
+	case 1:
+		_vTemp.swap(INVENMANAGER->getVItem());
+		INVENMANAGER->clearVItem();
+		for (int i = 0; i < _vTemp.size(); i++)
+		{
+			if (_vTemp[i].Type == ARMOR) INVENMANAGER->pushBackVItem(i, _vTemp);
+		}
+		for (int i = 0; i < _vTemp.size(); i++)
+		{
+			if (_vTemp[i].Type == GENERAL)INVENMANAGER->pushBackVItem(i, _vTemp);
+			else if (_vTemp[i].Type == WEAPON)INVENMANAGER->pushBackVItem(i, _vTemp);
+		}
+		_vTemp.clear();
+		break;
+	case 2:
+		_vTemp.swap(INVENMANAGER->getVItem());
+		INVENMANAGER->clearVItem();
+		for (int i = 0; i < _vTemp.size(); i++)
+		{
+			if (_vTemp[i].Type == GENERAL) INVENMANAGER->pushBackVItem(i, _vTemp);
+		}
+		for (int i = 0; i < _vTemp.size(); i++)
+		{
+			if (_vTemp[i].Type == ARMOR)INVENMANAGER->pushBackVItem(i, _vTemp);
+			else if (_vTemp[i].Type == WEAPON)INVENMANAGER->pushBackVItem(i, _vTemp);
+		}
+		_vTemp.clear();
+		break;
+	}
+}
+//아이템 인벤에서 창고로 또는 창고에서 인벤으로
+void townInven::SendItem()
+{
+	switch (_wareHouseCheck)
+	{
+		//인벤창 일 때
+	case 0:
+		//인벤 안에 템이 한개 있을때
+		if (INVENMANAGER->getVItem().size() == 1)
+		{
+			INVENMANAGER->pushBackWareHouse(0, INVENMANAGER->getVItem());
+			INVENMANAGER->erase2VItem(0);
+			_swap = false;
+		}
+		//여러개 있을때
+		else if (INVENMANAGER->getVItem().size() > 1)
+		{
+			if (_itemSlot == INVENMANAGER->getVItem().size() - 1)
+			{
+				INVENMANAGER->pushBackWareHouse(_itemSlot, INVENMANAGER->getVItem());
+				INVENMANAGER->erase2VItem(_itemSlot);
+				_swap = false;
+			}
+			else if (_itemSlot < INVENMANAGER->getVItem().size() - 1)
+			{
+				INVENMANAGER->pushBackWareHouse(_itemSlot, INVENMANAGER->getVItem());
+				for (int i = _itemSlot + 1; i < INVENMANAGER->getVItem().size(); i++)
+				{
+					_vTemp.push_back(INVENMANAGER->getVItem()[i]);
+				}
+				INVENMANAGER->eraseVItem(_itemSlot);
+				for (int i = 0; i < _vTemp.size(); i++)
+				{
+					INVENMANAGER->pushBackVItem(i, _vTemp);
+				}
+				_vTemp.clear();
+				_swap = false;
+			}
+		}
+		break;
+		//창고창 일 때
+	case 1:
+		//창고 안에 템이 한개 있을때
+		if (INVENMANAGER->getVWareHouse().size() == 1)
+		{
+			INVENMANAGER->pushBackVItem(0, INVENMANAGER->getVWareHouse());
+			INVENMANAGER->eraseWareHouse(0);
+			_swap = false;
+		}
+		//여러개 있을때
+		else if (INVENMANAGER->getVWareHouse().size() > 1)
+		{
+			if (_itemSlot == INVENMANAGER->getVWareHouse().size() - 1)
+			{
+				INVENMANAGER->pushBackVItem(_itemSlot, INVENMANAGER->getVWareHouse());
+				INVENMANAGER->eraseWareHouse(_itemSlot);
+				_swap = false;
+			}
+			else if (_itemSlot < INVENMANAGER->getVWareHouse().size() - 1)
+			{
+				INVENMANAGER->pushBackVItem(_itemSlot, INVENMANAGER->getVWareHouse());
+				for (int i = _itemSlot + 1; i < INVENMANAGER->getVWareHouse().size(); i++)
+				{
+					_vTemp.push_back(INVENMANAGER->getVWareHouse()[i]);
+				}
+				INVENMANAGER->eraseWareHouse2(_itemSlot);
+				for (int i = 0; i < _vTemp.size(); i++)
+				{
+					INVENMANAGER->pushBackWareHouse(i, _vTemp);
+				}
+				_vTemp.clear();
+				_swap = false;
+			}
+		}
+		break;
+	}
 }

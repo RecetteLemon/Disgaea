@@ -28,8 +28,8 @@ enum TAGITEMSTAT
 {
 	ITEM_WEAPON,
 	ITEM_ARMOR,
-	ITEM_POTION,
-	ITEM_NULL
+	ITEM_POTION
+	//ITEM_NULL
 };
 
 class townInven : public gameNode
@@ -79,6 +79,8 @@ private:
 	int _test;
 	bool _wareHouseCheck;
 
+	bool _swap;
+
 public:
 	HRESULT init();
 	void release();
@@ -87,6 +89,9 @@ public:
 
 	void itemNumDraw();
 	void slotMove();
+
+	void sortItem();
+	void SendItem();
 
 	townInven();
 	~townInven();
