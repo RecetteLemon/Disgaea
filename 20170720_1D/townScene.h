@@ -2,7 +2,7 @@
 #include "gameNode.h"
 #include "tile.h"
 #include "characterManager.h"
-
+#include "animation.h"
 class townScene : public gameNode
 {
 private:
@@ -10,7 +10,8 @@ private:
 	characterManager* _cm;
 	int _tileNum;
 	int _tileIndex;
-	
+	image* _npc;
+	animation* _npcFrame;
 public:
 	townScene();
 	~townScene();

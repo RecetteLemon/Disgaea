@@ -678,5 +678,6 @@ TERRAIN_TYPE mapToolScene::terCreater(POINT tile)
 }
 OBJECT_TYPE mapToolScene::objCreater(POINT tile)
 {
+	if (tile.x == 4 && tile.y == 6) return OBJ_NPC;
 	return OBJ_ITEM;
 }

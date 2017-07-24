@@ -20,6 +20,15 @@ HRESULT townScene::init()
 	this->loadTile();
 	ASTARMANAGER->addAStar(_tile, L"Ä³¸¯ÅÍ", _cm->getCenter().x, _cm->getCenter().y);
 
+	_npc = IMAGEMANAGER->addFrameImage(L"npc", L"image/face/NPC.png", 588, 156, 6, 1);
+
+	_npcFrame = new animation;
+	_npcFrame->init(588, 156, 98, 156);
+	_npcFrame->setDefPlayFrame(false, true);
+	_npcFrame->setFPS(1);
+	_npcFrame->start();
+
+
 	return S_OK;
 }
 void townScene::release()
@@ -32,6 +41,7 @@ void townScene::update()
 	this->camControl();
 	this->aStarMove();
 	_cm->update();
+	_npcFrame->frameUpdate(0.2);
 }
 void townScene::render()
 {
@@ -172,9 +182,18 @@ void townScene::drawTile()
 
 			if (_tile[i].obj != OBJ_ERASE)
 			{
-				IMAGEMANAGER->findImage(L"IsoObject")->frameRender(_tile[i].x - TILESIZEX / 2 - IMAGEMANAGER->findImage(L"IsoObject")->getFrameWidth() + TILESIZEX,
-					_tile[i].y - _tile[i].z - IMAGEMANAGER->findImage(L"IsoObject")->getFrameHeight() - TILESIZEY * (_tile[i].z - 1),
-					_tile[i].objFrame.x, _tile[i].objFrame.y, true, 1.0f);
+				if (_tile[i].obj == OBJ_NPC)
+				{
+					_npc->aniRender(_tile[i].x - TILESIZEX / 2 - _npc->getFrameWidth() + TILESIZEX - 38,
+						_tile[i].y - _tile[i].z - _npc->getFrameHeight() - TILESIZEY * (_tile[i].z - 1) - 30,
+						_npcFrame, true, 1.0);
+				}
+				else
+				{
+					IMAGEMANAGER->findImage(L"IsoObject")->frameRender(_tile[i].x - TILESIZEX / 2 - IMAGEMANAGER->findImage(L"IsoObject")->getFrameWidth() + TILESIZEX,
+						_tile[i].y - _tile[i].z - IMAGEMANAGER->findImage(L"IsoObject")->getFrameHeight() - TILESIZEY * (_tile[i].z - 1),
+						_tile[i].objFrame.x, _tile[i].objFrame.y, true, 1.0f);
+				}
 			}
 		}
 		if (_tileIndex == i) _cm->render();
@@ -204,7 +223,7 @@ void townScene::loadTile()
 	CAMERAMANAGER->setPosition(INITX - WINSIZEX / 2, INITY + 22);
 	HANDLE file;
 	DWORD read;
-	file = CreateFile(L"Tile/Town/TownTile.map", GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	file = CreateFile(L"Tile/Town/TownTile2.map", GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	ReadFile(file, _tile, sizeof(tagIso) * TILEX * TILEY, &read, NULL);
 	CloseHandle(file);
 }
