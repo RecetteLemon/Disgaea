@@ -11,6 +11,12 @@ private:
 	characterManager* _cm;
 	int _tileIndex;
 
+	image* _potal[2]; // 마법진 프레임
+
+	float _alpha;
+
+	bool _alphaChange;
+
 	//에이스타용
 	int _tileNum;
 	bool _isMoveStart;

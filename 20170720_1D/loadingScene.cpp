@@ -71,6 +71,9 @@ void loadingScene::loadingImage()
 
 	_ld->loadFrameImage(L"settingIcon", L"Image/MapTool/settingIcon.png", 150, 50, 3, 1);
 
+	_ld->loadImage(L"potalBlack", L"Image/MapTool/blackPotal.png", 192, 192);
+	_ld->loadImage(L"potalWhite", L"Image/MapTool/whitePotal.png", 192, 192);
+
 
 	// 캐릭터 관련 이미지
 	_ld->loadFrameImage(L"Valvatorez", L"Image/player/Valvatorez.png", 2964, 2873, 12, 13);

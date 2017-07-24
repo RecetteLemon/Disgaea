@@ -27,6 +27,14 @@ HRESULT dungeonScene::init()
 	_tileNum = 0;
 	_isMoveStart = false;
 
+	// 포탈 이미지가 추가 되었습니다.
+	_potal[0] = IMAGEMANAGER->findImage(L"potalBlack");
+	_potal[1] = IMAGEMANAGER->findImage(L"potalWhite");
+
+	_alpha = 0;
+	_alphaChange = false;
+
+
 	return S_OK;
 }
 void dungeonScene::release()
@@ -39,6 +47,18 @@ void dungeonScene::update()
 	this->coordinateUpdate();
 	this->aStarMove();
 	_cm->update();
+
+	if (!_alphaChange)
+	{
+		_alpha += 0.004f;
+		if (_alpha > 1.0f) _alphaChange = true;
+	}
+
+	else
+	{
+		_alpha -= 0.004f;
+		if (_alpha < 0) _alphaChange = false;
+	}
 }
 void dungeonScene::render()
 {
@@ -104,9 +124,17 @@ void dungeonScene::drawTile()
 
 			if (_tile[i].obj != OBJ_ERASE)
 			{
-				IMAGEMANAGER->findImage(L"IsoObject")->frameRender(_tile[i].x - TILESIZEX / 2 - IMAGEMANAGER->findImage(L"IsoObject")->getFrameWidth() + TILESIZEX,
-					_tile[i].y - _tile[i].z - IMAGEMANAGER->findImage(L"IsoObject")->getFrameHeight() - TILESIZEY * (_tile[i].z - 1),
-					_tile[i].objFrame.x, _tile[i].objFrame.y, true, 1.0f);
+				if (_tile[i].objFrame.x == 6 && _tile[i].objFrame.y == 6)
+				{
+					_potal[0]->render(_tile[i].x - _potal[0]->getWidth() / 2, _tile[i].y - _potal[0]->getHeight() / 2, true, 1.0f);
+					_potal[1]->render(_tile[i].x - _potal[1]->getWidth() / 2, _tile[i].y - _potal[1]->getHeight() / 2, true, _alpha);
+				}
+				else
+				{
+					IMAGEMANAGER->findImage(L"IsoObject")->frameRender(_tile[i].x - TILESIZEX / 2 - IMAGEMANAGER->findImage(L"IsoObject")->getFrameWidth() + TILESIZEX,
+						_tile[i].y - _tile[i].z - IMAGEMANAGER->findImage(L"IsoObject")->getFrameHeight() - TILESIZEY * (_tile[i].z - 1),
+						_tile[i].objFrame.x, _tile[i].objFrame.y, true, 1.0f);
+				}
 			}
 
 			if (_tileIndex == i) _cm->render();
