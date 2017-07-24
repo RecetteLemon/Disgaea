@@ -99,7 +99,18 @@ public:
 	//찾은 값들은 마지막에 _vMoveList안에 저장됩니다!
 	void pathFinder(aStarTile* currentTile);
 
+	//움직일 수 있는 타일을 찾을때 쓰는 함수입니다!
+	//찾은 값들은 _vMovableList안에 저장됩니다!
+	void movablepathFinder(aStarTile* currentTile);
+
+	//_vMovableList용 확인함수
+	bool checkList(vector<tagIso> &list, aStarTile* tile);
+
+	//움직일 타일의 좌표를 그립니다!(테스트용)
 	void renderGoalList();
+
+	//움직일 수 있는 타일의 좌표를 그립니다!(테스트용)
+	void drawMovableTile();
 
 	//벡터들을 전부 지워줍니다!
 	//길을 다 찾고 난 뒤에 캐릭터가 도착하면 그때 써줍시다!
@@ -126,7 +137,7 @@ public:
 
 	//플레이어가 이동 가능한 타일(아직 안만듬)
 	//	void setMoveTile(tagIso tile); <- 이 함수를 아래와 같이 변경함.(민수)
-	void getMovablePath(tagIso tile);
+	void getMovablePath(tagIso* currentMap, int arrNum, int moveNum);
 
 	//캐릭터에게 이동해야될 길을 넘겨준다
 	//이 함수는 캐릭터한테 갈 수 있는 길을 넘겨주는게 아니라,
