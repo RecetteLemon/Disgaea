@@ -16,6 +16,7 @@ HRESULT townScene::init()
 	_cm->init(2, 5);
 	_cm->selectPlayer(3);
 	_tileNum = 0;
+	_tileIndex = 0;
 	this->loadTile();
 	ASTARMANAGER->addAStar(_tile, L"캐릭터", _cm->getCenter().x, _cm->getCenter().y);
 
@@ -35,7 +36,6 @@ void townScene::update()
 void townScene::render()
 {
 	this->drawTile();
-	_cm->render();
 	ASTARMANAGER->findAStar(L"캐릭터")->render();
 	ASTARMANAGER->findAStar(L"캐릭터")->renderGoalList();
 }
@@ -177,19 +177,7 @@ void townScene::drawTile()
 					_tile[i].objFrame.x, _tile[i].objFrame.y, true, 1.0f);
 			}
 		}
-		if (_tile[i].edgePaint)
-		{
-			if (_tile[i].z >= 0)
-			{
-				IMAGEMANAGER->findImage(L"IsoEdge")->render(_tile[i].x - TILESIZEX / 2,
-					_tile[i].y - _tile[i].z * TILESIZEZ, true, 1);
-			}
-			else if (_tile[i].z < 0)
-			{
-				IMAGEMANAGER->findImage(L"IsoEdge")->render(_tile[i].x - TILESIZEX / 2,
-					_tile[i].y, true, 1);
-			}
-		}
+		if (_tileIndex == i) _cm->render();
 	}
 }
 void townScene::camControl()
@@ -222,6 +210,18 @@ void townScene::loadTile()
 }
 void townScene::playerTileCol()
 {
+
+	for (int i = 0; i < TILEX * TILEY; i++)
+	{
+		HRGN hRgn = CreatePolygonRgn(_tile[i].line, 4, WINDING);
+
+		if (PtInRegion(hRgn, _cm->getShadowRC().left + 40, _cm->getShadowRC().bottom + 20))
+		{
+			_tileIndex = i;
+		}
+
+		DeleteObject(hRgn);
+	}
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
 		HRGN hRgn = CreatePolygonRgn(_tile[i].line, 4, WINDING);

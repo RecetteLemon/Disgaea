@@ -9,6 +9,7 @@ class dungeonScene : public gameNode
 private:
 	tagIso _tile[TILEX * TILEY];
 	characterManager* _cm;
+	int _tileIndex;
 public:
 	dungeonScene();
 	~dungeonScene();

@@ -467,11 +467,42 @@ void mapToolScene::drawTile()
 			-CAMERAMANAGER->getY() + _tile[i].y + TILESIZEY / 2 < 22 ||
 			-CAMERAMANAGER->getY() + _tile[i].y - TILESIZEY / 2 > 22 + TILEMONITORSIZEH))
 		{
-			for (int j = 0; j < _tile[i].z + 1; j++)
+			if (_tile[i].z == 0)
 			{
 				IMAGEMANAGER->findImage(L"IsoTerrain")->frameRender(_tile[i].x - TILESIZEX / 2,
-					_tile[i].y - j * TILESIZEZ,
+					_tile[i].y,
 					_tile[i].terFrame.x, _tile[i].terFrame.y, true, 1.0f);
+			}
+		}
+	}
+	for (int i = 0; i < TILEX * TILEY; i++)
+	{
+		if ((-CAMERAMANAGER->getX() + _tile[i].x + TILESIZEX / 2 > 22 ||
+			-CAMERAMANAGER->getX() + _tile[i].x - TILESIZEX / 2 < 22 + TILEMONITORSIZEW ||
+			-CAMERAMANAGER->getY() + _tile[i].y + TILESIZEY / 2 < 22 ||
+			-CAMERAMANAGER->getY() + _tile[i].y - TILESIZEY / 2 > 22 + TILEMONITORSIZEH))
+		{
+			for (int j = 1; j < _tile[i].z + 1; j++)
+			{
+				if (_tile[i].z > 0)
+				{
+					IMAGEMANAGER->findImage(L"IsoTerrain")->frameRender(_tile[i].x - TILESIZEX / 2,
+						_tile[i].y - j * TILESIZEZ,
+						_tile[i].terFrame.x, _tile[i].terFrame.y, true, 1.0f);
+				}
+			}
+			if (_tile[i].edgePaint)
+			{
+				if (_tile[i].z >= 0)
+				{
+					IMAGEMANAGER->findImage(L"IsoEdge")->render(_tile[i].x - TILESIZEX / 2,
+						_tile[i].y - _tile[i].z * TILESIZEZ, true, 1);
+				}
+				else if (_tile[i].z < 0)
+				{
+					IMAGEMANAGER->findImage(L"IsoEdge")->render(_tile[i].x - TILESIZEX / 2,
+						_tile[i].y, true, 1);
+				}
 			}
 
 			if (_tile[i].z <= 0)
@@ -487,23 +518,6 @@ void mapToolScene::drawTile()
 				IMAGEMANAGER->findImage(L"IsoObject")->frameRender(_tile[i].x - TILESIZEX / 2 - IMAGEMANAGER->findImage(L"IsoObject")->getFrameWidth() + TILESIZEX,
 					_tile[i].y - _tile[i].z - IMAGEMANAGER->findImage(L"IsoObject")->getFrameHeight() - TILESIZEY * (_tile[i].z - 1),
 					_tile[i].objFrame.x, _tile[i].objFrame.y, true, 1.0f);
-			}
-		}
-	}
-
-	for (int i = 0; i < TILEX * TILEY; i++)
-	{
-		if (_tile[i].edgePaint)
-		{
-			if (_tile[i].z >= 0)
-			{
-				IMAGEMANAGER->findImage(L"IsoEdge")->render(_tile[i].x - TILESIZEX / 2,
-					_tile[i].y - _tile[i].z * TILESIZEZ, true, 1);
-			}
-			else if (_tile[i].z < 0)
-			{
-				IMAGEMANAGER->findImage(L"IsoEdge")->render(_tile[i].x - TILESIZEX / 2,
-					_tile[i].y, true, 1);
 			}
 		}
 	}

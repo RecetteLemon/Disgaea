@@ -9,6 +9,7 @@ private:
 	tagIso _tile[TILEX * TILEY];
 	characterManager* _cm;
 	int _tileNum;
+	int _tileIndex;
 	
 public:
 	townScene();
