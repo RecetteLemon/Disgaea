@@ -3,7 +3,7 @@
 
 
 
-enum STAT
+enum ENEMYSTAT
 {
 	ENEMY_STAT_LB_STAND, ENEMY_STAT_LB_ATTACK,
 	ENEMY_STAT_LB_SKILL, ENEMY_STAT_LB_MOVE,
@@ -50,7 +50,7 @@ struct ENEMY_
 	wstring _enemyName;
 	image* img;
 	animation* pos[ENEMY_POS_END];
-	STAT stat;
+	ENEMYSTAT stat;
 	RECT rc;
 	int x, y;
 };
@@ -58,7 +58,7 @@ class enemy : public gameNode
 {
 protected:
 	ENEMY_ _enemy;
-	
+
 
 
 
@@ -75,7 +75,13 @@ public:
 	virtual void attack(void);
 	virtual void skill(void);
 	virtual void hit(void);
-	
+
+
+	int  getX() { return _enemy.x; }
+	int  getY() { return _enemy.y; }
+	ENEMYSTAT getStat() { return _enemy.stat; }
+
+	void setStat(ENEMYSTAT ps) { _enemy.stat = ps; }
 
 	enemy();
 	~enemy();

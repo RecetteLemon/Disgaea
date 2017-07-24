@@ -88,14 +88,40 @@ void statUi::showstatUI()
 	IMAGEMANAGER->findImage(L"ClericFace")->render(_rc[4].left, _rc[4].top,50,50, false, 1);
 
 	
-	if(y == 50) IMAGEMANAGER->findImage(L"AdellFace")->render(5, 670,195,195 ,false, 1);
-	if (y == 100) IMAGEMANAGER->findImage(L"RozalinFace")->render(5, 670, 195, 195, false, 1);
-	if (y == 150) IMAGEMANAGER->findImage(L"PramFace")->render(5, 670, 195, 195, false, 1);
-	if (y == 200) IMAGEMANAGER->findImage(L"ValvatorezFace")->render(5, 670, 195, 195, false, 1);
-	if (y == 250) IMAGEMANAGER->findImage(L"ClericFace")->render(5, 670, 195, 195, false, 1);
-
-
 	WCHAR str[128];
+	if (y == 50)
+	{
+		IMAGEMANAGER->findImage(L"AdellFace")->render(5, 670, 195, 195, false, 1);
+		swprintf_s(str, L"ADELL");
+		DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(255, 255, 255), 1), L"°íµñ", 28, str, 50, 615, 400, 615);
+	}
+	if (y == 100)
+
+	{
+		IMAGEMANAGER->findImage(L"RozalinFace")->render(5, 670, 195, 195, false, 1);
+		swprintf_s(str, L"ROZALIN");
+		DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(255, 255, 255), 1), L"°íµñ", 28, str, 50, 615, 400, 615);
+	}
+	if (y == 150)
+	{
+		IMAGEMANAGER->findImage(L"PramFace")->render(5, 670, 195, 195, false, 1);
+		swprintf_s(str, L"PRAM");
+		DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(255, 255, 255), 1), L"°íµñ", 28, str, 50, 615, 400, 615);
+	}
+	if (y == 200)
+	{
+		IMAGEMANAGER->findImage(L"ValvatorezFace")->render(5, 670, 195, 195, false, 1);
+		swprintf_s(str, L"VALVATOREZ");
+		DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(255, 255, 255), 1), L"°íµñ", 28, str, 50, 615, 400, 615);
+	}
+	if (y == 250)
+	{
+		IMAGEMANAGER->findImage(L"ClericFace")->render(5, 670, 195, 195, false, 1);
+		swprintf_s(str, L"CLERIC");
+		DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(255, 255, 255), 1), L"°íµñ", 28, str, 50, 615, 400, 615);
+	}
+
+
 	
 	swprintf_s(str, L"%d", STATMANAGER->getPlayerStat()[0]._lv);
 	DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0, 0, 0), 1), L"°íµñ", 30, str, 535, 45 + 2, 580, 50 + 2);
@@ -120,12 +146,10 @@ void statUi::showstatUI()
 	swprintf_s(str, L"Cleric");
 	DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0, 0, 0), 1), L"°íµñ", 28, str, _rc[4].right + 100, 250 + 2 + 2 + 2 + 2, _rc[4].right + 300, 250 + 2 + 2 + 2 + 2);
 
+
+	
+
 	//ÇÇÅë,¿¥ÇÇÅë
-
-
-	swprintf_s(str, L"%d", _kind);
-	DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(255, 255, 255), 1), L"°íµñ", 30, str, WINSIZEX / 2, WINSIZEY / 2, WINSIZEX / 2 + 100, WINSIZEY / 2 + 100);
-
 
 	swprintf_s(str, L"%d / %d", STATMANAGER->getPlayerStat()[_kind]._hp, STATMANAGER->getPlayerStat()[_kind]._maxHp);
 	DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(255, 255, 255), 1), L"°íµñ", 30, str, 825, 665, 1000, 700);

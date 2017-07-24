@@ -14,6 +14,7 @@ characterManager::~characterManager()
 
 HRESULT characterManager::init(int x, int y)
 {
+
 	_x = x;
 	_y = y;
 

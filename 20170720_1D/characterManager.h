@@ -8,6 +8,8 @@
 #include "Prinny.h"
 
 
+
+
 enum PLAYER
 {
 	PLAYER_ADELL,
@@ -52,10 +54,15 @@ public:
 
 	inline RECT getShadowRC() { return _shadowRc; }
 
-	POINT getCenter() { return PointMake(_player->getX(), _player->getY()); }
-	PLAYERSTAT getStat() { return _player->getStat(); }
+	POINT getPlayerCenter() { return PointMake(_player->getX(), _player->getY()); }
+	PLAYERSTAT getPlayerStat() { return _player->getStat(); }
 
-	void setState(PLAYERSTAT ps) { _player->setStat(ps); }
+	POINT getEnemyCenter() { return PointMake(_enemy->getX(), _enemy->getY()); }
+	ENEMYSTAT getEnemyStat() { return _enemy->getStat(); }
+
+	void setPlayerState(PLAYERSTAT ps) { _player->setStat(ps); }
+	void setEnemyState(ENEMYSTAT ps) { _enemy->setStat(ps); }
+
 	void moveOn() { _player->move(); }
 	
 

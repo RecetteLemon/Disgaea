@@ -142,31 +142,11 @@ void rozalin::render(void)
 {
 	player::render();
 }
-void rozalin::stand(void)
-{
-	player::stand();
-}
-
 void rozalin::move(void)
 {
 	player::move();
 }
-void rozalin::attack(void)
-{
-	player::attack();
-}
-void rozalin::lift(void)
-{
-	player::lift();
-}
-void rozalin::hit(void)
-{
-	player::hit();
-}
-void rozalin::throw_(void)
-{
-	player::throw_();
-}
+
 void rozalin::control(void)
 {
 	player::control();

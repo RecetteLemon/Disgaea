@@ -47,7 +47,6 @@ void player::release(void)
 void player::update(void) 
 {
 	//통상 렉트
-	
 	_player.rc = RectMakeBottomCenter(_player.x, _player.y, 
 		_player.img->getFrameWidth(), _player.img->getFrameHeight());
 
@@ -55,171 +54,146 @@ void player::update(void)
 		_player.shadowImg->getWidth(), _player.shadowImg->getHeight());
 
 
-	if(SCENEMANAGER->sceneCheck(L"TownScene"))this->control();
-	
-
-	//this->move();
-	this->attack();
-	this->lift();
-	this->hit();
-	this->throw_();
-	this->stand();
+	if(SCENEMANAGER->sceneCheck(L"DungeonScene"))this->control();
+	this->stat();
 	this->AstarMove();
+	//this->move();
 
 	if (KEYMANAGER->isOnceKeyDown('P'))
 	{
 		if (_shopOn) _shopOn = false;
 		else _shopOn = true;
 	}
-	
 	if (_shopOn) SCENEMANAGER->changeScene(L"ShopScene");
 	
 }
 
-void player::posSet(void) 
-{
 
-
-
-}
 
 void player::render(void) 
 {
 	//상태별로 애니메이션 그려줌
-
-	//DIRECT2D->drawRectangle(DIRECT2D->_defaultBrush, _player.rc.left, _player.rc.top, _player.rc.right, _player.rc.bottom, 10);
+	WCHAR str[12];
+	swprintf_s(str, L"%d", _player.pos[PLAYER_POS_LB_ATTACK]->getFrameNum());
+	DIRECT2D->drawTextD2D(DIRECT2D->_defaultBrush, str, WINSIZEX / 2, WINSIZEY / 2, WINSIZEX / 2 + 100, WINSIZEY / 2 + 100);
 	DIRECT2D->drawRectangle(DIRECT2D->_defaultBrush, _player.shadowRC.left, _player.shadowRC.top, _player.shadowRC.right, _player.shadowRC.bottom, 10);
-	IMAGEMANAGER->findImage(L"shadow")->render(_player.shadowRC.left, _player.shadowRC.top, true, 0.5f);
-	switch (_player.stat)
-	{
-		//==================서있음====================//
-		case PLAYER_STAT_RT_STAND:
-			_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_RT_STAND],true,1);
-		break;
-		case PLAYER_STAT_LB_STAND:
-			_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_LB_STAND], true, 1);
-		break;
-		case PLAYER_STAT_LT_STAND:
-			_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_LT_STAND], true, 1);
-		break;
-		case PLAYER_STAT_RB_STAND:
-			_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_RB_STAND], true, 1);
-		break;
-
-		//==================움직임====================//
-		case PLAYER_STAT_RT_MOVE:
-			_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_RT_MOVE], true, 1);
-		break;
-		case PLAYER_STAT_LB_MOVE:
-			_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_LB_MOVE], true, 1);
-		break;
-		case PLAYER_STAT_LT_MOVE:
-			_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_LT_MOVE], true, 1);
-		break;
-		case PLAYER_STAT_RB_MOVE:
-			_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_RB_MOVE], true, 1);
-		break;
-
-		//==================공격함====================//
-		case PLAYER_STAT_RT_ATTACK:
-			_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_RT_ATTACK], true, 1);
-		break;
-		case PLAYER_STAT_LB_ATTACK:
-			_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_LB_ATTACK], true, 1);
-		break;
-		case PLAYER_STAT_LT_ATTACK:
-			_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_LT_ATTACK], true, 1);
-		break;
-		case PLAYER_STAT_RB_ATTACK:
-			_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_RB_ATTACK], true, 1);
-		break;
-
-		//==================쳐맞음====================//
-		case PLAYER_STAT_RT_HIT:
-			_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_RT_HIT], true, 1);
-		break;																		   
-		case PLAYER_STAT_LB_HIT:											   
-			_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_LB_HIT], true, 1);
-		break;																		   
-		case PLAYER_STAT_LT_HIT:											   
-			_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_LT_HIT], true, 1);
-		break;																		   
-		case PLAYER_STAT_RB_HIT:											   
-			_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_RB_HIT], true, 1);
-		break;																		   
-																					   
-		//==================던진다====================//								 
-		case PLAYER_STAT_RT_THROW:											   
-			_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_RT_THROW], true, 1);
-		break;																		   
-		case PLAYER_STAT_LB_THROW:											   
-			_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_LB_THROW], true, 1);
-		break;																		   
-		case PLAYER_STAT_LT_THROW:											   
-			_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_LT_THROW], true, 1);
-		break;																		   
-		case PLAYER_STAT_RB_THROW:											   
-			_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_RB_THROW], true, 1);
-		break;																		   
-																					   
-		//==================쳐들다====================//								 
-		case PLAYER_STAT_LB_LIFT:											   
-			_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_LB_LIFT], true, 1);
-		break;																		   
-		case PLAYER_STAT_LT_LIFT:											   
-			_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_LT_LIFT], true, 1);
-		break;																		   
-		case PLAYER_STAT_RT_LIFT:											   
-			_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_RT_LIFT], true, 1);
-		break;																		   
-		case PLAYER_STAT_RB_LIFT:											   
-			_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_RB_LIFT], true, 1);
-		break;																		   
-	
-		//==================스킬씀====================//
-		case PLAYER_STAT_LB_SKILL:
-			_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_LB_SKILL], true, 1);
-			break;
-		case PLAYER_STAT_RB_SKILL:
-			_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_RB_SKILL], true, 1);
-			break;
-		case PLAYER_STAT_LT_SKILL:
-			_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_LT_SKILL], true, 1);
-			break;
-		case PLAYER_STAT_RT_SKILL:
-			_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_RT_SKILL], true, 1);
-			break;
-
-
-		case PLAYER_STAT_END:
-			_player.img = NULL;
-		break;
-	}
-	
+	this->draw();
 }
 
-void player::stand(void)
+void player::stat(void)
 {
 	switch (_player.stat)
 	{
-		case PLAYER_STAT_RT_STAND:
-			_player.pos[PLAYER_POS_RT_STAND]->frameUpdate(TIMEMANAGER->getElapsedTime());
-			if (!_player.pos[PLAYER_POS_RT_STAND]->isPlay()) _player.pos[PLAYER_POS_RT_STAND]->start();
+		//=========================서있음================================
+	case PLAYER_STAT_RT_STAND:
+		_player.pos[PLAYER_POS_RT_STAND]->frameUpdate(TIMEMANAGER->getElapsedTime());
+		if (!_player.pos[PLAYER_POS_RT_STAND]->isPlay()) _player.pos[PLAYER_POS_RT_STAND]->start();
 		break;
-		case PLAYER_STAT_LB_STAND:
-			_player.pos[PLAYER_POS_LB_STAND]->frameUpdate(TIMEMANAGER->getElapsedTime());
-			if (!_player.pos[PLAYER_POS_LB_STAND]->isPlay()) _player.pos[PLAYER_POS_LB_STAND]->start();
+	case PLAYER_STAT_LB_STAND:
+		_player.pos[PLAYER_POS_LB_STAND]->frameUpdate(TIMEMANAGER->getElapsedTime());
+		if (!_player.pos[PLAYER_POS_LB_STAND]->isPlay()) _player.pos[PLAYER_POS_LB_STAND]->start();
 		break;
-		case PLAYER_STAT_LT_STAND:
-			_player.pos[PLAYER_POS_LT_STAND]->frameUpdate(TIMEMANAGER->getElapsedTime());
-			if (!_player.pos[PLAYER_POS_LT_STAND]->isPlay()) _player.pos[PLAYER_POS_LT_STAND]->start();
+	case PLAYER_STAT_LT_STAND:
+		_player.pos[PLAYER_POS_LT_STAND]->frameUpdate(TIMEMANAGER->getElapsedTime());
+		if (!_player.pos[PLAYER_POS_LT_STAND]->isPlay()) _player.pos[PLAYER_POS_LT_STAND]->start();
 		break;
-		case PLAYER_STAT_RB_STAND:
-			_player.pos[PLAYER_POS_RB_STAND]->frameUpdate(TIMEMANAGER->getElapsedTime());
-			if (!_player.pos[PLAYER_POS_RB_STAND]->isPlay()) _player.pos[PLAYER_POS_RB_STAND]->start();
+	case PLAYER_STAT_RB_STAND:
+		_player.pos[PLAYER_POS_RB_STAND]->frameUpdate(TIMEMANAGER->getElapsedTime());
+		if (!_player.pos[PLAYER_POS_RB_STAND]->isPlay()) _player.pos[PLAYER_POS_RB_STAND]->start();
+		break;
+
+		//=========================공격함================================
+	case PLAYER_STAT_RT_ATTACK:
+		_player.pos[PLAYER_POS_RT_ATTACK]->frameUpdate(TIMEMANAGER->getElapsedTime());
+		if (!_player.pos[PLAYER_POS_RT_ATTACK]->isPlay()) _player.stat = PLAYER_STAT_RT_STAND;
+		break;
+	case PLAYER_STAT_LB_ATTACK:
+		_player.pos[PLAYER_POS_LB_ATTACK]->frameUpdate(TIMEMANAGER->getElapsedTime());
+		if (!_player.pos[PLAYER_POS_LB_ATTACK]->isPlay()) _player.stat = PLAYER_STAT_LB_STAND;
+		break;
+	case PLAYER_STAT_LT_ATTACK:
+		_player.pos[PLAYER_POS_LT_ATTACK]->frameUpdate(TIMEMANAGER->getElapsedTime());
+		if (!_player.pos[PLAYER_POS_LT_ATTACK]->isPlay()) _player.stat = PLAYER_STAT_LT_STAND;
+		break;
+	case PLAYER_STAT_RB_ATTACK:
+		_player.pos[PLAYER_POS_RB_ATTACK]->frameUpdate(TIMEMANAGER->getElapsedTime());
+		if (!_player.pos[PLAYER_POS_RB_ATTACK]->isPlay()) _player.stat = PLAYER_STAT_RB_STAND;
+		break;
+
+		//=========================들어올림================================
+	case PLAYER_STAT_RT_LIFT:
+		_player.pos[PLAYER_POS_RT_LIFT]->frameUpdate(TIMEMANAGER->getElapsedTime());
+		if (!_player.pos[PLAYER_POS_RT_LIFT]->isPlay()) _player.pos[PLAYER_POS_RT_LIFT]->start();
+		break;
+	case PLAYER_STAT_LB_LIFT:
+		_player.pos[PLAYER_POS_LB_LIFT]->frameUpdate(TIMEMANAGER->getElapsedTime());
+		if (!_player.pos[PLAYER_POS_LB_LIFT]->isPlay()) _player.pos[PLAYER_POS_LB_LIFT]->start();
+		break;
+	case PLAYER_STAT_LT_LIFT:
+		_player.pos[PLAYER_POS_LT_LIFT]->frameUpdate(TIMEMANAGER->getElapsedTime());
+		if (!_player.pos[PLAYER_POS_LT_LIFT]->isPlay()) _player.pos[PLAYER_POS_LT_LIFT]->start();
+		break;
+	case PLAYER_STAT_RB_LIFT:
+		_player.pos[PLAYER_POS_RB_LIFT]->frameUpdate(TIMEMANAGER->getElapsedTime());
+		if (!_player.pos[PLAYER_POS_RB_LIFT]->isPlay()) _player.pos[PLAYER_POS_RB_LIFT]->start();
+		break;
+
+		//=========================쳐맞음================================
+	case PLAYER_STAT_RT_HIT:
+		_player.pos[PLAYER_POS_RT_HIT]->frameUpdate(TIMEMANAGER->getElapsedTime());
+		if (!_player.pos[PLAYER_POS_RT_HIT]->isPlay()) _player.stat = PLAYER_STAT_RT_STAND;
+		break;
+	case PLAYER_STAT_LB_HIT:
+		_player.pos[PLAYER_POS_LB_HIT]->frameUpdate(TIMEMANAGER->getElapsedTime());
+		if (!_player.pos[PLAYER_POS_LB_HIT]->isPlay()) _player.stat = PLAYER_STAT_LB_STAND;
+		break;
+	case PLAYER_STAT_LT_HIT:
+		_player.pos[PLAYER_POS_LT_HIT]->frameUpdate(TIMEMANAGER->getElapsedTime());
+		if (!_player.pos[PLAYER_POS_LT_HIT]->isPlay()) _player.stat = PLAYER_STAT_LT_STAND;
+		break;
+	case PLAYER_STAT_RB_HIT:
+		_player.pos[PLAYER_POS_RB_HIT]->frameUpdate(TIMEMANAGER->getElapsedTime());
+		if (!_player.pos[PLAYER_POS_RB_HIT]->isPlay()) _player.stat = PLAYER_STAT_RB_STAND;
+		break;
+
+		//=========================던 짐================================
+	case PLAYER_STAT_RT_THROW:
+		_player.pos[PLAYER_POS_RT_THROW]->frameUpdate(TIMEMANAGER->getElapsedTime());
+		if (!_player.pos[PLAYER_POS_RT_THROW]->isPlay()) _player.pos[PLAYER_POS_RT_THROW]->start();
+		break;
+	case PLAYER_STAT_LB_THROW:
+		_player.pos[PLAYER_POS_LB_THROW]->frameUpdate(TIMEMANAGER->getElapsedTime());
+		if (!_player.pos[PLAYER_POS_LB_THROW]->isPlay()) _player.pos[PLAYER_POS_LB_THROW]->start();
+		break;
+	case PLAYER_STAT_LT_THROW:
+		_player.pos[PLAYER_POS_LT_THROW]->frameUpdate(TIMEMANAGER->getElapsedTime());
+		if (!_player.pos[PLAYER_POS_LT_THROW]->isPlay()) _player.pos[PLAYER_POS_LT_THROW]->start();
+		break;
+	case PLAYER_STAT_RB_THROW:
+		_player.pos[PLAYER_POS_RB_THROW]->frameUpdate(TIMEMANAGER->getElapsedTime());
+		if (!_player.pos[PLAYER_POS_RB_THROW]->isPlay()) _player.pos[PLAYER_POS_RB_THROW]->start();
+		break;
+
+		//=========================스킬씀================================
+	case PLAYER_STAT_RT_SKILL:
+		_player.pos[PLAYER_POS_RT_SKILL]->frameUpdate(TIMEMANAGER->getElapsedTime());
+		if (!_player.pos[PLAYER_POS_RT_SKILL]->isPlay()) _player.pos[PLAYER_POS_RT_SKILL]->start();
+		break;
+	case PLAYER_STAT_LB_SKILL:
+		_player.pos[PLAYER_POS_LB_SKILL]->frameUpdate(TIMEMANAGER->getElapsedTime());
+		if (!_player.pos[PLAYER_POS_LB_SKILL]->isPlay()) _player.pos[PLAYER_POS_LB_SKILL]->start();
+		break;
+	case PLAYER_STAT_LT_SKILL:
+		_player.pos[PLAYER_POS_LT_SKILL]->frameUpdate(TIMEMANAGER->getElapsedTime());
+		if (!_player.pos[PLAYER_POS_LT_SKILL]->isPlay()) _player.pos[PLAYER_POS_LT_SKILL]->start();
+		break;
+	case PLAYER_STAT_RB_SKILL:
+		_player.pos[PLAYER_POS_RB_SKILL]->frameUpdate(TIMEMANAGER->getElapsedTime());
+		if (!_player.pos[PLAYER_POS_RB_SKILL]->isPlay()) _player.pos[PLAYER_POS_RB_SKILL]->start();
 		break;
 	}
 }
+
 void player::move(void)
 {
 	switch (_player.stat)
@@ -274,114 +248,113 @@ void player::move(void)
 		break;
 	}
 }
-void player::attack(void)
-{
-	switch (_player.stat)
-	{
-		case PLAYER_STAT_RT_ATTACK:
-			_player.pos[PLAYER_POS_RT_ATTACK]->frameUpdate(TIMEMANAGER->getElapsedTime());
-			if (!_player.pos[PLAYER_POS_RT_ATTACK]->isPlay()) _player.pos[PLAYER_POS_RT_ATTACK]->start();
-		break;
-		case PLAYER_STAT_LB_ATTACK:
-			_player.pos[PLAYER_POS_LB_ATTACK]->frameUpdate(TIMEMANAGER->getElapsedTime());
-			if (!_player.pos[PLAYER_POS_LB_ATTACK]->isPlay()) _player.pos[PLAYER_POS_LB_ATTACK]->start();
-		break;
-		case PLAYER_STAT_LT_ATTACK:
-			_player.pos[PLAYER_POS_LT_ATTACK]->frameUpdate(TIMEMANAGER->getElapsedTime());
-			if (!_player.pos[PLAYER_POS_LT_ATTACK]->isPlay()) _player.pos[PLAYER_POS_LT_ATTACK]->start();
-		break;
-		case PLAYER_STAT_RB_ATTACK:
-			_player.pos[PLAYER_POS_RB_ATTACK]->frameUpdate(TIMEMANAGER->getElapsedTime());
-			if (!_player.pos[PLAYER_POS_RB_ATTACK]->isPlay()) _player.pos[PLAYER_POS_RB_ATTACK]->start();
-		break;
-	}
-}
-void player::lift(void)
-{
-	switch (_player.stat)
-	{
-		case PLAYER_STAT_RT_LIFT:
-			_player.pos[PLAYER_POS_RT_LIFT]->frameUpdate(TIMEMANAGER->getElapsedTime());
-			if (!_player.pos[PLAYER_POS_RT_LIFT]->isPlay()) _player.pos[PLAYER_POS_RT_LIFT]->start();
-		break;
-		case PLAYER_STAT_LB_LIFT:
-			_player.pos[PLAYER_POS_LB_LIFT]->frameUpdate(TIMEMANAGER->getElapsedTime());
-			if (!_player.pos[PLAYER_POS_LB_LIFT]->isPlay()) _player.pos[PLAYER_POS_LB_LIFT]->start();
-		break;
-		case PLAYER_STAT_LT_LIFT:
-			_player.pos[PLAYER_POS_LT_LIFT]->frameUpdate(TIMEMANAGER->getElapsedTime());
-			if (!_player.pos[PLAYER_POS_LT_LIFT]->isPlay()) _player.pos[PLAYER_POS_LT_LIFT]->start();
-		break;
-		case PLAYER_STAT_RB_LIFT:
-			_player.pos[PLAYER_POS_RB_LIFT]->frameUpdate(TIMEMANAGER->getElapsedTime());
-			if (!_player.pos[PLAYER_POS_RB_LIFT]->isPlay()) _player.pos[PLAYER_POS_RB_LIFT]->start();
-		break;
-	}
-}
-void player::hit(void)
-{
-	switch (_player.stat)
-	{
-		case PLAYER_STAT_RT_HIT:
-			_player.pos[PLAYER_POS_RT_HIT]->frameUpdate(TIMEMANAGER->getElapsedTime());
-			if (!_player.pos[PLAYER_POS_RT_HIT]->isPlay()) _player.pos[PLAYER_POS_RT_HIT]->start();
-		break;
-		case PLAYER_STAT_LB_HIT:
-			_player.pos[PLAYER_POS_LB_HIT]->frameUpdate(TIMEMANAGER->getElapsedTime());
-			if (!_player.pos[PLAYER_POS_LB_HIT]->isPlay()) _player.pos[PLAYER_POS_LB_HIT]->start();
-		break;
-		case PLAYER_STAT_LT_HIT:
-			_player.pos[PLAYER_POS_LT_HIT]->frameUpdate(TIMEMANAGER->getElapsedTime());
-			if (!_player.pos[PLAYER_POS_LT_HIT]->isPlay()) _player.pos[PLAYER_POS_LT_HIT]->start();
-		break;
-		case PLAYER_STAT_RB_HIT:
-			_player.pos[PLAYER_POS_RB_HIT]->frameUpdate(TIMEMANAGER->getElapsedTime());
-			if (!_player.pos[PLAYER_POS_RB_HIT]->isPlay()) _player.pos[PLAYER_POS_RB_HIT]->start();
-		break;
-	}
-}
-void player::throw_(void)
-{
-	switch (_player.stat)
-	{
-		case PLAYER_STAT_RT_THROW:
-			_player.pos[PLAYER_POS_RT_THROW]->frameUpdate(TIMEMANAGER->getElapsedTime());
-			if (!_player.pos[PLAYER_POS_RT_THROW]->isPlay()) _player.pos[PLAYER_POS_RT_THROW]->start();
-		break;
-		case PLAYER_STAT_LB_THROW:
-			_player.pos[PLAYER_POS_LB_THROW]->frameUpdate(TIMEMANAGER->getElapsedTime());
-			if (!_player.pos[PLAYER_POS_LB_THROW]->isPlay()) _player.pos[PLAYER_POS_LB_THROW]->start();
-		break;
-		case PLAYER_STAT_LT_THROW:
-			_player.pos[PLAYER_POS_LT_THROW]->frameUpdate(TIMEMANAGER->getElapsedTime());
-			if (!_player.pos[PLAYER_POS_LT_THROW]->isPlay()) _player.pos[PLAYER_POS_LT_THROW]->start();
-		break;
-		case PLAYER_STAT_RB_THROW:
-			_player.pos[PLAYER_POS_RB_THROW]->frameUpdate(TIMEMANAGER->getElapsedTime());
-			if (!_player.pos[PLAYER_POS_RB_THROW]->isPlay()) _player.pos[PLAYER_POS_RB_THROW]->start();
-		break;
-	}
-}
 
-void player::skill(void)
+void player::draw(void)
 {
+	IMAGEMANAGER->findImage(L"shadow")->render(_player.shadowRC.left, _player.shadowRC.top, true, 0.5f);
 	switch (_player.stat)
 	{
-	case PLAYER_STAT_RT_SKILL:
-		_player.pos[PLAYER_POS_RT_SKILL]->frameUpdate(TIMEMANAGER->getElapsedTime());
-		if (!_player.pos[PLAYER_POS_RT_SKILL]->isPlay()) _player.pos[PLAYER_POS_RT_SKILL]->start();
+		//==================서있음====================//
+	case PLAYER_STAT_RT_STAND:
+		_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_RT_STAND], true, 1);
 		break;
+	case PLAYER_STAT_LB_STAND:
+		_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_LB_STAND], true, 1);
+		break;
+	case PLAYER_STAT_LT_STAND:
+		_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_LT_STAND], true, 1);
+		break;
+	case PLAYER_STAT_RB_STAND:
+		_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_RB_STAND], true, 1);
+		break;
+
+		//==================움직임====================//
+	case PLAYER_STAT_RT_MOVE:
+		_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_RT_MOVE], true, 1);
+		break;
+	case PLAYER_STAT_LB_MOVE:
+		_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_LB_MOVE], true, 1);
+		break;
+	case PLAYER_STAT_LT_MOVE:
+		_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_LT_MOVE], true, 1);
+		break;
+	case PLAYER_STAT_RB_MOVE:
+		_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_RB_MOVE], true, 1);
+		break;
+
+		//==================공격함====================//
+	case PLAYER_STAT_RT_ATTACK:
+		_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_RT_ATTACK], true, 1);
+		break;
+	case PLAYER_STAT_LB_ATTACK:
+		_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_LB_ATTACK], true, 1);
+		break;
+	case PLAYER_STAT_LT_ATTACK:
+		_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_LT_ATTACK], true, 1);
+		break;
+	case PLAYER_STAT_RB_ATTACK:
+		_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_RB_ATTACK], true, 1);
+		break;
+
+		//==================쳐맞음====================//
+	case PLAYER_STAT_RT_HIT:
+		_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_RT_HIT], true, 1);
+		break;
+	case PLAYER_STAT_LB_HIT:
+		_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_LB_HIT], true, 1);
+		break;
+	case PLAYER_STAT_LT_HIT:
+		_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_LT_HIT], true, 1);
+		break;
+	case PLAYER_STAT_RB_HIT:
+		_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_RB_HIT], true, 1);
+		break;
+
+		//==================던진다====================//								 
+	case PLAYER_STAT_RT_THROW:
+		_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_RT_THROW], true, 1);
+		break;
+	case PLAYER_STAT_LB_THROW:
+		_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_LB_THROW], true, 1);
+		break;
+	case PLAYER_STAT_LT_THROW:
+		_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_LT_THROW], true, 1);
+		break;
+	case PLAYER_STAT_RB_THROW:
+		_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_RB_THROW], true, 1);
+		break;
+
+		//==================쳐들다====================//								 
+	case PLAYER_STAT_LB_LIFT:
+		_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_LB_LIFT], true, 1);
+		break;
+	case PLAYER_STAT_LT_LIFT:
+		_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_LT_LIFT], true, 1);
+		break;
+	case PLAYER_STAT_RT_LIFT:
+		_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_RT_LIFT], true, 1);
+		break;
+	case PLAYER_STAT_RB_LIFT:
+		_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_RB_LIFT], true, 1);
+		break;
+
+		//==================스킬씀====================//
 	case PLAYER_STAT_LB_SKILL:
-		_player.pos[PLAYER_POS_LB_SKILL]->frameUpdate(TIMEMANAGER->getElapsedTime());
-		if (!_player.pos[PLAYER_POS_LB_SKILL]->isPlay()) _player.pos[PLAYER_POS_LB_SKILL]->start();
-		break;
-	case PLAYER_STAT_LT_SKILL:
-		_player.pos[PLAYER_POS_LT_SKILL]->frameUpdate(TIMEMANAGER->getElapsedTime());
-		if (!_player.pos[PLAYER_POS_LT_SKILL]->isPlay()) _player.pos[PLAYER_POS_LT_SKILL]->start();
+		_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_LB_SKILL], true, 1);
 		break;
 	case PLAYER_STAT_RB_SKILL:
-		_player.pos[PLAYER_POS_RB_SKILL]->frameUpdate(TIMEMANAGER->getElapsedTime());
-		if (!_player.pos[PLAYER_POS_RB_SKILL]->isPlay()) _player.pos[PLAYER_POS_RB_SKILL]->start();
+		_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_RB_SKILL], true, 1);
+		break;
+	case PLAYER_STAT_LT_SKILL:
+		_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_LT_SKILL], true, 1);
+		break;
+	case PLAYER_STAT_RT_SKILL:
+		_player.img->aniRender(_player.rc.left, _player.rc.top, _player.pos[PLAYER_POS_RT_SKILL], true, 1);
+		break;
+
+
+	case PLAYER_STAT_END:
+		_player.img = NULL;
 		break;
 	}
 }
@@ -429,17 +402,23 @@ void player::control(void)
 	{
 		_player.stat = PLAYER_STAT_LT_STAND;
 	}
-
-	
+	if (KEYMANAGER->isOnceKeyDown('Z'))
+	{
+		_player.stat = PLAYER_STAT_LB_ATTACK;
+		_player.pos[PLAYER_POS_LB_ATTACK]->start();
+	}
 }
 
 void player::AstarMove(void)
 {
 	//a*********************************************
 
-
-
-
 }
+
+void player::posSet(void)
+{
+}
+
+
 
 

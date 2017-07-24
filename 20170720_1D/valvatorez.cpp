@@ -149,32 +149,14 @@ void valvatorez::render(void)
 }
 
 //각상태별로 개별적으로 필요하면 추가
-void valvatorez::stand(void)
-{
-	player::stand();
-}
+
 
 void valvatorez::move(void)
 {
 	player::move();
 }
 
-void valvatorez::attack(void)
-{
-	player::attack();
-}
-void valvatorez::lift(void)
-{
-	player::lift();
-}
-void valvatorez::hit(void)
-{
-	player::hit();
-}
-void valvatorez::throw_(void)
-{
-	player::throw_();
-}
+
 
 void valvatorez::control(void)
 {

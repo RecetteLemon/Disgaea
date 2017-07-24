@@ -105,13 +105,10 @@ public:
 	//상태값변하는 조건처리할 함수
 	virtual void control(void);
 	//상태별 처리할함수들
-	virtual void stand(void);
-	virtual void attack(void);
-	virtual void lift(void);
-	virtual void hit(void);
-	virtual void throw_(void);
+	virtual void stat(void);
+	virtual void draw(void);
+
 	virtual void move(void);
-	virtual void skill(void);
 
 	virtual void AstarMove(void);
 

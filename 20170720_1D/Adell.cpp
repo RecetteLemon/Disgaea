@@ -73,20 +73,20 @@ void Adell::posSet(void)
 
 	/////
 	int arrLB_ATTACK[] = { 72,73,74,75 };
-	_player.pos[PLAYER_POS_LB_ATTACK]->setPlayFrame(arrLB_ATTACK, 4, 1);
+	_player.pos[PLAYER_POS_LB_ATTACK]->setPlayFrame(arrLB_ATTACK, 4, 0);
 	_player.pos[PLAYER_POS_LB_ATTACK]->setFPS(10);
 
 	int arrRB_ATTACK[] = { 83,82,81,80 };
-	_player.pos[PLAYER_POS_LB_ATTACK]->setPlayFrame(arrRB_ATTACK, 4, 1);
-	_player.pos[PLAYER_POS_LB_ATTACK]->setFPS(10);
+	_player.pos[PLAYER_POS_RB_ATTACK]->setPlayFrame(arrRB_ATTACK, 4, 0);
+	_player.pos[PLAYER_POS_RB_ATTACK]->setFPS(10);
 
 	int arrLT_ATTACK[] = { 84,85,86,87 };
-	_player.pos[PLAYER_POS_LB_ATTACK]->setPlayFrame(arrLT_ATTACK, 4, 1);
-	_player.pos[PLAYER_POS_LB_ATTACK]->setFPS(10);
+	_player.pos[PLAYER_POS_LT_ATTACK]->setPlayFrame(arrLT_ATTACK, 4, 0);
+	_player.pos[PLAYER_POS_LT_ATTACK]->setFPS(10);
 
 	int arrRT_ATTACK[] = { 95,94,93,92 };
-	_player.pos[PLAYER_POS_LB_ATTACK]->setPlayFrame(arrRT_ATTACK, 4, 1);
-	_player.pos[PLAYER_POS_LB_ATTACK]->setFPS(10);
+	_player.pos[PLAYER_POS_RT_ATTACK]->setPlayFrame(arrRT_ATTACK, 4, 0);
+	_player.pos[PLAYER_POS_RT_ATTACK]->setFPS(10);
 
 	///////
 
