@@ -26,6 +26,7 @@ HRESULT menuUI::init()
 	_turnMenu = false;
 	_invenOn = false;
 	_showui = false;
+	_equipOn = false;
 
 	_cursor = SLOT_ITEM;
 	_selectNum = 0;
