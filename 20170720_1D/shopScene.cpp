@@ -225,33 +225,6 @@ void shopScene::buyPage()
 			if (_item->getVItem()[_changeNum + (int)_buySlot].Price > _playerMoney) _isBuying = false;
 		}
 	}
-	//슬롯 만들기
-	for (int i = 0; i < 11; i++)
-	{
-		switch (_changeNum)
-		{
-		case 0:
-			_slot[i] = RectMake(76, 47 + (56 * i), 833, 56);
-			_bar = RectMake(917, 40, 40, 123);
-			if (i > 8) continue;
-			break;
-		case 1:
-			_slot[i] = RectMake(76, 47 + (56 * (i - 1)), 833, 56);
-			_bar = RectMake(917, 155, 40, 123);
-			if (i > 9) continue;
-			break;
-		case 2:
-			_slot[i] = RectMake(76, 47 + (56 * (i - 2)), 833, 56);
-			_bar = RectMake(917, 270, 40, 123);
-			if (i > 10) continue;
-			break;
-		case 3:
-			_slot[i] = RectMake(76, 47 + (56 * (i - 3)), 833, 56);
-			_bar = RectMake(917, 385, 40, 123);
-			break;
-		}
-
-	}
 	//위, 아래 버튼
 	if (_buySlot == 0)
 	{
@@ -297,6 +270,34 @@ void shopScene::buyPage()
 			_buySlot = (BUYSLOT)_buySlotNum;
 		}
 	}
+	//슬롯 만들기
+	for (int i = 0; i < 11; i++)
+	{
+		switch (_changeNum)
+		{
+		case 0:
+			_slot[i] = RectMake(76, 47 + (56 * i), 833, 56);
+			_bar = RectMake(917, 40, 40, 123);
+			if (i > 8) continue;
+			break;
+		case 1:
+			_slot[i] = RectMake(76, 47 + (56 * (i - 1)), 833, 56);
+			_bar = RectMake(917, 155, 40, 123);
+			if (i > 9) continue;
+			break;
+		case 2:
+			_slot[i] = RectMake(76, 47 + (56 * (i - 2)), 833, 56);
+			_bar = RectMake(917, 270, 40, 123);
+			if (i > 10) continue;
+			break;
+		case 3:
+			_slot[i] = RectMake(76, 47 + (56 * (i - 3)), 833, 56);
+			_bar = RectMake(917, 385, 40, 123);
+			break;
+		}
+
+	}
+
 
 	//정보 이미지 나오게하는 조건
 	RECT tempRC;
@@ -343,6 +344,20 @@ void shopScene::buyPage()
 //상점 판매 페이지
 void shopScene::sellPage()
 {
+	//이미지 최신화
+	for (int i = 0; i < 24; i++)
+	{
+		//있는 배열 범위까지만 아이템의 이미지를 넣어준다
+		if (INVENMANAGER->getVItem().size() > i)
+		{
+			_invenSImage[i] = INVENMANAGER->getVItem()[i].priceImage;
+		}
+		//없는 배열에는 논 이미지를 넣어준다
+		else if (INVENMANAGER->getVItem().size() <= i)
+		{
+			_invenSImage[i] = IMAGEMANAGER->findImage(L"noneShop");
+		}
+	}
 	//팔것인지 묻는
 	if (!_isSelling)
 	{
@@ -381,7 +396,52 @@ void shopScene::sellPage()
 			_sellType = TYPE_WAREHOUSE;
 		}
 	}
+	//위, 아래 버튼
+	if (_sellSlot == 0)
+	{
+		if (KEYMANAGER->isOnceKeyDown('W'))
+		{
+			_changeNum--;
+			if (_changeNum < 0)
+			{
+				_sellSlotNum = 6;
+				_changeNum = 17;
+			}
+			else _sellSlotNum = 0;
+			_sellSlot = (SELLSLOT)_sellSlotNum;
+		}
+	}
+	else
+	{
+		if (KEYMANAGER->isOnceKeyDown('W'))
+		{
+			_sellSlotNum--;
+			_sellSlot = (SELLSLOT)_sellSlotNum;
+		}
+	}
 
+	if (_sellSlot == 6)
+	{
+		if (KEYMANAGER->isOnceKeyDown('S'))
+		{
+			_changeNum++;
+			if (_changeNum > 17)
+			{
+				_sellSlotNum = 0;
+				_changeNum = 0;
+			}
+			else _sellSlotNum = 6;
+			_sellSlot = (SELLSLOT)_sellSlotNum;
+		}
+	}
+	else
+	{
+		if (KEYMANAGER->isOnceKeyDown('S'))
+		{
+			_sellSlotNum++;
+			_sellSlot = (SELLSLOT)_sellSlotNum;
+		}
+	}
 	//상태별 아이템 위치 정렬
 	if (KEYMANAGER->isOnceKeyDown('I'))
 	{
@@ -522,52 +582,7 @@ void shopScene::sellPage()
 		_wareHouseSlot[i] = RectMake(76, 104 + 2 + (58 * i), 834, 56);
 	}
 
-	//위, 아래 버튼
-	if (_sellSlot == 0)
-	{
-		if (KEYMANAGER->isOnceKeyDown('W'))
-		{
-			_changeNum--;
-			if (_changeNum < 0)
-			{
-				_sellSlotNum = 6;
-				_changeNum = 17;
-			}
-			else _sellSlotNum = 0;
-			_sellSlot = (SELLSLOT)_sellSlotNum;
-		}
-	}
-	else
-	{
-		if (KEYMANAGER->isOnceKeyDown('W'))
-		{
-			_sellSlotNum--;
-			_sellSlot = (SELLSLOT)_sellSlotNum;
-		}
-	}
 
-	if (_sellSlot == 6)
-	{
-		if (KEYMANAGER->isOnceKeyDown('S'))
-		{
-			_changeNum++;
-			if (_changeNum > 17)
-			{
-				_sellSlotNum = 0;
-				_changeNum = 0;
-			}
-			else _sellSlotNum = 6;
-			_sellSlot = (SELLSLOT)_sellSlotNum;
-		}
-	}
-	else
-	{
-		if (KEYMANAGER->isOnceKeyDown('S'))
-		{
-			_sellSlotNum++;
-			_sellSlot = (SELLSLOT)_sellSlotNum;
-		}
-	}
 
 	//정보 이미지 나오게하는 조건
 	RECT tempRC;

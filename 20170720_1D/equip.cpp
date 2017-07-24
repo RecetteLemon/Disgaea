@@ -43,6 +43,19 @@ void equip::release()
 
 void equip::update()
 {
+	for (int i = 0; i < 24; i++)
+	{
+		//있는 배열 범위까지만 아이템의 이미지를 넣어준다
+		if (INVENMANAGER->getVItem().size() > i)
+		{
+			i_slot[i] = INVENMANAGER->getVItem()[i].Image;
+		}
+		//없는 배열에는 논 이미지를 넣어준다
+		else if (INVENMANAGER->getVItem().size() <= i)
+		{
+			i_slot[i] = IMAGEMANAGER->findImage(L"none");
+		}
+	}
 	cursorMove();
 	slotMove();
 	itemInfo();
@@ -96,8 +109,8 @@ void equip::render()
 		IMAGEMANAGER->findImage(L"miniBlack")->render(_itemBox.left, _itemBox.top, false, 0.4f);
 		IMAGEMANAGER->findImage(L"miniInfo")->render(_itemBox.left, _itemBox.top, false, 1.0f);
 		IMAGEMANAGER->findImage(L"infoBox")->render(61, _invenBox.bottom + 20, false, 1.0f);
-		INVENMANAGER->getVItem()[_tempNum + _num].info->render(61 + 13, _invenBox.bottom + 20 + 7, false, 1.0f);
-		INVENMANAGER->getVItem()[_tempNum + _num].Image2->render(_itemBox.left + 7, _itemBox.top + 10, false, 1.0f);
+		INVENMANAGER->getVItem()[_slotCount + (int)_slotNum].info->render(61 + 13, _invenBox.bottom + 20 + 7, false, 1.0f);
+		INVENMANAGER->getVItem()[_slotCount + (int)_slotNum].Image2->render(_itemBox.left + 7, _itemBox.top + 10, false, 1.0f);
 	}
 	IMAGEMANAGER->findImage(L"cursor")->render(_cursor.left, _cursor.top, false, 1.0f);
 }
@@ -211,7 +224,6 @@ void equip::equipItem()
 				_isEquip = false;
 				STATMANAGER->pushBackVWeapon(0, INVENMANAGER->getVItem());
 				INVENMANAGER->erase2VItem(0);
-
 			}
 			//템이 여러개 있을때
 			else if (INVENMANAGER->getVItem().size() > 1)
