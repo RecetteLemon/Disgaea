@@ -25,7 +25,7 @@ HRESULT statUi::init()
 	for (int i = 0; i < 5; i++)
 	{
 		_hp[i] = new progressBar;
-		_hp[i]->init(L"UI/stat_hp", L"UI/stat_maxhp", 635, 60 + 50 * i, 230, 10);
+		_hp[i]->init(L"UI/stat_hp", L"UI/stat_maxhp", 635, 64 + 52 * i, 230, 10);
 	}
 	
 
@@ -98,16 +98,27 @@ void statUi::showstatUI()
 	WCHAR str[128];
 	
 	swprintf_s(str, L"%d", STATMANAGER->getPlayerStat()[0]._lv);
-	DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0, 0, 0), 1), L"±√º≠√º", 30, str, 535, 45, 580, 50);
+	DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0, 0, 0), 1), L"∞ÌµÒ", 30, str, 535, 45 + 2, 580, 50 + 2);
 	swprintf_s(str, L"%d", STATMANAGER->getPlayerStat()[1]._lv);
-	DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0, 0, 0), 1), L"∞ÌµÒ", 30, str, 535, 95, 580, 100);
+	DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0, 0, 0), 1), L"∞ÌµÒ", 30, str, 535, 95 + 2 + 2, 580, 100 + 2 + 2);
 	swprintf_s(str, L"%d", STATMANAGER->getPlayerStat()[2]._lv);
-	DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0, 0, 0), 1), L"∞ÌµÒ", 30, str, 535, 145, 580, 150);
+	DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0, 0, 0), 1), L"∞ÌµÒ", 30, str, 535, 145 + 2 + 2 + 2, 580, 150 + 2 + 2 + 2);
 	swprintf_s(str, L"%d", STATMANAGER->getPlayerStat()[3]._lv);
-	DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0, 0, 0), 1), L"∞ÌµÒ", 30, str, 535, 195, 580, 200);
+	DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0, 0, 0), 1), L"∞ÌµÒ", 30, str, 535, 195 + 2 + 2 + 2 + 2, 580, 200 + 2 + 2 + 2 + 2);
 	swprintf_s(str, L"%d", STATMANAGER->getPlayerStat()[4]._lv);
-	DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0, 0, 0), 1), L"∞ÌµÒ", 30, str, 535, 245, 580, 250);
+	DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0, 0, 0), 1), L"∞ÌµÒ", 30, str, 535, 245 + 2 + 2 + 2 + 2 + 2, 580, 250 + 2 + 2 + 2 + 2 + 2);
 
+
+	swprintf_s(str, L"Adell");
+	DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0, 0, 0), 1), L"∞ÌµÒ", 28, str, _rc[0].right + 100, 50 + 2, _rc[0].right + 300, 50 + 2);
+	swprintf_s(str, L"Rozalin");
+	DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0, 0, 0), 1), L"∞ÌµÒ", 28, str, _rc[1].right + 100, 100 + 2 + 2, _rc[1].right + 300, 100 + 2 + 2);
+	swprintf_s(str, L"Pram");
+	DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0, 0, 0), 1), L"∞ÌµÒ", 28, str, _rc[2].right + 100, 150 + 2 + 2 + 2, _rc[2].right + 300, 150 + 2 + 2 + 2);
+	swprintf_s(str, L"Valvatorez");
+	DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0, 0, 0), 1), L"∞ÌµÒ", 28, str, _rc[3].right + 100, 200 + 2 + 2 + 2 + 2, _rc[3].right + 300, 200 + 2 + 2 + 2 + 2);
+	swprintf_s(str, L"Cleric");
+	DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0, 0, 0), 1), L"∞ÌµÒ", 28, str, _rc[4].right + 100, 250 + 2 + 2 + 2 + 2, _rc[4].right + 300, 250 + 2 + 2 + 2 + 2);
 
 	//««≈Î,ø•««≈Î
 

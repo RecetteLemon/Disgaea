@@ -160,7 +160,7 @@ void direct2DManager::drawTextD2D(ID2D1SolidColorBrush* brush, LPCWSTR fontName,
 	float y2 = endY;
 
 	//	TextFormat »ý¼º
-	_writeFactory->CreateTextFormat(fontName, NULL, DWRITE_FONT_WEIGHT_REGULAR,
+	_writeFactory->CreateTextFormat(fontName, NULL, DWRITE_FONT_WEIGHT_HEAVY,
 		DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, fontSize, L"", &_customTextFormat);
 
 
