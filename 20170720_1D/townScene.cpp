@@ -172,12 +172,10 @@ void townScene::drawTile()
 			-CAMERAMANAGER->getY() + _tile[i].y + TILESIZEY / 2 < 22 ||
 			-CAMERAMANAGER->getY() + _tile[i].y - TILESIZEY / 2 > 22 + TILEMONITORSIZEH))
 		{
-			if (_tile[i].z == 0)
-			{
-				IMAGEMANAGER->findImage(L"IsoTerrain")->frameRender(_tile[i].x - TILESIZEX / 2,
-					_tile[i].y,
-					_tile[i].terFrame.x, _tile[i].terFrame.y, true, 1.0f);
-			}
+			IMAGEMANAGER->findImage(L"IsoTerrain")->frameRender(_tile[i].x - TILESIZEX / 2,
+				_tile[i].y,
+				_tile[i].terFrame.x, _tile[i].terFrame.y, true, 1.0f);
+			
 		}
 	}
 
@@ -205,21 +203,23 @@ void townScene::drawTile()
 				DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[3].x, _tile[i].line[3].y, _tile[i].line[0].x, _tile[i].line[0].y, true, 1);
 			}
 
+			if (_tile[i].obj == OBJ_NPC)
+			{
+				_npc->aniRender(_tile[i].x - TILESIZEX / 2 - _npc->getFrameWidth() + TILESIZEX - 38,
+					_tile[i].y - _tile[i].z - _npc->getFrameHeight() - TILESIZEY * (_tile[i].z - 1) - 30,
+					_npcFrame, true, 1.0);
+			}
+
 			if (_tile[i].obj != OBJ_ERASE)
 			{
-				if (_tile[i].obj == OBJ_NPC)
-				{
-					_npc->aniRender(_tile[i].x - TILESIZEX / 2 - _npc->getFrameWidth() + TILESIZEX - 38,
-						_tile[i].y - _tile[i].z - _npc->getFrameHeight() - TILESIZEY * (_tile[i].z - 1) - 30,
-						_npcFrame, true, 1.0);
-				}
-				else
+				if (_tile[i].obj != OBJ_NPC)
 				{
 					IMAGEMANAGER->findImage(L"IsoObject")->frameRender(_tile[i].x - TILESIZEX / 2 - IMAGEMANAGER->findImage(L"IsoObject")->getFrameWidth() + TILESIZEX,
 						_tile[i].y - _tile[i].z - IMAGEMANAGER->findImage(L"IsoObject")->getFrameHeight() - TILESIZEY * (_tile[i].z - 1),
 						_tile[i].objFrame.x, _tile[i].objFrame.y, true, 1.0f);
 				}
 			}
+			
 		}
 		if (_tileIndex == i) _cm->render();
 	}
