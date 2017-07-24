@@ -40,7 +40,7 @@ void dungeonScene::update()
 void dungeonScene::render()
 {
 	this->drawTile();
-	_cm->render();
+	//_cm->render();
 
 	//차례가 된 캐릭터(플레이어)의 moveList 표시
 	//ASTARMANAGER->findAStar(_cm->getName())->renderGoalList();
