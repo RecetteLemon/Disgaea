@@ -42,6 +42,7 @@ void townScene::update()
 	this->aStarMove();
 	_cm->update();
 	_npcFrame->frameUpdate(0.2);
+	
 }
 void townScene::render()
 {
@@ -165,11 +166,30 @@ void townScene::drawTile()
 			-CAMERAMANAGER->getY() + _tile[i].y + TILESIZEY / 2 < 22 ||
 			-CAMERAMANAGER->getY() + _tile[i].y - TILESIZEY / 2 > 22 + TILEMONITORSIZEH))
 		{
-			for (int j = 0; j < _tile[i].z + 1; j++)
+			if (_tile[i].z == 0)
 			{
 				IMAGEMANAGER->findImage(L"IsoTerrain")->frameRender(_tile[i].x - TILESIZEX / 2,
-					_tile[i].y - j * TILESIZEZ,
+					_tile[i].y,
 					_tile[i].terFrame.x, _tile[i].terFrame.y, true, 1.0f);
+			}
+		}
+	}
+
+	for (int i = 0; i < TILEX * TILEY; i++)
+	{
+		if ((-CAMERAMANAGER->getX() + _tile[i].x + TILESIZEX / 2 > 22 ||
+			-CAMERAMANAGER->getX() + _tile[i].x - TILESIZEX / 2 < 22 + TILEMONITORSIZEW ||
+			-CAMERAMANAGER->getY() + _tile[i].y + TILESIZEY / 2 < 22 ||
+			-CAMERAMANAGER->getY() + _tile[i].y - TILESIZEY / 2 > 22 + TILEMONITORSIZEH))
+		{
+			for (int j = 1; j < _tile[i].z + 1; j++)
+			{
+				if (_tile[i].z > 0)
+				{
+					IMAGEMANAGER->findImage(L"IsoTerrain")->frameRender(_tile[i].x - TILESIZEX / 2,
+						_tile[i].y - j * TILESIZEZ,
+						_tile[i].terFrame.x, _tile[i].terFrame.y, true, 1.0f);
+				}
 			}
 
 			if (_tile[i].z <= 0)
@@ -230,17 +250,7 @@ void townScene::loadTile()
 void townScene::playerTileCol()
 {
 
-	for (int i = 0; i < TILEX * TILEY; i++)
-	{
-		HRGN hRgn = CreatePolygonRgn(_tile[i].line, 4, WINDING);
-
-		if (PtInRegion(hRgn, _cm->getShadowRC().left + 40, _cm->getShadowRC().bottom + 20))
-		{
-			_tileIndex = i;
-		}
-
-		DeleteObject(hRgn);
-	}
+	
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
 		HRGN hRgn = CreatePolygonRgn(_tile[i].line, 4, WINDING);
@@ -270,6 +280,18 @@ void townScene::playerTileCol()
 			}
 			else _cm->playerTileCol(4);
 		}
+		DeleteObject(hRgn);
+	}
+
+	for (int i = 0; i < TILEX * TILEY; i++)
+	{
+		HRGN hRgn = CreatePolygonRgn(_tile[i].line, 4, WINDING);
+
+		if (PtInRegion(hRgn, _cm->getShadowRC().left + 50, _cm->getShadowRC().top + 20))
+		{
+			_tileIndex = i;
+		}
+
 		DeleteObject(hRgn);
 	}
 }
