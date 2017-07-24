@@ -21,7 +21,6 @@ HRESULT townScene::init()
 	_tileNum = 0;
 	_tileIndex = 0;
 	this->loadTile();
-	ASTARMANAGER->addAStar(_tile, L"캐릭터", _cm->getPlayerCenter().x, _cm->getPlayerCenter().y);
 
 	_npc = IMAGEMANAGER->addFrameImage(L"npc", L"image/face/NPC.png", 588, 156, 6, 1);
 
@@ -43,7 +42,6 @@ void townScene::update()
 	_mUI->update();
 	this->playerTileCol();
 	this->camControl();
-	this->aStarMove();
 	_cm->update();
 	_npcFrame->frameUpdate(0.2);
 	
@@ -52,115 +50,9 @@ void townScene::update()
 void townScene::render()
 {
 	this->drawTile();
-	ASTARMANAGER->findAStar(L"캐릭터")->render();
-	ASTARMANAGER->findAStar(L"캐릭터")->renderGoalList();
 	_mUI->render();
 }
 
-void townScene::aStarMove()
-{
-	bool isStart = false;
-	for (int i = 0; i < TILEX * TILEY; i++)
-	{
-		HRGN hRgn = CreatePolygonRgn(_tile[i].line, 4, WINDING);
-		HRGN playerTile = CreatePolygonRgn(_tile[i].line, 4, WINDING);
-
-		//실시간으로 플레이어 위치를 받아서 스타트타일 셋팅
-		if (PtInRegion(playerTile, _cm->getPlayerCenter().x, _cm->getPlayerCenter().y))
-		{
-			ASTARMANAGER->findAStar(L"캐릭터")->setStartTile(i);
-		}
-
-		if (PtInRegion(hRgn, _ptMouse.x + CAMERAMANAGER->getX(), _ptMouse.y + CAMERAMANAGER->getY()))
-		{
-			_tile[i].edgePaint = true;
-
-			if (KEYMANAGER->isOnceKeyDown(VK_RBUTTON))
-			{
-				ASTARMANAGER->findAStar(L"캐릭터")->setGoalTile(i);
-				ASTARMANAGER->findAStar(L"캐릭터")->pathFinder(ASTARMANAGER->findAStar(L"캐릭터")->getStartTile());
-			}
-		}
-		else _tile[i].edgePaint = false;
-
-		DeleteObject(hRgn);
-		DeleteObject(playerTile);
-	}
-
-	if (ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile().size() != NULL)
-	{
-		if ((int)_cm->getPlayerCenter().x < ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile()[_tileNum].centerX &&
-			(int)_cm->getPlayerCenter().y < ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile()[_tileNum].centerY)
-		{
-			_cm->setPlayerState(PLAYER_STAT_RB_MOVE);
-			_cm->moveOn();
-		}
-		if ((int)_cm->getPlayerCenter().x > ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile()[_tileNum].centerX &&
-			(int)_cm->getPlayerCenter().y < ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile()[_tileNum].centerY)
-		{
-			_cm->setPlayerState(PLAYER_STAT_LB_MOVE);
-			_cm->moveOn();
-		}
-		if ((int)_cm->getPlayerCenter().x < ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile()[_tileNum].centerX &&
-			(int)_cm->getPlayerCenter().y > ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile()[_tileNum].centerY)
-		{
-			_cm->setPlayerState(PLAYER_STAT_RT_MOVE);
-			_cm->moveOn();
-		}
-		if ((int)_cm->getPlayerCenter().x > ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile()[_tileNum].centerX &&
-			(int)_cm->getPlayerCenter().y > ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile()[_tileNum].centerY)
-		{
-			_cm->setPlayerState(PLAYER_STAT_LT_MOVE);
-			_cm->moveOn();
-		}
-
-		switch (_cm->getPlayerStat())
-		{
-		case PLAYER_STAT_RB_MOVE:
-			if (_cm->getPlayerCenter().x >= ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile()[_tileNum].centerX &&
-				_cm->getPlayerCenter().y >= ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile()[_tileNum].centerY)
-			{
-				_cm->setPlayerState(PLAYER_STAT_RB_STAND);
-				++_tileNum;
-			}
-			break;
-		case PLAYER_STAT_LB_MOVE:
-			if (_cm->getPlayerCenter().x <= ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile()[_tileNum].centerX &&
-				_cm->getPlayerCenter().y >= ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile()[_tileNum].centerY)
-			{
-				_cm->setPlayerState(PLAYER_STAT_LB_STAND);
-				++_tileNum;
-			}
-			break;
-		case PLAYER_STAT_RT_MOVE:
-			if (_cm->getPlayerCenter().x >= ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile()[_tileNum].centerX &&
-				_cm->getPlayerCenter().y <= ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile()[_tileNum].centerY)
-			{
-				_cm->setPlayerState(PLAYER_STAT_RT_STAND);
-				++_tileNum;
-			}
-			break;
-		case PLAYER_STAT_LT_MOVE:
-			if (_cm->getPlayerCenter().x <= ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile()[_tileNum].centerX &&
-				_cm->getPlayerCenter().y <= ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile()[_tileNum].centerY)
-			{
-				_cm->setPlayerState(PLAYER_STAT_LT_STAND);
-				++_tileNum;
-			}
-			break;
-		}
-		if (_tileNum >= ASTARMANAGER->findAStar(L"캐릭터")->getMoveTile().size())
-		{
-			_tileNum = 0;
-		}
-
-		if (ASTARMANAGER->findAStar(L"캐릭터")->getStartTile() == ASTARMANAGER->findAStar(L"캐릭터")->getGoalTile())
-		{
-			ASTARMANAGER->findAStar(L"캐릭터")->vectorClear();
-			ASTARMANAGER->findAStar(L"캐릭터")->moveListUpdate();
-		}
-	}
-}
 
 
 void townScene::drawTile()
@@ -260,7 +152,7 @@ void townScene::playerTileCol()
 	{
 		HRGN hRgn = CreatePolygonRgn(_tile[i].line, 4, WINDING);
 
-		if (_tile[i].z > 0 || _tile[i].ter == TER_WALL)
+		if (_tile[i].z > 0 || _tile[i].ter == TER_WALL || _tile[i].ter == TER_VOID)
 		{
 			if (PtInRegion(hRgn, _cm->getShadowRC().left, _cm->getShadowRC().bottom))
 			{

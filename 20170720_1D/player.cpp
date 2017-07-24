@@ -57,6 +57,7 @@ void player::update(void)
 	if(SCENEMANAGER->sceneCheck(L"DungeonScene"))this->control();
 	this->stat();
 	this->AstarMove();
+	this->control();
 	//this->move();
 
 	if (KEYMANAGER->isOnceKeyDown('P'))

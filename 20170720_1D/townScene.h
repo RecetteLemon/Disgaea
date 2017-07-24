@@ -26,6 +26,5 @@ public:
 	void drawTile();
 	void camControl();
 	void playerTileCol();
-	void aStarMove();
 };
 
