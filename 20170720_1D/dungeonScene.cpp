@@ -27,6 +27,7 @@ HRESULT dungeonScene::init()
 	//에이스타용
 	ASTARMANAGER->addAStar(L"Character");
 
+	_tileNum = 0;
 	_isMoveStart = false;
 
 	return S_OK;
