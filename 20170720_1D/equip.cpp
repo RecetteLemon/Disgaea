@@ -17,12 +17,12 @@ HRESULT equip::init()
 	_statBox = RectMake(0, 10, 1600, 300);
 	_invenBox = RectMake(61, 315, 553, 480);
 	_itemBox = RectMake(_invenBox.right + 20, 535, 677, 253);
-	_sort = RectMake(_itemBox.right - 100, 315,374, 203);
+	_sort = RectMake(_itemBox.right - 100, 315, 374, 203);
 	//
 	_slotNum = ESLOT_1;
 	for (int i = 0; i < 24; i++)
 	{
-		_slot[i] = RectMake(_invenBox.left + 12, _invenBox.top + 76 +(67 * i) , 474,56);
+		_slot[i] = RectMake(_invenBox.left + 12, _invenBox.top + 76 + (67 * i), 474, 56);
 	}
 	for (int i = 0; i < 4; i++)
 	{
@@ -31,7 +31,7 @@ HRESULT equip::init()
 	_cursor = RectMakeCenter(_slot[0].left - 4, (_slot[0].bottom - _slot[0].top) / 2 + _slot[0].top, 52, 39);
 	_slotCount = _num = _tempNum = 0;
 	_infoOn = false;
-
+	_isEquip = false;
 	_state = INVEN;
 
 	return S_OK;
@@ -46,13 +46,23 @@ void equip::update()
 	cursorMove();
 	slotMove();
 	itemInfo();
+
+	if (KEYMANAGER->isOnceKeyDown('K'))
+	{
+		if (!_isEquip) _isEquip = true;
+		else _isEquip = false;
+		if (_isEquip) equipItem();
+	}
+
 }
 
 void equip::render()
 {
 	IMAGEMANAGER->findImage(L"StatUI")->render(_statBox.left, _statBox.top, false, 0.4f);
 	IMAGEMANAGER->findImage(L"StatUI1")->render(_statBox.left, _statBox.top, false, 1.0f);
-	IMAGEMANAGER->findImage(L"weapon")->render(_equipSlot[0].left, _equipSlot[0].top, false, 1.0f);
+	//무기 끼우기
+	if (STATMANAGER->getVWeapon().size() == 0)	IMAGEMANAGER->findImage(L"weapon")->render(_equipSlot[0].left, _equipSlot[0].top, false, 1.0f);
+	else STATMANAGER->getVWeapon()[0].Image2->render(_equipSlot[0].left + 100, _equipSlot[0].top, false, 1.0f);
 	IMAGEMANAGER->findImage(L"other")->render(_equipSlot[1].left, _equipSlot[1].top, false, 1.0f);
 	IMAGEMANAGER->findImage(L"other")->render(_equipSlot[2].left, _equipSlot[2].top, false, 1.0f);
 	IMAGEMANAGER->findImage(L"other")->render(_equipSlot[3].left, _equipSlot[3].top, false, 1.0f);
@@ -71,7 +81,7 @@ void equip::render()
 			if (INVENMANAGER->getVItem().size() > i)
 			{
 				i_slot[i] = INVENMANAGER->getVItem()[i].Image;
-				if(INVENMANAGER->getVItem()[i].Type == GENERAL) i_slot[i]->render(_slot[i].left, _slot[i].top, false, 0.4f);
+				if (INVENMANAGER->getVItem()[i].Type == GENERAL) i_slot[i]->render(_slot[i].left, _slot[i].top, false, 0.4f);
 				else i_slot[i]->render(_slot[i].left, _slot[i].top, false, 1.0f);
 			}
 			else if (INVENMANAGER->getVItem().size() <= i)
@@ -173,7 +183,7 @@ void equip::slotMove()
 	//인벤 슬롯
 	for (int i = 0; i < 24; i++)
 	{
-		_slot[i] = RectMake(_invenBox.left + 12, _invenBox.top + 76 + (67 * (i- _slotCount)), 474, 56);
+		_slot[i] = RectMake(_invenBox.left + 12, _invenBox.top + 76 + (67 * (i - _slotCount)), 474, 56);
 	}
 }
 
@@ -182,8 +192,78 @@ void equip::itemInfo()
 	RECT tempRC;
 	if (IntersectRect(&tempRC, &RectMake(_cursor.left - 20, _cursor.top + 10, _cursor.right + 20, _cursor.bottom - 10), &_slot[_slotCount + (int)_slotNum]))
 	{
-		if (i_slot[_tempNum + _num] != IMAGEMANAGER->findImage(L"none"))  _infoOn = true;
+		if (i_slot[_slotCount + (int)_slotNum] != IMAGEMANAGER->findImage(L"none"))  _infoOn = true;
 		else _infoOn = false;
 	}
-	if(INVENMANAGER->getVItem().size() == 0) _infoOn = false;
+	if (INVENMANAGER->getVItem().size() == 0) _infoOn = false;
+}
+
+void equip::equipItem()
+{
+	switch (INVENMANAGER->getVItem()[_slotCount + (int)_slotNum].Type)
+	{
+	case WEAPON:
+		if (STATMANAGER->getVWeapon().size() == 0)
+		{
+			//인벤창에 장비 템 하나 있을때
+			if (INVENMANAGER->getVItem().size() == 1)
+			{
+				_isEquip = false;
+				STATMANAGER->pushBackVWeapon(0, INVENMANAGER->getVItem());
+				INVENMANAGER->erase2VItem(0);
+
+			}
+			//템이 여러개 있을때
+			else if (INVENMANAGER->getVItem().size() > 1)
+			{
+				//마지막꺼
+				if (_slotCount + (int)_slotNum == INVENMANAGER->getVItem().size() - 1)
+				{
+					_isEquip = false;
+					STATMANAGER->pushBackVWeapon(_slotCount + (int)_slotNum, INVENMANAGER->getVItem());
+					INVENMANAGER->erase2VItem(0);
+
+				}
+				//마지막거 말고
+				else if (_slotCount + (int)_slotNum < INVENMANAGER->getVItem().size())
+				{
+					_isEquip = false;
+					STATMANAGER->pushBackVWeapon(_slotCount + (int)_slotNum, INVENMANAGER->getVItem());
+					for (int i = _slotCount + (int)_slotNum + 1; i < INVENMANAGER->getVItem().size(); i++)
+					{
+						_vTemp.push_back(INVENMANAGER->getVItem()[i]);
+					}
+					INVENMANAGER->eraseVItem(_slotCount + (int)_slotNum);
+					for (int i = 0; i < _vTemp.size(); i++)
+					{
+						INVENMANAGER->pushBackVItem(i, _vTemp);
+					}
+					_vTemp.clear();
+				}
+			}
+		}
+		else if (STATMANAGER->getVWeapon().size() > 0)
+		{
+			_isEquip = false;
+			_vTemp.push_back(STATMANAGER->getVWeapon()[0]);
+			STATMANAGER->eraseVWeapon(0);
+			STATMANAGER->pushBackVWeapon(_slotCount + (int)_slotNum, INVENMANAGER->getVItem());
+			INVENMANAGER->erase2VItem(_slotCount + (int)_slotNum);
+			INVENMANAGER->pushBackVItem(0, _vTemp);
+			_vTemp.clear();
+		}
+		break;
+
+	case ARMOR:
+		if (STATMANAGER->getVArmor().size() == 0)
+		{
+
+		}
+		else if (STATMANAGER->getVArmor().size() > 0)
+		{
+
+		}
+		break;
+	}
+
 }

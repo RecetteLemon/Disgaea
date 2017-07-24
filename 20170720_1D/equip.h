@@ -1,5 +1,7 @@
 #pragma once
 #include "gameNode.h"
+#include "item.h"
+#include <vector>
 
 enum EQUIP_SLOT
 {
@@ -19,6 +21,8 @@ enum EQUIPSTATE
 
 class equip : public gameNode
 {
+private:
+	vector<Item> _vTemp;
 private:
 	//기본 틀 렉트
 	RECT _statBox;
@@ -41,6 +45,7 @@ private:
 
 	bool _infoOn;
 
+	bool _isEquip;
 
 public:
 	HRESULT init();
@@ -51,8 +56,11 @@ public:
 	void cursorMove();
 	void slotMove();
 	void itemInfo();
+	void equipItem();
 
 	equip();
 	~equip();
 };
+
+
 

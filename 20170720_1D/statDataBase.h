@@ -1,5 +1,7 @@
 #pragma once
 #include "gameNode.h"
+#include "item.h"
+#include <vector>
 
 enum playerNum
 {
@@ -24,6 +26,8 @@ struct playerStat
 class statDataBase : public singletonBase<statDataBase>
 {
 private:
+	vector<Item> _vWeapon;  //장착 무기 벡터 - 1칸
+	vector<Item> _vArmor;	//장착 아머 벡터 - 3칸 쓸것
 
 	playerStat _plStat[DB_PLAYER_END];
 	unsigned int _money;
@@ -49,6 +53,19 @@ public:
 
 	void setMoney(unsigned int money) { _money = money; }
 	unsigned int getMoney() { return _money; }
+
+	//아이템 착용 및 교체를 위한 벡터 겟터 셋터
+	vector<Item> getVWeapon(void) { return _vWeapon; }
+	vector<Item> getVArmor(void) { return _vArmor; }
+	//푸시백
+	void pushBackVWeapon(int i, vector<Item> Item) { _vWeapon.push_back(Item[i]); }
+	void pushBackVArmor(int i, vector<Item> Item) { _vArmor.push_back(Item[i]); }
+	//지우기 1 - 선택만 지우기
+	void eraseVWeapon(int i) { _vWeapon.erase(_vWeapon.begin() + i); }
+	void eraseVArmor(int i) { _vArmor.erase(_vArmor.begin() + i); }
+	//지우기 2 - 선택부터 끝까지 지우기
+	void erase2VWeapon(int i) { _vWeapon.erase(_vWeapon.begin() + i, _vWeapon.end()); }
+	void erase2VArmor(int i) { _vArmor.erase(_vArmor.begin() + i, _vArmor.end()); }
 
 	statDataBase();
 	~statDataBase();
