@@ -29,14 +29,6 @@ HRESULT mapToolScene::init()
 	_phaseSample.isMove = false;
 	_curTile.x = _curTile.y = 0;
 	
-	for (int i = 0; i < SAMY; i++) for (int j = 0; j < SAMX; j++)
-	{
-		_tileSample[i * SAMX + j].frame.x = j;
-		_tileSample[i * SAMX + j].frame.y = i;
-		SetRect(&_tileSample[i * SAMX + j].rc, _phaseSample.rc.left + j * SAMSIZEX,
-			_phaseSample.rc.top + i * SAMSIZEY, _phaseSample.rc.left + j * SAMSIZEX + SAMSIZEX, _phaseSample.rc.top + i * SAMSIZEY + SAMSIZEY);
-	}
-
 	_sampleTile.frame.x = 0;
 	_sampleTile.frame.y = 0;
 	_sampleTile.rc = RectMakeCenter(_phaseSample.x, _phaseSample.y, 192, 192);
@@ -430,14 +422,47 @@ void mapToolScene::setTile()
 					}
 					break;
 				case SAM_OBJECT:
-					_tile[i].objFrame.x = _curTile.x;
-					_tile[i].objFrame.y = _curTile.y;
-					_tile[i].obj = this->objCreater({ _curTile.x, _curTile.y });
+					if (this->objCreater({ _curTile.x, _curTile.y }) == OBJ_HOUSE)
+					{
+						if (!houseSetCheck(i)) continue;
+						for (int t = 0; t < 4; t++)
+						{
+							for (int k = i; k < i + 4; k++)
+							{
+								if (k + t * TILEX == i + (TILEX + 1) * 3) _tile[k + t * TILEX].obj = OBJ_HOUSERENDER;
+								else _tile[k + t * TILEX].obj = this->objCreater({ _curTile.x, _curTile.y });
+							}
+						}
+					}
+					else
+					{
+						if (_tile[i].obj == OBJ_ERASE)
+						{
+							_tile[i].objFrame.x = _curTile.x;
+							_tile[i].objFrame.y = _curTile.y;
+							_tile[i].obj = this->objCreater({ _curTile.x, _curTile.y });
+						}
+					}
 					break;
 				case SAM_OBJ_ERASER:
-					_tile[i].objFrame.x = _curTile.x;
-					_tile[i].objFrame.y = _curTile.y;
-					_tile[i].obj = OBJ_ERASE;
+					if (_tile[i].obj == OBJ_HOUSERENDER)
+					{
+						for (int t = 0; t < 4; t++)
+						{
+							for (int k = (i - 3) - TILEX * 3; k < (i - 3) - TILEX * 3 + 4; k++)
+							{
+								_tile[k + t * TILEX].objFrame.x = _curTile.x;
+								_tile[k + t * TILEX].objFrame.y = _curTile.y;
+								_tile[k + t * TILEX].obj = OBJ_ERASE;
+							}
+						}
+					}
+					else
+					{
+						_tile[i].objFrame.x = _curTile.x;
+						_tile[i].objFrame.y = _curTile.y;
+						_tile[i].obj = OBJ_ERASE;
+					}
 					break;
 				}
 			}		
@@ -456,6 +481,30 @@ void mapToolScene::setTile()
 		}
 	}
 }
+
+bool mapToolScene::houseSetCheck(int num)
+{
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = num; j < num + 4; j++)
+		{
+			if (_tile[j + i * TILEX].obj != OBJ_ERASE) return false;
+			if (_tile[j + i * TILEX].ter == TER_VOID) return false;
+			if (num >= TILEX * (TILEY - 1) + 1 && num < TILEX * TILEY) return false;
+			if (num % (TILEX - 1) == 0 && num != 0) return false;
+			if (i < num + 3)
+			{
+				if (_tile[j + i * TILEX].z != _tile[j + i * TILEX].z) return false;
+			}
+			else
+			{
+				if (_tile[j + i * TILEX].z != _tile[num + (i + 1) * TILEX].z && j < num + 3) return false;
+			}
+		}
+	}
+	return true;
+}
+
 void mapToolScene::drawTile()
 {
 	IMAGEMANAGER->findImage(L"IsoBackground")->render(0, 0, false, 1);
@@ -511,13 +560,32 @@ void mapToolScene::drawTile()
 				DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[1].x, _tile[i].line[1].y, _tile[i].line[2].x, _tile[i].line[2].y, true, 1);
 				DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[2].x, _tile[i].line[2].y, _tile[i].line[3].x, _tile[i].line[3].y, true, 1);
 				DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[3].x, _tile[i].line[3].y, _tile[i].line[0].x, _tile[i].line[0].y, true, 1);
+
+				/*int tileObj = 0;
+				if (_tile[i].obj != OBJ_ERASE) tileObj = 1;
+				WCHAR str[128];
+				wsprintf(str, L"%d", tileObj);
+				DIRECT2D->drawTextD2D(DIRECT2D->_defaultBrush, str,
+					_tile[i].line[1].x - CAMERAMANAGER->getX(), 
+					_tile[i].line[1].y - CAMERAMANAGER->getY(),
+					_tile[i].line[2].x - CAMERAMANAGER->getX(),
+					_tile[i].line[2].y - CAMERAMANAGER->getY());*/
 			}
 
 			if (_tile[i].obj != OBJ_ERASE)
 			{
-				IMAGEMANAGER->findImage(L"IsoObject")->frameRender(_tile[i].x - TILESIZEX / 2 - IMAGEMANAGER->findImage(L"IsoObject")->getFrameWidth() + TILESIZEX,
-					_tile[i].y - _tile[i].z - IMAGEMANAGER->findImage(L"IsoObject")->getFrameHeight() - TILESIZEY * (_tile[i].z - 1),
-					_tile[i].objFrame.x, _tile[i].objFrame.y, true, 1.0f);
+				if (_tile[i].obj == OBJ_HOUSERENDER)
+				{
+				//	if(_tile[i].indexX )
+					IMAGEMANAGER->findImage(L"obj_house")->render(_tile[i].x - (TILESIZEX * 4) / 2,
+						_tile[i].y + TILESIZEY - IMAGEMANAGER->findImage(L"obj_house")->getHeight(), true, 1.0f);
+				}
+				else if (_tile[i].obj != OBJ_HOUSE)
+				{
+					IMAGEMANAGER->findImage(L"IsoObject")->frameRender(_tile[i].x - TILESIZEX / 2 - IMAGEMANAGER->findImage(L"IsoObject")->getFrameWidth() + TILESIZEX,
+						_tile[i].y - _tile[i].z - IMAGEMANAGER->findImage(L"IsoObject")->getFrameHeight() - TILESIZEY * (_tile[i].z - 1),
+						_tile[i].objFrame.x, _tile[i].objFrame.y, true, 1.0f);
+				}
 			}
 		}
 	}
@@ -679,5 +747,6 @@ TERRAIN_TYPE mapToolScene::terCreater(POINT tile)
 OBJECT_TYPE mapToolScene::objCreater(POINT tile)
 {
 	if (tile.x == 4 && tile.y == 6) return OBJ_NPC;
+	if (tile.x == 7 && tile.y == 6) return OBJ_HOUSE;
 	return OBJ_ITEM;
 }

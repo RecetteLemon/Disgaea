@@ -66,6 +66,7 @@ void loadingScene::loadingImage()
 	_ld->loadFrameImage(L"terrainSelectTile", L"Image/MapTool/terrainSelectTile.png", 576 / 2, 144 / 2, 8, 2);
 	_ld->loadFrameImage(L"terrainSelectTile2", L"Image/MapTool/terrainSelectTile2.png", 384 / 2, 96 / 2, 8, 2);
 
+	_ld->loadImage(L"obj_house", L"Image/MapTool/house.png", 768, 627);
 
 	_ld->loadFrameImage(L"settingIcon", L"Image/MapTool/settingIcon.png", 150, 50, 3, 1);
 
@@ -89,7 +90,6 @@ void loadingScene::loadingImage()
 	_ld->loadImage(L"StatUI", L"Image/UI/statUI.png", 1600, 300);
 	_ld->loadImage(L"StatUI1", L"Image/UI/statUI1.png", 1600, 300);
 	_ld->loadImage(L"StatMain", L"Image/UI/stat_main.png", 800, 450);
-	_ld->loadImage(L"MenuMain", L"Image/UI/mainUI.png", 500, 658);
 
 	// 이펙트 이미지
 	_ld->loadFrameImage(L"PrinnyEffect", L"image/Effect/prinny_effect.png", 1704, 202, 8, 1);

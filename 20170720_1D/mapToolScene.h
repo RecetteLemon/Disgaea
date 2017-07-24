@@ -104,6 +104,8 @@ public:
 	void updateButton();
 	void drawButton();
 
+	bool houseSetCheck(int num);
+
 	TERRAIN_TYPE terCreater(POINT tileNum);
 	OBJECT_TYPE objCreater(POINT tileNum);
 };
