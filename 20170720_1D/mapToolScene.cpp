@@ -516,12 +516,9 @@ void mapToolScene::drawTile()
 			-CAMERAMANAGER->getY() + _tile[i].y + TILESIZEY / 2 < 22 ||
 			-CAMERAMANAGER->getY() + _tile[i].y - TILESIZEY / 2 > 22 + TILEMONITORSIZEH))
 		{
-			if (_tile[i].z == 0)
-			{
-				IMAGEMANAGER->findImage(L"IsoTerrain")->frameRender(_tile[i].x - TILESIZEX / 2,
-					_tile[i].y,
-					_tile[i].terFrame.x, _tile[i].terFrame.y, true, 1.0f);
-			}
+			IMAGEMANAGER->findImage(L"IsoTerrain")->frameRender(_tile[i].x - TILESIZEX / 2,
+				_tile[i].y,
+				_tile[i].terFrame.x, _tile[i].terFrame.y, true, 1.0f);		
 		}
 	}
 	for (int i = 0; i < TILEX * TILEY; i++)

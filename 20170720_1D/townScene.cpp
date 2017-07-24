@@ -190,12 +190,11 @@ void townScene::drawTile()
 		{
 			for (int j = 1; j < _tile[i].z + 1; j++)
 			{
-				if (_tile[i].z > 0)
-				{
-					IMAGEMANAGER->findImage(L"IsoTerrain")->frameRender(_tile[i].x - TILESIZEX / 2,
-						_tile[i].y - j * TILESIZEZ,
-						_tile[i].terFrame.x, _tile[i].terFrame.y, true, 1.0f);
-				}
+				
+				IMAGEMANAGER->findImage(L"IsoTerrain")->frameRender(_tile[i].x - TILESIZEX / 2,
+					_tile[i].y - j * TILESIZEZ,
+					_tile[i].terFrame.x, _tile[i].terFrame.y, true, 1.0f);
+				
 			}
 
 			if (_tile[i].z <= 0)
@@ -249,7 +248,7 @@ void townScene::loadTile()
 	CAMERAMANAGER->setPosition(INITX - WINSIZEX / 2, INITY + 22);
 	HANDLE file;
 	DWORD read;
-	file = CreateFile(L"Tile/Town/TownTile2.map", GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	file = CreateFile(L"Tile/Town/TownTile.map", GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	ReadFile(file, _tile, sizeof(tagIso) * TILEX * TILEY, &read, NULL);
 	CloseHandle(file);
 }
