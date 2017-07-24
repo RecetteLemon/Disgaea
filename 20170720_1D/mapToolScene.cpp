@@ -55,7 +55,9 @@ HRESULT mapToolScene::init()
 
 		_tile[i].ter = TER_LOAD;
 		_tile[i].obj = OBJ_ERASE;
-		_tile[i].terFrame.x = 1;
+		// 맵툴 이용할때만 사용
+		_tile[i].terFrame.x = 0;
+		// _tile[i].terFrame.x = 1;
 		_tile[i].terFrame.y = 0;
 		_tile[i].objFrame.x = 0;
 		_tile[i].objFrame.y = 0;
@@ -579,9 +581,18 @@ void mapToolScene::drawTile()
 				}
 				else if (_tile[i].obj != OBJ_HOUSE)
 				{
-					IMAGEMANAGER->findImage(L"IsoObject")->frameRender(_tile[i].x - TILESIZEX / 2 - IMAGEMANAGER->findImage(L"IsoObject")->getFrameWidth() + TILESIZEX,
-						_tile[i].y - _tile[i].z - IMAGEMANAGER->findImage(L"IsoObject")->getFrameHeight() - TILESIZEY * (_tile[i].z - 1),
-						_tile[i].objFrame.x, _tile[i].objFrame.y, true, 1.0f);
+					if (_tile[i].objFrame.x == 5 && _tile[i].objFrame.y == 1)
+					{
+						IMAGEMANAGER->findImage(L"Tree")->render(_tile[i].x - IMAGEMANAGER->findImage(L"Tree")->getWidth() / 2, 
+							_tile[i].y - IMAGEMANAGER->findImage(L"Tree")->getHeight() / 2 - TILESIZEZ / 2, true, 1.0f);
+					}
+
+					else
+					{
+						IMAGEMANAGER->findImage(L"IsoObject")->frameRender(_tile[i].x - TILESIZEX / 2 - IMAGEMANAGER->findImage(L"IsoObject")->getFrameWidth() + TILESIZEX,
+							_tile[i].y - _tile[i].z - IMAGEMANAGER->findImage(L"IsoObject")->getFrameHeight() - TILESIZEY * (_tile[i].z - 1),
+							_tile[i].objFrame.x, _tile[i].objFrame.y, true, 1.0f);
+					}
 				}
 			}
 		}
