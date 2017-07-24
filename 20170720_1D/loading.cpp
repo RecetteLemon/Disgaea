@@ -64,6 +64,9 @@ loading::~loading()
 
 HRESULT loading::init()
 {
+
+	SOUNDMANAGER->addSound(L"ALoading", L"Sound/DisgaeaALoading.mp3", true, false);
+
 	_background = IMAGEMANAGER->addImage(L"LoadingBackground", L"Image/Loading/L01.png", WINSIZEX, WINSIZEY);
 
 	_loadingBar = new progressBar;
@@ -73,6 +76,8 @@ HRESULT loading::init()
 	_currentGauge = 0;
 
 	ZeroMemory(&_loadingFileName, sizeof(_loadingFileName));
+
+	SOUNDMANAGER->play(L"ALoading");
 	
 	return S_OK;
 }

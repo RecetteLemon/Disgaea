@@ -14,18 +14,34 @@ HRESULT menuScene::init()
 {
 	_menu = MENU_START;
 	_mouse = { 615, 530 };
+
+	SOUNDMANAGER->play(L"MenuScene");
+
 	return S_OK;
 }
 void menuScene::release()
 {
-
+	SOUNDMANAGER->stop(L"MenuScene");
 }
 void menuScene::update()
 {
 	this->mouseUpdate();
-	if (KEYMANAGER->isOnceKeyDown('W')) this->keyDownW();
-	if (KEYMANAGER->isOnceKeyDown('S')) this->keyDownS();
-	if (KEYMANAGER->isOnceKeyDown(VK_SPACE)) this->keyDownSpace();
+	if (KEYMANAGER->isOnceKeyDown('W'))
+	{
+		SOUNDMANAGER->play(L"Pick");
+		this->keyDownW();
+	}
+	if (KEYMANAGER->isOnceKeyDown('S'))
+	{
+		SOUNDMANAGER->play(L"Pick");
+		this->keyDownS();
+	}
+
+	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
+	{
+		SOUNDMANAGER->play(L"Decision");
+		this->keyDownSpace();
+	}
 }
 void menuScene::render()
 {

@@ -30,12 +30,13 @@ HRESULT townScene::init()
 	_npcFrame->setFPS(1);
 	_npcFrame->start();
 
+	if (!SOUNDMANAGER->isPlaySound(L"TownScene")) SOUNDMANAGER->play(L"TownScene");
 
 	return S_OK;
 }
 void townScene::release()
 {
-
+	SOUNDMANAGER->stop(L"TownScene");
 }
 void townScene::update()
 {
