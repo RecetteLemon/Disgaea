@@ -1,6 +1,5 @@
 #pragma once
 #include "gameNode.h"
-#include "townInven.h"
 
 enum PLAYERKIND
 {
@@ -92,8 +91,7 @@ protected:
 
 	int _kind;
 	
-	townInven* _townInven;
-	bool _invenOn;
+	
 	bool _shopOn;
 
 public:

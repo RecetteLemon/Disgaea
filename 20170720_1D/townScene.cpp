@@ -12,6 +12,9 @@ townScene::~townScene()
 }
 HRESULT townScene::init()
 {
+	_mUI = new menuUI;
+	_mUI->init();
+
 	_cm = new characterManager;
 	_cm->init(2, 5);
 	_cm->selectPlayer(3);
@@ -37,11 +40,13 @@ void townScene::release()
 }
 void townScene::update()
 {
+	_mUI->update();
 	this->playerTileCol();
 	this->camControl();
 	this->aStarMove();
 	_cm->update();
 	_npcFrame->frameUpdate(0.2);
+	
 	
 }
 void townScene::render()
@@ -49,6 +54,7 @@ void townScene::render()
 	this->drawTile();
 	ASTARMANAGER->findAStar(L"캐릭터")->render();
 	ASTARMANAGER->findAStar(L"캐릭터")->renderGoalList();
+	_mUI->render();
 }
 
 void townScene::aStarMove()

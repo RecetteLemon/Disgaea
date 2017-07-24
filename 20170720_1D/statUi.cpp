@@ -20,7 +20,6 @@ HRESULT statUi::init()
 	}
 	_kind = 0;
 	y = 50;
-	_showui = false;
 	
 
 	for (int i = 0; i < 5; i++)
@@ -52,8 +51,7 @@ void statUi::update()
 		_kind += 1;
 	}
 	
-	if (KEYMANAGER->isOnceKeyDown('I')) _showui = true;
-	if (KEYMANAGER->isOnceKeyDown('K')) _showui = false;
+	
 	
 	for (int i = 0; i < 5; i++)
 	{
@@ -72,9 +70,7 @@ void statUi::update()
 }
 void statUi::render()
 {
-	
-	if(_showui) showstatUI();
-	
+	showstatUI();
 }
 
 

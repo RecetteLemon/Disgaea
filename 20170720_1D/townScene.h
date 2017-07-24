@@ -3,10 +3,13 @@
 #include "tile.h"
 #include "characterManager.h"
 #include "animation.h"
+#include "menuUI.h"
+
 class townScene : public gameNode
 {
 private:
 	tagIso _tile[TILEX * TILEY];
+	menuUI* _mUI;
 	characterManager* _cm;
 	int _tileNum;
 	int _tileIndex;

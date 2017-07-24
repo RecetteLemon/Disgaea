@@ -7,7 +7,6 @@ class statUi : public gameNode
 {
 private:
 	int _kind;
-	bool _showui;
 
 	int y;
 	RECT _rc[5];
@@ -22,7 +21,10 @@ public:
 	void render();
 
 	void showstatUI();
+
 	
+
+
 	statUi();
 	~statUi();
 };

@@ -240,14 +240,17 @@
     <ClInclude Include="aStar.h">
       <Filter>2DGameFramework\A%2a Algorithm</Filter>
     </ClInclude>
-    <ClInclude Include="statUi.h">
-      <Filter>Disgaea\UI</Filter>
-    </ClInclude>
     <ClInclude Include="invenDataBase.h">
       <Filter>Disgaea\inven</Filter>
     </ClInclude>
     <ClInclude Include="townInven.h">
       <Filter>Disgaea\inven</Filter>
+    </ClInclude>
+    <ClInclude Include="menuUI.h">
+      <Filter>Disgaea\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="statUi.h">
+      <Filter>Disgaea\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -377,14 +380,17 @@
     <ClCompile Include="aStar.cpp">
       <Filter>2DGameFramework\A%2a Algorithm</Filter>
     </ClCompile>
-    <ClCompile Include="statUi.cpp">
-      <Filter>Disgaea\UI</Filter>
-    </ClCompile>
     <ClCompile Include="invenDataBase.cpp">
       <Filter>Disgaea\inven</Filter>
     </ClCompile>
     <ClCompile Include="townInven.cpp">
       <Filter>Disgaea\inven</Filter>
+    </ClCompile>
+    <ClCompile Include="menuUI.cpp">
+      <Filter>Disgaea\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="statUi.cpp">
+      <Filter>Disgaea\UI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
