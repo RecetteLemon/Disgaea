@@ -13,6 +13,10 @@ enemy::~enemy()
 
 HRESULT enemy::init(const wstring characterName, const wchar_t* imageName, int x, int y)
 {
+	_enemy._maxHp = _enemy._hp =100;
+	_enemy._maxSp = _enemy._sp = 100;
+	_enemy._str = _enemy._def = _enemy._res = 10;
+
 	_enemy._enemyName = characterName;
 	_enemy.img = IMAGEMANAGER->findImage(imageName);
 	_enemy.x = x;
@@ -39,6 +43,7 @@ void enemy::update()
 	if (KEYMANAGER->isOnceKeyDown('G'))
 	{
 		_enemy.stat = ENEMY_STAT_LB_ATTACK;
+		_enemy.pos[ENEMY_STAT_LB_ATTACK]->start();
 	}
 
 	this->move();
@@ -181,22 +186,21 @@ void enemy::attack(void)
 	
 	case ENEMY_STAT_LB_ATTACK:
 		_enemy.pos[ENEMY_POS_LB_ATTACK]->frameUpdate(TIMEMANAGER->getElapsedTime());
-		if (!_enemy.pos[ENEMY_POS_LB_ATTACK]->isPlay()) _enemy.pos[ENEMY_POS_LB_ATTACK]->start();
+		if (!_enemy.pos[ENEMY_POS_LB_ATTACK]->isPlay()) _enemy.stat = ENEMY_STAT_LB_STAND;
 		break;
 	
 	case ENEMY_STAT_LT_ATTACK:
 		_enemy.pos[ENEMY_POS_LT_ATTACK]->frameUpdate(TIMEMANAGER->getElapsedTime());
-		if (!_enemy.pos[ENEMY_POS_LT_ATTACK]->isPlay()) _enemy.pos[ENEMY_POS_LT_ATTACK]->start();
-		break;
+		if (!_enemy.pos[ENEMY_POS_LT_ATTACK]->isPlay()) _enemy.stat = ENEMY_STAT_LT_STAND;
 	
 	case ENEMY_STAT_RB_ATTACK:
 		_enemy.pos[ENEMY_POS_RB_ATTACK]->frameUpdate(TIMEMANAGER->getElapsedTime());
-		if (!_enemy.pos[ENEMY_POS_RB_ATTACK]->isPlay()) _enemy.pos[ENEMY_POS_RB_ATTACK]->start();
+		if (!_enemy.pos[ENEMY_POS_RB_ATTACK]->isPlay()) _enemy.stat = ENEMY_STAT_RB_STAND;
 		break;
 	
 	case ENEMY_STAT_RT_ATTACK:
 		_enemy.pos[ENEMY_POS_RT_ATTACK]->frameUpdate(TIMEMANAGER->getElapsedTime());
-		if (!_enemy.pos[ENEMY_POS_RT_ATTACK]->isPlay()) _enemy.pos[ENEMY_POS_RT_ATTACK]->start();
+		if (!_enemy.pos[ENEMY_POS_RT_ATTACK]->isPlay()) _enemy.stat = ENEMY_STAT_RT_STAND;
 		break;
 	
 	}
@@ -208,23 +212,23 @@ void enemy::skill(void)
 	
 	case ENEMY_STAT_LB_SKILL:
 		_enemy.pos[ENEMY_POS_LB_SKILL]->frameUpdate(TIMEMANAGER->getElapsedTime());
-		if (!_enemy.pos[ENEMY_POS_LB_SKILL]->isPlay()) _enemy.pos[ENEMY_POS_LB_SKILL]->start();
+		if (!_enemy.pos[ENEMY_POS_LB_SKILL]->isPlay()) _enemy.stat = ENEMY_STAT_LB_STAND;
 		break;
 	
 	case ENEMY_STAT_LT_SKILL:
 		_enemy.pos[ENEMY_POS_LT_SKILL]->frameUpdate(TIMEMANAGER->getElapsedTime());
-		if (!_enemy.pos[ENEMY_POS_LT_SKILL]->isPlay()) _enemy.pos[ENEMY_POS_LT_SKILL]->start();
+		if (!_enemy.pos[ENEMY_POS_LT_SKILL]->isPlay()) _enemy.stat = ENEMY_STAT_LT_STAND;
 		break;
 	
 	case ENEMY_STAT_RB_SKILL:
 		_enemy.pos[ENEMY_POS_RB_SKILL]->frameUpdate(TIMEMANAGER->getElapsedTime());
-		if (!_enemy.pos[ENEMY_POS_RB_SKILL]->isPlay()) _enemy.pos[ENEMY_POS_RB_SKILL]->start();
+		if (!_enemy.pos[ENEMY_POS_RB_SKILL]->isPlay()) _enemy.stat = ENEMY_STAT_RB_STAND;
 		break;
 	
 		break;
 	case ENEMY_STAT_RT_SKILL:
 		_enemy.pos[ENEMY_POS_RT_SKILL]->frameUpdate(TIMEMANAGER->getElapsedTime());
-		if (!_enemy.pos[ENEMY_POS_RT_SKILL]->isPlay()) _enemy.pos[ENEMY_POS_RT_SKILL]->start();
+		if (!_enemy.pos[ENEMY_POS_RT_SKILL]->isPlay()) _enemy.stat = ENEMY_STAT_RT_STAND;
 		break;
 	
 		

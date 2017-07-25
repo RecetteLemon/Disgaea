@@ -53,6 +53,8 @@ struct ENEMY_
 	ENEMYSTAT stat;
 	RECT rc;
 	int x, y;
+	unsigned int _maxHp, _hp, _maxSp, _sp;
+	int _str, _def, _res;
 };
 class enemy : public gameNode
 {
@@ -79,7 +81,11 @@ public:
 
 	int  getX() { return _enemy.x; }
 	int  getY() { return _enemy.y; }
+	ENEMY_ getEnemy() { return _enemy; }
 	ENEMYSTAT getStat() { return _enemy.stat; }
+
+	void setEnemyHp(int damage) { _enemy._hp - damage; }
+	void setEnemySp(int useSp) { _enemy._sp - useSp; }
 
 	void setStat(ENEMYSTAT ps) { _enemy.stat = ps; }
 

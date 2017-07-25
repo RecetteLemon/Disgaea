@@ -26,6 +26,8 @@ HRESULT dungeonScene::init()
 	_dm->setPram(_tile[79].centerX, _tile[79].centerY);
 	_dm->setRozalin(_tile[60].centerX, _tile[60].centerY);
 	_dm->setValvatorez(_tile[59].centerX, _tile[59].centerY);
+
+	_dm->setEnemy(_tile[23].centerX, _tile[23].centerY + 45);
 	
 	//a* 알고리즘을 적용할 캐릭터 수 만큼 호출
 	//	ASTARMANAGER->addAStar(_tile, _cm->getName(), _cm->getPlayerX(), _cm->getPlayerY());

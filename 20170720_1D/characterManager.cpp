@@ -19,7 +19,7 @@ HRESULT characterManager::init(int x, int y)
 	_y = y;
 
 	_playerKind = PLAYER_END;
-	_enemyKind = ENEMY_END;
+	
 	
 
 	return S_OK;
@@ -31,7 +31,7 @@ void characterManager::release(void)
 void characterManager::update(void)
 {
 	if (_playerKind != PLAYER_END ) _player->update();
-	if (_enemyKind != ENEMY_END) _enemy->update();
+	
 	_shadowRc = _player->getShadowRect();
 
 	
@@ -39,7 +39,7 @@ void characterManager::update(void)
 void characterManager::render(void)
 {
 	if (_playerKind != PLAYER_END ) _player->render();
-	if (_enemyKind != ENEMY_END) _enemy->render();
+	
 	
 	
 }
@@ -74,21 +74,7 @@ void characterManager::selectPlayer(int kind)
 		break;
 	}
 }
-void characterManager::selectEnemy(int kind)
-{
-	_enemyKind = (ENEMY)kind;
 
-	switch (_enemyKind)
-	{
-		case ENEMY_PRINNY:
-			_enemy = new Prinny;
-			_enemy->init(L"NamePrinny", L"Prinny", _x, _y);
-		break;
-		case ENEMY_END:
-		break;
-	}
-
-}
 
 void characterManager::playerTileCol(int num)
 {
@@ -107,7 +93,7 @@ dungeonManager::~dungeonManager()
 
 HRESULT dungeonManager::init(void)
 {
-
+	
 
 	return S_OK;
 }
@@ -122,6 +108,7 @@ void dungeonManager::update(void)
 		_player[i]->update();
 		_shadowRc[i] = _player[i]->getShadowRect();
 	}
+	_enemy->update();
 }
 
 void dungeonManager::render(void)
@@ -130,6 +117,7 @@ void dungeonManager::render(void)
 	{
 		_player[i]->render();
 	}
+	_enemy->render();
 }
 
 void dungeonManager::setAdell(int x, int y)
@@ -156,4 +144,11 @@ void dungeonManager::setValvatorez(int x, int y)
 {
 	_player[PLAYER_VALVATOREZ] = new valvatorez;
 	_player[PLAYER_VALVATOREZ]->init(L"NameValvatorez", L"Valvatorez", x, y);
+}
+
+void dungeonManager::setEnemy(int x, int y)
+{
+	_enemy = new Prinny;
+	_enemy->init(L"NamePrinny", L"Prinny", x , y);
+	
 }

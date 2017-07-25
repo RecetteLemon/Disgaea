@@ -43,19 +43,19 @@ void Prinny::posSet(void)
 
 	//============움직이기=============
 	int arrLB_MOVE[] = { 64,65,66,67,68,69,70 };
-	_enemy.pos[ENEMY_POS_LB_MOVE]->setPlayFrame(arrLB_MOVE, 7, 0);
+	_enemy.pos[ENEMY_POS_LB_MOVE]->setPlayFrame(arrLB_MOVE, 7, 1);
 	_enemy.pos[ENEMY_POS_LB_MOVE]->setFPS(10);
 
 	int arrRB_MOVE[] = { 95,94,93,92,91,90,89 };
-	_enemy.pos[ENEMY_POS_RB_MOVE]->setPlayFrame(arrRB_MOVE, 7, 0);
+	_enemy.pos[ENEMY_POS_RB_MOVE]->setPlayFrame(arrRB_MOVE, 7, 1);
 	_enemy.pos[ENEMY_POS_RB_MOVE]->setFPS(10);
 
 	int arrLT_MOVE[] = { 96,97,98,99,100,101,102 };
-	_enemy.pos[ENEMY_POS_LT_MOVE]->setPlayFrame(arrLT_MOVE, 7, 0);
+	_enemy.pos[ENEMY_POS_LT_MOVE]->setPlayFrame(arrLT_MOVE, 7, 1);
 	_enemy.pos[ENEMY_POS_LT_MOVE]->setFPS(10);
 
 	int arrRT_MOVE[] = { 127,126,125,124,123,122,121 };
-	_enemy.pos[ENEMY_POS_RT_MOVE]->setPlayFrame(arrRT_MOVE, 7, 0);
+	_enemy.pos[ENEMY_POS_RT_MOVE]->setPlayFrame(arrRT_MOVE, 7, 1);
 	_enemy.pos[ENEMY_POS_RT_MOVE]->setFPS(10);
 
 
@@ -96,14 +96,15 @@ void Prinny::posSet(void)
 
 	int arrRB_SKILL[] = { 191,190,189,188,187,186,185,184,183,182,180,179,178 };
 	_enemy.pos[ENEMY_POS_RB_SKILL]->setPlayFrame(arrRB_SKILL, 13, 0);
-
+	_enemy.pos[ENEMY_POS_RB_SKILL]->setFPS(10);
 
 	int arrLT_SKILL[] = { 192,193,194,195,196,197,198,199,200,201,202,203,204 };
 	_enemy.pos[ENEMY_POS_LT_SKILL]->setPlayFrame(arrLT_SKILL, 13, 0);
-
+	_enemy.pos[ENEMY_POS_LT_SKILL]->setFPS(10);
 
 	int arrRT_SKILL[] = { 223,222,221,220,219,218,217,216,215,214,213,212,211 };
-	_enemy.pos[ENEMY_POS_RT_SKILL]->setPlayFrame(arrRT_SKILL, 13, 1);
+	_enemy.pos[ENEMY_POS_RT_SKILL]->setPlayFrame(arrRT_SKILL, 13, 0);
+	_enemy.pos[ENEMY_POS_RT_SKILL]->setFPS(10);
 }
 void Prinny::release(void)
 {

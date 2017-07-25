@@ -209,7 +209,6 @@ void player::move(void)
 			{
 				_player.x -= 8;
 				_player.y += 4;
-				_tileCol = PLAYER_NULL;
 			}
 		break;
 		case PLAYER_STAT_LB_MOVE:
@@ -222,7 +221,6 @@ void player::move(void)
 			{
 				_player.x += 8;
 				_player.y -= 4;
-				_tileCol = PLAYER_NULL;
 			}
 		break;
 		case PLAYER_STAT_LT_MOVE:
@@ -235,7 +233,6 @@ void player::move(void)
 			{
 				_player.x += 8;
 				_player.y += 4;
-				_tileCol = PLAYER_NULL;
 			}
 		break;
 		case PLAYER_STAT_RB_MOVE:
@@ -248,7 +245,6 @@ void player::move(void)
 			{
 				_player.x -= 8;
 				_player.y -= 4;
-				_tileCol = PLAYER_NULL;
 			}
 		break;
 	}

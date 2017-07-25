@@ -64,7 +64,7 @@ void menuUI::render()
 
 void menuUI::control()
 {
-	if (KEYMANAGER->isOnceKeyDown('I') && (!_showui || !_invenOn || !_turnMenu || !_equipOn)) _turnMenu = true;
+	if (KEYMANAGER->isOnceKeyDown('I') && (!_showui && !_invenOn && !_turnMenu && !_equipOn)) _turnMenu = true;
 
 	if (KEYMANAGER->isOnceKeyDown('L'))
 	{
