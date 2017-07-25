@@ -44,6 +44,14 @@ HRESULT townScene::init()
 	_npcFrame->setFPS(1);
 	_npcFrame->start();
 
+	_potalNpc = IMAGEMANAGER->addFrameImage(L"potalNpc", L"Image/player/prinny.png", 3744, 854, 32, 7);
+	_potalNpcFrame = new animation;
+	_potalNpcFrame->init(3744, 854, 117, 122);
+	int npcFrame[] = { 26 + 32, 27 + 32, 28 + 32, 29 + 32, 30 + 32, 31 + 32 };
+	_potalNpcFrame->setPlayFrame(npcFrame, 6, true);
+	_potalNpcFrame->setFPS(1);
+	_potalNpcFrame->start();
+
 	if (!SOUNDMANAGER->isPlaySound(L"TownScene")) SOUNDMANAGER->play(L"TownScene");
 
 	return S_OK;
@@ -59,6 +67,7 @@ void townScene::update()
 	this->camControl();
 	_cm->update();
 	_npcFrame->frameUpdate(0.2);
+	_potalNpcFrame->frameUpdate(0.2);
 	this->backMenu();
 	
 	
@@ -132,6 +141,10 @@ void townScene::drawTile()
 					{
 						IMAGEMANAGER->findImage(L"Tree")->render(_tile[i].x - IMAGEMANAGER->findImage(L"Tree")->getWidth() / 2,
 							_tile[i].y - IMAGEMANAGER->findImage(L"Tree")->getHeight() / 2 - TILESIZEZ / 2, true, 1.0f);
+					}
+					else if (_tile[i].objFrame.x == 5 && _tile[i].objFrame.y == 6)
+					{
+						_potalNpc->aniRender(_tile[i].x - _potalNpc->getFrameWidth() / 2, _tile[i].y - _potalNpc->getFrameHeight() / 2, _potalNpcFrame, true, 1.0f);
 					}
 					else if (_tile[i].obj != OBJ_NPC)
 					{

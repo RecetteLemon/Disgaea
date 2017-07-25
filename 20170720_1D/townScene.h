@@ -15,6 +15,9 @@ private:
 	int _tileIndex;
 	image* _npc;
 	animation* _npcFrame;
+
+	image* _potalNpc;
+	animation* _potalNpcFrame;
 public:
 	townScene();
 	~townScene();
