@@ -15,6 +15,13 @@ private:
 	int _tileNum;
 	bool _isMoveStart;
 	bool _findPlayer;
+
+	RECT _rcEdge;
+	int _edgeNum;
+	bool _edgeMouseMove;
+	int _edgeMouseY;
+	image* _edge;
+	image* _edgeMouse;
 public:
 	dungeonScene();
 	~dungeonScene();

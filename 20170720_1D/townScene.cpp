@@ -167,7 +167,7 @@ void townScene::playerTileCol()
 	{
 		HRGN hRgn = CreatePolygonRgn(_tile[i].line, 4, WINDING);
 
-		if (_tile[i].z > 0 || _tile[i].ter == TER_WALL || _tile[i].ter == TER_VOID)
+		if (_tile[i].z > 0 || _tile[i].ter == TER_WALL || _tile[i].ter == TER_VOID || _tile[i].obj != OBJ_ERASE)
 		{
 			if (PtInRegion(hRgn, _cm->getShadowRC().left, _cm->getShadowRC().bottom))
 			{
@@ -190,7 +190,11 @@ void townScene::playerTileCol()
 				_cm->playerTileCol(3);
 				break;
 			}
-			else _cm->playerTileCol(4);
+			else
+			{
+				_cm->playerTileCol(4);
+				break;
+			}
 		}
 		DeleteObject(hRgn);
 	}
