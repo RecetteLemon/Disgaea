@@ -22,6 +22,12 @@ private:
 	int _edgeMouseY;
 	image* _edge;
 	image* _edgeMouse;
+
+	image* _potal[2];
+	
+	float _alpha;
+
+	bool _alphaChange;
 public:
 	dungeonScene();
 	~dungeonScene();
