@@ -45,5 +45,6 @@ public:
 	void aStarMove(int plNum);
 
 	void coordinateUpdate();
+	void characterTileUpdate();
 };
 

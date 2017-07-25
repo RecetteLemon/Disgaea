@@ -60,6 +60,9 @@ void aStarManager::setCurrentMap(tagIso* currentMap, int tileNum)
 		else if (node->getIso().obj == OBJ_ERASE || node->getIso().ter == TER_VOID) node->setIsOpen(0);
 		else node->setIsOpen(0);
 
+		if (!node->getIso().isOpen) node->setIsOpen(0);
+		if (node->getIso().z >= 1) node->setIsOpen(0);
+
 		_vTotalList.push_back(node);
 	}
 

@@ -18,6 +18,7 @@ HRESULT dungeonScene::init()
 	{
 		_tileIndex[i] = 0;
 	}
+	for (int i = 0; i < TILEX * TILEY; i++) _tile[i].isOpen = true;
 	_selectPlNum = 0;
 	_dm = new dungeonManager;
 	_dm->init();
@@ -107,14 +108,13 @@ void dungeonScene::drawTile()
 			-CAMERAMANAGER->getY() + _tile[i].y + TILESIZEY / 2 < 22 ||
 			-CAMERAMANAGER->getY() + _tile[i].y - TILESIZEY / 2 > 22 + TILEMONITORSIZEH))
 		{
-			
-				IMAGEMANAGER->findImage(L"IsoTerrain")->frameRender(_tile[i].x - TILESIZEX / 2,
-					_tile[i].y,
-					_tile[i].terFrame.x, _tile[i].terFrame.y, true, 1.0f);
-			
-		}
 
+			IMAGEMANAGER->findImage(L"IsoTerrain")->frameRender(_tile[i].x - TILESIZEX / 2,
+				_tile[i].y,
+				_tile[i].terFrame.x, _tile[i].terFrame.y, true, 1.0f);
+		}
 	}
+
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
 		if ((-CAMERAMANAGER->getX() + _tile[i].x + TILESIZEX / 2 > 22 ||
@@ -132,27 +132,15 @@ void dungeonScene::drawTile()
 				}
 			}
 
-			/*if (_tile[i].z <= 0)
-			{
-				DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[0].x, _tile[i].line[0].y, _tile[i].line[1].x, _tile[i].line[1].y, true, 1);
-				DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[1].x, _tile[i].line[1].y, _tile[i].line[2].x, _tile[i].line[2].y, true, 1);
-				DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[2].x, _tile[i].line[2].y, _tile[i].line[3].x, _tile[i].line[3].y, true, 1);
-				DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[3].x, _tile[i].line[3].y, _tile[i].line[0].x, _tile[i].line[0].y, true, 1);
-			}*/
+			//if (_tile[i].z <= 0)
+			//{
+			//	DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[0].x, _tile[i].line[0].y, _tile[i].line[1].x, _tile[i].line[1].y, true, 1);
+			//	DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[1].x, _tile[i].line[1].y, _tile[i].line[2].x, _tile[i].line[2].y, true, 1);
+			//	DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[2].x, _tile[i].line[2].y, _tile[i].line[3].x, _tile[i].line[3].y, true, 1);
+			//	DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[3].x, _tile[i].line[3].y, _tile[i].line[0].x, _tile[i].line[0].y, true, 1);
+			//}
 
-			if (_edgeNum == i)
-			{
-				if (_tile[_edgeNum].z >= 0)
-				{
-					_edge->render(_rcEdge.left, _rcEdge.top - _tile[i].z * TILESIZEZ, true, 1.0);
-					_edgeMouse->render(_rcEdge.left, _rcEdge.top - 100 + _edgeMouseY - _tile[i].z * TILESIZEZ, true, 1.0);
-				}
-				else
-				{
-					_edge->render(_rcEdge.left, _rcEdge.top, true, 1.0);
-					_edgeMouse->render(_rcEdge.left, _rcEdge.top - 100 + _edgeMouseY, true, 1.0);
-				}
-			}
+
 
 			if (_tile[i].obj != OBJ_ERASE)
 			{
@@ -168,10 +156,34 @@ void dungeonScene::drawTile()
 						_tile[i].objFrame.x, _tile[i].objFrame.y, true, 1.0f);
 				}
 			}
+		}
+	}
+	for (int j = 0; j < ASTARMANAGER->getMovableTile().size(); j++)
+	{
+		if (ASTARMANAGER->getMovableTile()[j].z < 1)
+		{
+			IMAGEMANAGER->findImage(L"movableTile")->render(ASTARMANAGER->getMovableTile()[j].x - TILESIZEX / 2 - IMAGEMANAGER->findImage(L"movableTile")->getWidth() + TILESIZEX,
+				ASTARMANAGER->getMovableTile()[j].y - ASTARMANAGER->getMovableTile()[j].z - IMAGEMANAGER->findImage(L"movableTile")->getHeight() - TILESIZEY * (ASTARMANAGER->getMovableTile()[j].z - 1), true, 1);
+		}
+	}
 
-			for (int j = 0; j < 5; j++)
+	for (int i = 0; i < TILEX * TILEY; i++)
+	{
+		for (int j = 0; j < 5; j++)
+		{
+			if (_tileIndex[j] == i) _dm->render();
+		}
+		if (_edgeNum == i)
+		{
+			if (_tile[_edgeNum].z >= 0)
 			{
-				if (_tileIndex[j] == i) _dm->render();
+				_edge->render(_rcEdge.left, _rcEdge.top - _tile[i].z * TILESIZEZ, true, 1.0);
+				_edgeMouse->render(_rcEdge.left, _rcEdge.top - 100 + _edgeMouseY - _tile[i].z * TILESIZEZ, true, 1.0);
+			}
+			else
+			{
+				_edge->render(_rcEdge.left, _rcEdge.top, true, 1.0);
+				_edgeMouse->render(_rcEdge.left, _rcEdge.top - 100 + _edgeMouseY, true, 1.0);
 			}
 		}
 	}
@@ -264,6 +276,20 @@ void dungeonScene::coordinateUpdate()
 
 void dungeonScene::aStarMove(int plNum)
 {
+	for (int i = 0; i < TILEX * TILEY; i++)
+	{
+		HRGN hrgn = CreatePolygonRgn(_tile[i].line, 4, WINDING);
+		for (int j = 0; j < 5; j++)
+		{
+			//캐릭터가 타일 안에 있으면
+			if (PtInRegion(hrgn, _dm->getPlayer(j)->getX(), _dm->getPlayer(j)->getY()))
+			{
+				_tile[i].isOpen = false;
+			}
+			//else _tile[i].isOpen = true;
+		}
+		DeleteObject(hrgn);
+	}
 	//움직일때(예외처리)
 	if (ASTARMANAGER->getMoveTile().size() != NULL && _isMoveStart)
 	{
@@ -334,6 +360,7 @@ void dungeonScene::aStarMove(int plNum)
 			_isMoveStart = false;
 			_findPlayer = false;
 		}
+		this->characterTileUpdate();
 	}
 
 	//움직이지 않을때(예외처리)
@@ -362,36 +389,17 @@ void dungeonScene::aStarMove(int plNum)
 
 				if (KEYMANAGER->isOnceKeyDown(VK_RBUTTON))
 				{
-					bool isExist = false; //캐릭터가 이미 존재하는가?
-
 					for (int j = 0; j < ASTARMANAGER->getMovableTile().size(); ++j)
 					{
 						if (ASTARMANAGER->getMovableTile()[j].indexX == _tile[i].indexX &&
 							ASTARMANAGER->getMovableTile()[j].indexY == _tile[i].indexY)
 						{
 							ASTARMANAGER->setGoalTile(i);
-
-							//캐릭터 수만큼 돌려준다
-							for (int i = 0; i < 5; i++)
-							{
-								if (ASTARMANAGER->getGoalTile()->getIso().x >= _dm->getPlayer(i)->getShadowRect().left &&
-									ASTARMANAGER->getGoalTile()->getIso().y >= _dm->getPlayer(i)->getShadowRect().top)
-									isExist = true;
-
-								if (isExist)
-									break;
-							}
-
-							if (!isExist)
-							{
-								ASTARMANAGER->startPathFinder();
-								_isMoveStart = true;
-							}
+							ASTARMANAGER->startPathFinder();
+							_isMoveStart = true;
 							break;
 						}
 					}
-
-
 				}
 			}
 			else _tile[i].edgePaint = false;
@@ -423,3 +431,20 @@ void dungeonScene::aStarMove(int plNum)
 	}
 }
 
+void dungeonScene::characterTileUpdate()
+{
+	for (int i = 0; i < TILEX * TILEY; i++)
+	{
+		HRGN hrgn = CreatePolygonRgn(_tile[i].line, 4, WINDING);
+		for (int j = 0; j < 5; j++)
+		{
+			//캐릭터가 타일 안에 없으면
+			if (PtInRegion(hrgn, _dm->getPlayer(j)->getX(), _dm->getPlayer(j)->getY()))
+			{
+				_tile[i].isOpen = false;
+			}
+			if (!PtInRegion(hrgn, _dm->getPlayer(j)->getX(), _dm->getPlayer(j)->getY())) _tile[i].isOpen = true;
+		}
+		DeleteObject(hrgn);
+	}
+}

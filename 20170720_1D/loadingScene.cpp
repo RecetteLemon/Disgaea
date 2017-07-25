@@ -77,6 +77,7 @@ void loadingScene::loadingImage()
 
 	_ld->loadImage(L"potalBlack", L"Image/MapTool/blackPotal.png", 192, 192);
 	_ld->loadImage(L"potalWhite", L"Image/MapTool/whitePotal.png", 192, 192);
+	_ld->loadImage(L"movableTile", L"Image/MapTool/movableTile.png", 190, 96);
 
 
 	// 캐릭터 관련 이미지

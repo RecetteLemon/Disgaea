@@ -47,4 +47,5 @@ struct tagIso
 	bool tileVoid;
 	bool edgePaint;
 	bool clickCheck;
+	bool isOpen;
 };
