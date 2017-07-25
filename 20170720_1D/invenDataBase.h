@@ -24,6 +24,16 @@ public:
 	void clearVItem() { _vInvenItem.clear(); }
 	//스왑
 	void swapVItem(vector<Item> Item) { _vInvenItem.swap(Item); }
+	void ItemToItem(int fNum, int sNum)
+	{
+		Item tempItem;
+
+		ZeroMemory(&tempItem, sizeof(Item));
+
+		tempItem = _vInvenItem[fNum];
+		_vInvenItem[fNum] = _vInvenItem[sNum];
+		_vInvenItem[sNum] = tempItem;
+	}
 	//=========================================================================================
 	//창고 벡터 가져오기
 	vector<Item> &getVWareHouse(void) { return _vWareHouse; }

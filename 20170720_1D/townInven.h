@@ -50,6 +50,7 @@ private:
 	TAGITEMSTAT _tagItemStat;
 	TAGSLOT _tagSlot;
 
+	RECT _itemBottom;
 	RECT _itemInfo;
 	RECT _itemNum1;
 	RECT _itemNum10;
@@ -68,7 +69,12 @@ private:
 	RECT r_wareSlot[512];
 	image* i_itemSlot[24];
 	image* i_wareSlot[512];
+	RECT _moveCursor;
 
+	RECT _itemName2;
+	RECT _itemInfo2;
+
+	bool _moveCheck;
 	int _itemSlot;
 	int _wareHouseSlot;
 
@@ -82,8 +88,11 @@ private:
 	int _wareNum;
 	int _slotNum;
 	bool _wareHouseCheck;
-
 	bool _swap;
+	float _blockMove;
+	float _wareBlockMove;
+
+	int firstNum, secNum;
 
 public:
 	HRESULT init();
@@ -92,7 +101,7 @@ public:
 	void render();
 
 	void itemNumDraw();
-	void slotMove();
+	void swapItem(int x, int y);
 
 	void sortItem();
 	void SendItem();
