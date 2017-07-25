@@ -64,10 +64,10 @@ void loadingScene::loadingImage()
 	_ld->loadFrameImage(L"objSelectTile", L"Image/MapTool/objSelectTile.png", 576 / 2, 504 / 2, 8, 7);
 	_ld->loadFrameImage(L"objSelectTile2", L"Image/MapTool/objSelectTile2.png", 384 / 2, 336 / 2, 8, 7);
 
-	_ld->loadFrameImage(L"terrainTile", L"Image/MapTool/terrainTile.png", 768, 192, 8, 2);
-	_ld->loadFrameImage(L"IsoTerrain", L"Image/MapTool/terrainTile2.png", 1536, 384, 8, 2);
-	_ld->loadFrameImage(L"terrainSelectTile", L"Image/MapTool/terrainSelectTile.png", 576 / 2, 144 / 2, 8, 2);
-	_ld->loadFrameImage(L"terrainSelectTile2", L"Image/MapTool/terrainSelectTile2.png", 384 / 2, 96 / 2, 8, 2);
+	_ld->loadFrameImage(L"terrainTile", L"Image/MapTool/terrainTile.png", 768, 480, 8, 5);
+	_ld->loadFrameImage(L"IsoTerrain", L"Image/MapTool/terrainTile2.png", 1536, 960, 8, 5);
+	_ld->loadFrameImage(L"terrainSelectTile", L"Image/MapTool/terrainSelectTile.png", 576 / 2, 180, 8, 5);
+	_ld->loadFrameImage(L"terrainSelectTile2", L"Image/MapTool/terrainSelectTile2.png", 384 / 2, 120, 8, 5);
 
 	_ld->loadImage(L"obj_house", L"Image/MapTool/house.png", 768, 627);
 	_ld->loadImage(L"Tree", L"Image/MapTool/tree.png", 192, 237);
