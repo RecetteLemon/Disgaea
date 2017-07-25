@@ -57,21 +57,17 @@ enum PLAYERPOSITION
 
 	PLAYER_POS_END
 };
-
+enum playerCol
+{
+	PLAYER_COL_LB,
+	PLAYER_COL_RB,
+	PLAYER_COL_LT,
+	PLAYER_COL_RT,
+	PLAYER_NULL
+};
 class player : public gameNode
 {
 protected:                                      
-
-
-
-	enum playerCol
-	{
-		PLAYER_COL_LB,
-		PLAYER_COL_RB,
-		PLAYER_COL_LT,
-		PLAYER_COL_RT,
-		PLAYER_NULL		
-	};
 	struct PLAYER
 	{
 		wstring _characterName;
@@ -119,6 +115,8 @@ public:
 
 	int getX() { return _player.x; }
 	int getY() { return _player.y; }
+	inline void setX(int x) { _player.x = x; }
+	inline void setY(int y) { _player.y = y; }
 	PLAYERSTAT getStat() { return _player.stat; }
 
 	void setStat(PLAYERSTAT ps) { _player.stat = ps; }

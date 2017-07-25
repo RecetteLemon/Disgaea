@@ -49,6 +49,9 @@ public:
 
 	inline RECT getShadowRC() { return _shadowRc; }
 
+	void setPlayerX(int x) { _player->setX(_player->getX() + x); }
+	void setPlayerY(int y) { _player->setY(_player->getY() + y); }
+
 	POINT getPlayerCenter() { return PointMake(_player->getX(), _player->getY()); }
 	PLAYERSTAT getPlayerStat() { return _player->getStat(); }
 
@@ -86,7 +89,7 @@ public:
 	inline RECT* getShadowRC() { return _shadowRc; }
 
 	player* getPlayer(int plNum) { return _player[plNum]; }
-	
+
 	void setPlayerState(int plNum,PLAYERSTAT ps) { _player[plNum]->setStat(ps); }
 
 	void setAdell(int x, int y);

@@ -16,7 +16,7 @@ HRESULT townScene::init()
 	_mUI->init();
 
 	_cm = new characterManager;
-	_cm->init(2, 5);
+	_cm->init(500, 500);
 	_cm->selectPlayer(3);
 	_tileNum = 0;
 	_tileIndex = 0;
@@ -163,41 +163,7 @@ void townScene::playerTileCol()
 {
 
 	
-	for (int i = 0; i < TILEX * TILEY; i++)
-	{
-		HRGN hRgn = CreatePolygonRgn(_tile[i].line, 4, WINDING);
-
-		if (_tile[i].z > 0 || _tile[i].ter == TER_WALL || _tile[i].ter == TER_VOID || _tile[i].obj != OBJ_ERASE)
-		{
-			if (PtInRegion(hRgn, _cm->getShadowRC().left, _cm->getShadowRC().bottom))
-			{
-				_cm->playerTileCol(0);
-				break;
-			}
-			else if (PtInRegion(hRgn, _cm->getShadowRC().right, _cm->getShadowRC().bottom))
-			{
-				_cm->playerTileCol(1);
-				break;
-			}
-			else if (PtInRegion(hRgn, _cm->getShadowRC().left, _cm->getShadowRC().top))
-			{
-				//_num = i;
-				_cm->playerTileCol(2);
-				break;
-			}
-			else if (PtInRegion(hRgn, _cm->getShadowRC().right, _cm->getShadowRC().top))
-			{
-				_cm->playerTileCol(3);
-				break;
-			}
-			else
-			{
-				_cm->playerTileCol(4);
-				
-			}
-		}
-		DeleteObject(hRgn);
-	}
+	
 
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
@@ -210,4 +176,67 @@ void townScene::playerTileCol()
 
 		DeleteObject(hRgn);
 	}
+
+
+
+	HRGN hRgn1 = CreatePolygonRgn(_tile[_tileIndex - TILEX].line, 4, WINDING);
+	if (_tile[_tileIndex - TILEX].z > 0 || _tile[_tileIndex - TILEX].ter == TER_WALL || _tile[_tileIndex - TILEX].ter == TER_VOID || _tile[_tileIndex - TILEX].obj != OBJ_ERASE)
+	{
+		if (RectInRegion(hRgn1, &_cm->getShadowRC()))
+		{
+			/*if (_cm->getPlayerStat() == PLAYER_STAT_RT_MOVE)
+			{
+				_cm->playerTileCol(PLAYER_COL_RT);
+			}*/
+			_cm->setPlayerX(-8);
+			_cm->setPlayerY(+4);
+		}
+	}
+	DeleteObject(hRgn1);
+
+	HRGN hRgn2 = CreatePolygonRgn(_tile[_tileIndex + TILEX].line, 4, WINDING);
+	if (_tile[_tileIndex + TILEX].z > 0 || _tile[_tileIndex + TILEX].ter == TER_WALL || _tile[_tileIndex + TILEX].ter == TER_VOID || _tile[_tileIndex + TILEX].obj != OBJ_ERASE)
+	{
+		if (RectInRegion(hRgn2, &_cm->getShadowRC()))
+		{
+			/*if (_cm->getPlayerStat() == PLAYER_STAT_LB_MOVE)
+			{
+				_cm->playerTileCol(PLAYER_COL_LB);
+			}*/
+			_cm->setPlayerX(+8);
+			_cm->setPlayerY(-4);
+		}
+	}
+	DeleteObject(hRgn2);
+
+	HRGN hRgn3 = CreatePolygonRgn(_tile[_tileIndex + 1].line, 4, WINDING);
+	if (_tile[_tileIndex + 1].z > 0 || _tile[_tileIndex + 1].ter == TER_WALL || _tile[_tileIndex + 1].ter == TER_VOID || _tile[_tileIndex + 1].obj != OBJ_ERASE)
+	{
+		if (RectInRegion(hRgn3, &_cm->getShadowRC()))
+		{
+			/*if (_cm->getPlayerStat() == PLAYER_STAT_RB_MOVE)
+			{
+				_cm->playerTileCol(PLAYER_COL_RB);
+			}*/
+			_cm->setPlayerX(-8);
+			_cm->setPlayerY(-4);
+		}
+	}
+	DeleteObject(hRgn3);
+
+	HRGN hRgn4 = CreatePolygonRgn(_tile[_tileIndex - 1].line, 4, WINDING);
+	if (_tile[_tileIndex - 1].z > 0 || _tile[_tileIndex - 1].ter == TER_WALL || _tile[_tileIndex - 1].ter == TER_VOID || _tile[_tileIndex - 1].obj != OBJ_ERASE)
+	{
+		if (RectInRegion(hRgn4, &_cm->getShadowRC()))
+		{
+			/*if (_cm->getPlayerStat() == PLAYER_STAT_LT_MOVE)
+			{
+				_cm->playerTileCol(PLAYER_COL_LT);
+			}*/
+			_cm->setPlayerX(+8);
+			_cm->setPlayerY(+4);
+		}
+	}
+	DeleteObject(hRgn4);
+	
 }
