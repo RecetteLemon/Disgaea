@@ -174,6 +174,10 @@ void menuScene::sceneChange()
 
 		if (!blackIn())
 		{
+			vector<wstring> v;
+			wchar_t str[10];
+			v.push_back(_itow(0, str, 10));
+			TXTDATA->txtSave(L"ContinueCheck.txt", v);
 			SCENEMANAGER->changeScene(L"TownScene");
 		}
 	}
@@ -183,7 +187,11 @@ void menuScene::sceneChange()
 
 		if (!blackIn())
 		{
-			SCENEMANAGER->changeScene(L"ShopScene");
+			vector<wstring> v;
+			wchar_t str[10];
+			v.push_back(_itow(1, str, 10));
+			TXTDATA->txtSave(L"ContinueCheck.txt", v);
+			SCENEMANAGER->changeScene(L"TownScene");
 		}
 	}
 	else if (_changeScene[MENU_SETTING])

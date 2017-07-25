@@ -20,7 +20,20 @@ HRESULT townScene::init()
 	_tileIndex = 0;
 	this->loadTile();
 
-	_cm->init(_tile[131].centerX, _tile[131].centerY);
+	vector<wstring> v;
+	v = TXTDATA->txtLoad(L"ContinueCheck.txt");
+	vector<wstring> vv;
+	vv = TXTDATA->txtLoad(L"PlayerSave.txt");
+	if (_wtoi(v[0].c_str()) == 0)
+	{
+		_cm->init(_tile[131].centerX, _tile[131].centerY);
+		CAMERAMANAGER->setPosition(INITX - WINSIZEX / 2 + _tile[131].centerX, INITY + 22 + _tile[131].centerY);
+	}
+	else if (_wtoi(v[0].c_str()) == 1)
+	{
+		_cm->init(_tile[_wtoi(vv[0].c_str())].centerX, _tile[_wtoi(vv[0].c_str())].centerY);
+		CAMERAMANAGER->setPosition(INITX - WINSIZEX / 2 + _tile[_wtoi(vv[0].c_str())].centerX, INITY + 22 + _tile[_wtoi(vv[0].c_str())].centerY);
+	}
 	_cm->selectPlayer(3);
 
 	_npc = IMAGEMANAGER->addFrameImage(L"npc", L"image/face/NPC.png", 588, 156, 6, 1);
@@ -46,6 +59,7 @@ void townScene::update()
 	this->camControl();
 	_cm->update();
 	_npcFrame->frameUpdate(0.2);
+	this->backMenu();
 	
 	
 }
@@ -89,13 +103,13 @@ void townScene::drawTile()
 				
 			}
 
-			if (_tile[i].z <= 0)
+			/*if (_tile[i].z <= 0)
 			{
 				DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[0].x, _tile[i].line[0].y, _tile[i].line[1].x, _tile[i].line[1].y, true, 1);
 				DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[1].x, _tile[i].line[1].y, _tile[i].line[2].x, _tile[i].line[2].y, true, 1);
 				DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[2].x, _tile[i].line[2].y, _tile[i].line[3].x, _tile[i].line[3].y, true, 1);
 				DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[3].x, _tile[i].line[3].y, _tile[i].line[0].x, _tile[i].line[0].y, true, 1);
-			}
+			}*/
 
 			if (_tile[i].obj == OBJ_NPC)
 			{
@@ -153,7 +167,7 @@ void townScene::camControl()
 }
 void townScene::loadTile()
 {
-	CAMERAMANAGER->setPosition(INITX - WINSIZEX / 2, INITY + 22);
+	//CAMERAMANAGER->setPosition(INITX - WINSIZEX / 2, INITY + 22);
 	HANDLE file;
 	DWORD read;
 	file = CreateFile(L"Tile/Town/TownTile3.map", GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -162,10 +176,6 @@ void townScene::loadTile()
 }
 void townScene::playerTileCol()
 {
-
-	
-	
-
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
 		HRGN hRgn = CreatePolygonRgn(_tile[i].line, 4, WINDING);
@@ -240,4 +250,15 @@ void townScene::playerTileCol()
 	}
 	DeleteObject(hRgn4);
 	
+}
+void townScene::backMenu()
+{
+	if (KEYMANAGER->isOnceKeyDown('M'))
+	{
+		vector<wstring> v;
+		wchar_t str[10];
+		v.push_back(_itow(_tileIndex, str, 10));
+		TXTDATA->txtSave(L"PlayerSave.txt", v);
+		SCENEMANAGER->changeScene(L"MenuScene");
+	}
 }
