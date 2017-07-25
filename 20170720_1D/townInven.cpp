@@ -68,6 +68,8 @@ HRESULT townInven::init()
 	_isItem = false;
 	_isInfo = false;
 
+	_currentX = _currentY = 0;
+
 	return S_OK;
 }
 
@@ -375,7 +377,8 @@ void townInven::update()
 			num = 0;
 			_itemBagBlock = RectMake(556, 103, 40, 123);
 			_test = 0;
-
+			if (!_moveCheck)_currentX = 0;
+			else _currentX = 2;
 			for (int i = _test; i < _test + 7; i++)
 			{
 				r_itemSlot[i] = RectMake(62, 103 + (57 * i), 474, 56);
@@ -390,7 +393,8 @@ void townInven::update()
 			num = 0;
 			_wareHouseBlock = RectMake(1157, 103, 40, 33);
 			_test1 = 0;
-
+			if (!_moveCheck)_currentX = 1;
+			else _currentX = 3;
 			for (int i = _test1; i < _test1 + 7; i++)
 			{
 				r_wareSlot[i] = RectMake(662, 103 + (57 * i), 474, 56);
@@ -402,19 +406,22 @@ void townInven::update()
 			SCENEMANAGER->changeScene(L"MenuScene");
 		}
 		//아이템 스왑용
-		if (KEYMANAGER->isOnceKeyDown('Q'))
+		if (KEYMANAGER->isOnceKeyDown('O'))
 		{
 			sortItem();
 			switch (_tagItemStat)
 			{
 			case 0:
 				_tagItemStat = ITEM_ARMOR;
+				_currentY = 2;
 				break;
 			case 1:
 				_tagItemStat = ITEM_POTION;
+				_currentY = 0;
 				break;
 			case 2:
 				_tagItemStat = ITEM_WEAPON;
+				_currentY = 1;
 				break;
 			}
 		}
@@ -447,6 +454,7 @@ void townInven::update()
 				{
 					_moveCursor = RectMake(r_itemSlot[i].left + 6, r_itemSlot[i].top + 14, 52, 39);
 				}
+				if (i_itemSlot[_itemSlot] == IMAGEMANAGER->findImage(L"none"))_moveCheck = false;
 			}
 			else
 			{
@@ -483,14 +491,15 @@ void townInven::render()
 		IMAGEMANAGER->findImage(L"마을창고")->render(_wareHouse.left, _wareHouse.top, false, 1.0f);
 		IMAGEMANAGER->findImage(L"마을창고3")->render(_wareHouseBlock.left, _wareHouseBlock.top, false, 1.0f);
 
-		if (_wareHouseCheck)
-		{
-			IMAGEMANAGER->findImage(L"마을창고2")->render(_itemMove.left, _itemMove.top, false, 1.0f);
-		}
-		else if (!_wareHouseCheck)
-		{
-			IMAGEMANAGER->findImage(L"마을인벤2")->render(_itemMove.left, _itemMove.top, false, 1.0f);
-		}
+		IMAGEMANAGER->findImage(L"invenSort")->frameRender(_itemMove.left, _itemMove.top, _currentX, _currentY, false, 1.0f);
+		//if (_wareHouseCheck)
+		//{
+		//	IMAGEMANAGER->findImage(L"마을창고2")->render(_itemMove.left, _itemMove.top, false, 1.0f);
+		//}
+		//else if (!_wareHouseCheck)
+		//{
+		//	IMAGEMANAGER->findImage(L"마을인벤2")->render(_itemMove.left, _itemMove.top, false, 1.0f);
+		//}
 
 		//인벤
 		//if (!_wareHouseCheck)

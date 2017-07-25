@@ -114,7 +114,7 @@ void loadingScene::loadingImage()
 	_ld->loadFrameImage(L"equipSort", L"Image/equip/sort.png", 748, 812, 2, 4);
 	_ld->loadImage(L"other", L"Image/equip/other.png", 564, 54);
 	_ld->loadImage(L"weapon", L"Image/equip/weapon.png", 564, 54);
-
+	_ld->loadFrameImage(L"invenSort", L"Image/inven/sort.png", 1108, 570, 4, 3);
 	//상점 관련
 	_ld->loadImage(L"shopMain", L"Image/shop/shopMain.png", 1600, 900);
 	_ld->loadImage(L"shopBuy", L"Image/shop/shopBuy.png", 1600, 900);

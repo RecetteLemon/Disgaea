@@ -101,6 +101,8 @@ private:
 	characterSelet* _charSel;
 	//ÀÎÆ÷
 	bool _isInfo;
+	int _currentX;
+	int _currentY;
 
 public:
 	HRESULT init();
