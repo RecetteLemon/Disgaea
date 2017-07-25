@@ -2,7 +2,7 @@
 #include "gameNode.h"
 #include "statUi.h"
 #include "townInven.h"
-#include "equipUI.h"
+#include "equip.h"
 
 enum cursor
 {
@@ -17,7 +17,7 @@ class menuUI : public gameNode
 private:
 	statUi* _sUI;
 	townInven* _townInven;
-	equipUI* _equip;
+	equip* _equip;
 
 	cursor _cursor;
 	int _selectNum;
