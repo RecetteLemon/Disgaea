@@ -61,6 +61,7 @@ public:
 	void moveOn() { _player->move(); }
 	
 
+
 	characterManager();
 	~characterManager();
 };
@@ -87,6 +88,12 @@ public:
 	player* getPlayer(int plNum) { return _player[plNum]; }
 	
 	void setPlayerState(int plNum,PLAYERSTAT ps) { _player[plNum]->setStat(ps); }
+
+	void setAdell(int x, int y);
+	void setCleric(int x, int y);
+	void setPram(int x, int y);
+	void setRozalin(int x, int y);
+	void setValvatorez(int x, int y);
 
 	dungeonManager();
 	~dungeonManager();

@@ -108,21 +108,6 @@ dungeonManager::~dungeonManager()
 HRESULT dungeonManager::init(void)
 {
 
-	_player[PLAYER_ADELL] = new Adell;
-	_player[PLAYER_ADELL]->init(L"NameAdell", L"Adell", 0, 0);
-
-	_player[PLAYER_CLERIC] = new Cleric;
-	_player[PLAYER_CLERIC]->init(L"NameCleric", L"Cleric", 80, 80);
-
-	_player[PLAYER_PRAM] = new Pram;
-	_player[PLAYER_PRAM]->init(L"NamePram", L"Pram", 160, 160);
-
-	_player[PLAYER_ROZALIN] = new rozalin;
-	_player[PLAYER_ROZALIN]->init(L"NameRozalin", L"Rozalin", 240, 240);
-
-	_player[PLAYER_VALVATOREZ] = new valvatorez;
-	_player[PLAYER_VALVATOREZ]->init(L"NameValvatorez", L"Valvatorez", 320, 320);
-
 
 	return S_OK;
 }
@@ -147,3 +132,28 @@ void dungeonManager::render(void)
 	}
 }
 
+void dungeonManager::setAdell(int x, int y)
+{
+	_player[PLAYER_ADELL] = new Adell;
+	_player[PLAYER_ADELL]->init(L"NameAdell", L"Adell", x, y);
+}
+void dungeonManager::setCleric(int x, int y)
+{
+	_player[PLAYER_CLERIC] = new Cleric;
+	_player[PLAYER_CLERIC]->init(L"NameCleric", L"Cleric", x, y);
+}
+void dungeonManager::setPram(int x, int y)
+{
+	_player[PLAYER_PRAM] = new Pram;
+	_player[PLAYER_PRAM]->init(L"NamePram", L"Pram", x, y);
+}
+void dungeonManager::setRozalin(int x, int y)
+{
+	_player[PLAYER_ROZALIN] = new rozalin;
+	_player[PLAYER_ROZALIN]->init(L"NameRozalin", L"Rozalin", x, y);
+}
+void dungeonManager::setValvatorez(int x, int y)
+{
+	_player[PLAYER_VALVATOREZ] = new valvatorez;
+	_player[PLAYER_VALVATOREZ]->init(L"NameValvatorez", L"Valvatorez", x, y);
+}

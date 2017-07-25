@@ -21,6 +21,11 @@ HRESULT dungeonScene::init()
 	_selectPlNum = 0;
 	_dm = new dungeonManager;
 	_dm->init();
+	_dm->setAdell(_tile[80].centerX, _tile[80].centerY);
+	_dm->setCleric(_tile[81].centerX, _tile[81].centerY);
+	_dm->setPram(_tile[79].centerX, _tile[79].centerY);
+	_dm->setRozalin(_tile[60].centerX, _tile[60].centerY);
+	_dm->setValvatorez(_tile[59].centerX, _tile[59].centerY);
 	
 	//a* 알고리즘을 적용할 캐릭터 수 만큼 호출
 	//	ASTARMANAGER->addAStar(_tile, _cm->getName(), _cm->getPlayerX(), _cm->getPlayerY());
@@ -353,15 +358,6 @@ void dungeonScene::aStarMove(int plNum)
 			{
 				_tile[i].edgePaint = true;
 
-				if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
-				{
-					for (int j = 0; j < 5; ++j)
-					{
-						if (_tileIndex[j] == i)_selectPlNum = j;
-						_findPlayer = false;
-					}
-				}
-
 				if (KEYMANAGER->isOnceKeyDown(VK_RBUTTON))
 				{
 					for (int j = 0; j < ASTARMANAGER->getMovableTile().size(); ++j)
@@ -386,5 +382,23 @@ void dungeonScene::aStarMove(int plNum)
 		}
 	}
 
+	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+	{
+		for (int i = 0; i < TILEX * TILEY; i++)
+		{
+			HRGN hRgn = CreatePolygonRgn(_tile[i].line, 4, WINDING);
+
+			if (PtInRegion(hRgn, _ptMouse.x + CAMERAMANAGER->getX(), _ptMouse.y + CAMERAMANAGER->getY()))
+			{
+				for (int j = 0; j < 5; j++)
+				{
+					if (_tileIndex[j] == i) _selectPlNum = j;
+					_findPlayer = false;
+				}
+			}
+
+			DeleteObject(hRgn);
+		}
+	}
 }
 
