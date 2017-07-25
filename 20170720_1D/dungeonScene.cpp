@@ -362,17 +362,36 @@ void dungeonScene::aStarMove(int plNum)
 
 				if (KEYMANAGER->isOnceKeyDown(VK_RBUTTON))
 				{
+					bool isExist = false; //캐릭터가 이미 존재하는가?
+
 					for (int j = 0; j < ASTARMANAGER->getMovableTile().size(); ++j)
 					{
 						if (ASTARMANAGER->getMovableTile()[j].indexX == _tile[i].indexX &&
 							ASTARMANAGER->getMovableTile()[j].indexY == _tile[i].indexY)
 						{
 							ASTARMANAGER->setGoalTile(i);
-							ASTARMANAGER->startPathFinder();
-							_isMoveStart = true;
+
+							//캐릭터 수만큼 돌려준다
+							for (int i = 0; i < 5; i++)
+							{
+								if (ASTARMANAGER->getGoalTile()->getIso().x >= _dm->getPlayer(i)->getShadowRect().left &&
+									ASTARMANAGER->getGoalTile()->getIso().y >= _dm->getPlayer(i)->getShadowRect().top)
+									isExist = true;
+
+								if (isExist)
+									break;
+							}
+
+							if (!isExist)
+							{
+								ASTARMANAGER->startPathFinder();
+								_isMoveStart = true;
+							}
 							break;
 						}
 					}
+
+
 				}
 			}
 			else _tile[i].edgePaint = false;

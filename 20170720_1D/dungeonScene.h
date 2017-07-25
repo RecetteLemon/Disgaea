@@ -29,6 +29,8 @@ private:
 	float _alpha;
 
 	bool _alphaChange;
+
+	WCHAR str[128];
 public:
 	dungeonScene();
 	~dungeonScene();
