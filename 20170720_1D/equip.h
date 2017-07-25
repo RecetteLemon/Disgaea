@@ -38,7 +38,8 @@ private:
 	RECT _equipSlot[4];
 	//Ä¿¼­
 	RECT _cursor;
-
+	//¹Ù
+	RECT _bar;
 	int _slotCount;
 	int _num;
 	int _tempNum;

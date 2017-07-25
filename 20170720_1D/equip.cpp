@@ -28,6 +28,7 @@ HRESULT equip::init()
 	{
 		_equipSlot[i] = RectMake(WINSIZEX - 619, 30 + (59 * i), 564, 54);
 	}
+	_bar = RectMake(_invenBox.right - 47, _invenBox.top + 67, 40, 123);
 	_cursor = RectMakeCenter(_slot[0].left - 4, (_slot[0].bottom - _slot[0].top) / 2 + _slot[0].top, 52, 39);
 	_slotCount = _num = _tempNum = 0;
 	_infoOn = false;
@@ -64,9 +65,9 @@ void equip::update()
 	{
 		if (!_isEquip) _isEquip = true;
 		else _isEquip = false;
-		if (_isEquip) equipItem();
+		if (_isEquip && i_slot[_slotCount + (int)_slotNum] != IMAGEMANAGER->findImage(L"none")) equipItem();
 	}
-
+	_bar = RectMake(_invenBox.right - 47, _invenBox.top + 67 + (16 * _slotCount), 40, 123);
 }
 
 void equip::render()
@@ -104,6 +105,7 @@ void equip::render()
 	}
 	//if()
 	IMAGEMANAGER->findImage(L"itemBag")->render(_invenBox.left, _invenBox.top, false, 1.0f);
+	IMAGEMANAGER->findImage(L"moveBar")->render(_bar.left, _bar.top, false, 1.0f);
 	IMAGEMANAGER->findImage(L"equipSort")->frameRender(_sort.left, _sort.top, 0, 0, false, 1.0f);
 	for (int i = _slotCount; i < _slotCount + 6; i++)
 	{
