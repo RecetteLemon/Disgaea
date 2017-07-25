@@ -8,9 +8,17 @@ enum EQUIP_SLOT
 	ESLOT_1,
 	ESLOT_2,
 	ESLOT_3,
-	ESLOT_4,
-	ESLOT_5,
-	ESLOT_6
+	ESLOT_4
+};
+
+enum INVEN_SLOT
+{
+	ISLOT_1,
+	ISLOT_2,
+	ISLOT_3,
+	ISLOT_4,
+	ISLOT_5,
+	ISLOT_6
 };
 
 enum EQUIPSTATE
@@ -33,11 +41,14 @@ private:
 	//슬롯 생성
 	RECT _slot[24];
 	image* i_slot[24];
-	EQUIP_SLOT _slotNum;
+	INVEN_SLOT _slotNum;
+	EQUIP_SLOT _EslotNum;
 	EQUIPSTATE _state;
 	RECT _equipSlot[4];
 	//커서
 	RECT _cursor;
+	RECT _tempCursor;
+	bool _isTemp;
 	//바
 	RECT _bar;
 	int _slotCount;
@@ -48,7 +59,10 @@ private:
 
 	bool _isEquip;
 
+
 	int _charNum;
+	int _currentFrameX;
+	int _currentFrameY;
 public:
 	HRESULT init();
 	void release();
@@ -61,12 +75,13 @@ public:
 	void equipItem();
 	void statUP_weapon();
 	void statUP_armor();
+	void takeOff_weapon();
+	void takeOff_armor(int i);
 
 	void setCharNum(int charNum) { _charNum = charNum; }
 
 	equip();
 	~equip();
 };
-
 
 

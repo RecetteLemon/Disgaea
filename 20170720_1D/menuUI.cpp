@@ -20,7 +20,7 @@ HRESULT menuUI::init()
 	_townInven = new townInven;
 	_townInven->init();
 	//장비창 소환
-	_equip = new equipUI;
+	_equip = new equip;
 	_equip->init();
 
 	_turnMenu = false;

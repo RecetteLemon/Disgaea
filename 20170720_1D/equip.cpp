@@ -4,7 +4,6 @@
 
 equip::equip()
 {
-	_charNum = 0;
 }
 
 
@@ -14,13 +13,14 @@ equip::~equip()
 
 HRESULT equip::init()
 {
+
 	//기본틀
 	_statBox = RectMake(0, 10, 1600, 300);
 	_invenBox = RectMake(61, 315, 553, 480);
 	_itemBox = RectMake(_invenBox.right + 20, 535, 677, 253);
 	_sort = RectMake(_itemBox.right - 100, 315, 374, 203);
 	//
-	_slotNum = ESLOT_1;
+	_slotNum = ISLOT_1;
 	for (int i = 0; i < 24; i++)
 	{
 		_slot[i] = RectMake(_invenBox.left + 12, _invenBox.top + 76 + (67 * i), 474, 56);
@@ -30,11 +30,15 @@ HRESULT equip::init()
 		_equipSlot[i] = RectMake(WINSIZEX - 619, 30 + (59 * i), 564, 54);
 	}
 	_bar = RectMake(_invenBox.right - 47, _invenBox.top + 67, 40, 123);
-	_cursor = RectMakeCenter(_slot[0].left - 4, (_slot[0].bottom - _slot[0].top) / 2 + _slot[0].top, 52, 39);
+	//_cursor = RectMakeCenter(_slot[0].left - 4, (_slot[0].bottom - _slot[0].top) / 2 + _slot[0].top, 52, 39);
+	_cursor = RectMakeCenter(_equipSlot[0].left, 40 + (59 * 0), 52, 39);
 	_slotCount = _num = _tempNum = 0;
 	_infoOn = false;
 	_isEquip = false;
-	_state = INVEN;
+	_isTemp = false;
+	_state = EQUIP;
+	_charNum = 0;
+	_currentFrameX = _currentFrameY = 0;
 
 	return S_OK;
 }
@@ -45,6 +49,18 @@ void equip::release()
 
 void equip::update()
 {
+	if (KEYMANAGER->isOnceKeyDown('Q'))
+	{
+		_charNum--;
+		if (_charNum < 0) _charNum = 4;
+	}
+	if (KEYMANAGER->isOnceKeyDown('E'))
+	{
+		_charNum++;
+		if (_charNum > 4) _charNum = 0;
+	}
+
+
 	switch (_charNum)
 	{
 	case 0:
@@ -125,7 +141,7 @@ void equip::render()
 	//if()
 	IMAGEMANAGER->findImage(L"itemBag")->render(_invenBox.left, _invenBox.top, false, 1.0f);
 	IMAGEMANAGER->findImage(L"moveBar")->render(_bar.left, _bar.top, false, 1.0f);
-	IMAGEMANAGER->findImage(L"equipSort")->frameRender(_sort.left, _sort.top, 0, 0, false, 1.0f);
+	IMAGEMANAGER->findImage(L"equipSort")->frameRender(_sort.left, _sort.top, _currentFrameX, _currentFrameY, false, 1.0f);
 	for (int i = _slotCount; i < _slotCount + 6; i++)
 	{
 		if (INVENMANAGER->getVItem().size() == 0)
@@ -160,16 +176,16 @@ void equip::render()
 		}
 	}
 	IMAGEMANAGER->findImage(L"cursor")->render(_cursor.left, _cursor.top, false, 1.0f);
-
+	if (_isTemp)IMAGEMANAGER->findImage(L"cursor")->render(_tempCursor.left, _tempCursor.top, false, 1.0f);
 
 	WCHAR str[128];
-	swprintf_s(str, L"%d", STATMANAGER->getPlayerStat()->_atk);
+	swprintf_s(str, L"%d", STATMANAGER->getPlayerStat()[_charNum]._atk);
 	DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(255, 255, 255), 1), L"고딕", 40, str, 400, WINSIZEY / 2 - 280, WINSIZEX, WINSIZEY);
-	swprintf_s(str, L"%d", STATMANAGER->getPlayerStat()->_int);
+	swprintf_s(str, L"%d", STATMANAGER->getPlayerStat()[_charNum]._int);
 	DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(255, 255, 255), 1), L"고딕", 40, str, 400, WINSIZEY / 2 - 250, WINSIZEX, WINSIZEY);
-	swprintf_s(str, L"%d", STATMANAGER->getPlayerStat()->_def);
+	swprintf_s(str, L"%d", STATMANAGER->getPlayerStat()[_charNum]._def);
 	DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(255, 255, 255), 1), L"고딕", 40, str, WINSIZEX / 2, WINSIZEY / 2 - 280, WINSIZEX, WINSIZEY);
-	swprintf_s(str, L"%d", STATMANAGER->getPlayerStat()->_res);
+	swprintf_s(str, L"%d", STATMANAGER->getPlayerStat()[_charNum]._res);
 	DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(255, 255, 255), 1), L"고딕", 40, str, WINSIZEX / 2, WINSIZEY / 2 - 250, WINSIZEX, WINSIZEY);
 }
 
@@ -199,54 +215,174 @@ void equip::cursorMove()
 			break;
 		}
 	}
+	if (_state == EQUIP)
+	{
+		switch (_EslotNum)
+		{
+		case 0:
+			_cursor = RectMakeCenter(_equipSlot[0].left, 40 + (59 * 0), 52, 39);
+			_tempCursor = RectMakeCenter(_equipSlot[0].left, 40 + (59 * 0), 52, 39);
+			break;
+		case 1:
+			_cursor = RectMakeCenter(_equipSlot[0].left, 40 + (59 * 1), 52, 39);
+			_tempCursor = RectMakeCenter(_equipSlot[0].left, 40 + (59 * 1), 52, 39);
+			break;
+		case 2:
+			_cursor = RectMakeCenter(_equipSlot[0].left, 40 + (59 * 2), 52, 39);
+			_tempCursor = RectMakeCenter(_equipSlot[0].left, 40 + (59 * 2), 52, 39);
+			break;
+		case 3:
+			_cursor = RectMakeCenter(_equipSlot[0].left, 40 + (59 * 3), 52, 39);
+			_tempCursor = RectMakeCenter(_equipSlot[0].left, 40 + (59 * 3), 52, 39);
+			break;
+		}
 
+	}
 }
 void equip::slotMove()
 {
-	if (_slotNum == 0)
+	switch (_state)
 	{
-		if (KEYMANAGER->isOnceKeyDown('W'))
+	case INVEN:
+		if (_slotNum == 0)
 		{
-			_slotCount--;
-			if (_slotCount < 0)
+			if (KEYMANAGER->isOnceKeyDown('W'))
 			{
-				_num = 5;
-				_slotCount = 18;
+				_slotCount--;
+				if (_slotCount < 0)
+				{
+					_num = 5;
+					_slotCount = 18;
+				}
+				else _num = 0;
+				_slotNum = (INVEN_SLOT)_num;
 			}
-			else _num = 0;
-			_slotNum = (EQUIP_SLOT)_num;
 		}
-	}
-	else
-	{
+		else
+		{
+			if (KEYMANAGER->isOnceKeyDown('W'))
+			{
+				_num--;
+				_slotNum = (INVEN_SLOT)_num;
+			}
+		}
+
+		if (_slotNum == 5)
+		{
+			if (KEYMANAGER->isOnceKeyDown('S'))
+			{
+				_slotCount++;
+				if (_slotCount > 18)
+				{
+					_num = 0;
+					_slotCount = 0;
+				}
+				else _num = 5;
+				_slotNum = (INVEN_SLOT)_num;
+			}
+		}
+		else
+		{
+			if (KEYMANAGER->isOnceKeyDown('S'))
+			{
+				_num++;
+				_slotNum = (INVEN_SLOT)_num;
+			}
+		}
+		if (KEYMANAGER->isOnceKeyDown('D'))	_state = EQUIP;
+		break;
+	case EQUIP:
 		if (KEYMANAGER->isOnceKeyDown('W'))
 		{
 			_num--;
-			_slotNum = (EQUIP_SLOT)_num;
-		}
-	}
+			if (_num < 0) _num = 3;
+			_EslotNum = (EQUIP_SLOT)_num;
 
-	if (_slotNum == 5)
-	{
-		if (KEYMANAGER->isOnceKeyDown('S'))
-		{
-			_slotCount++;
-			if (_slotCount > 18)
-			{
-				_num = 0;
-				_slotCount = 0;
-			}
-			else _num = 5;
-			_slotNum = (EQUIP_SLOT)_num;
 		}
-	}
-	else
-	{
 		if (KEYMANAGER->isOnceKeyDown('S'))
 		{
 			_num++;
-			_slotNum = (EQUIP_SLOT)_num;
+			if (_num > 3) _num = 0;
+			_EslotNum = (EQUIP_SLOT)_num;
 		}
+		if (KEYMANAGER->isOnceKeyDown('K'))
+		{
+			if (STATMANAGER->getVWeapon(_charNum).size() == 0 && STATMANAGER->getVArmor(_charNum).size() == 0)
+			{
+				_isTemp = true;
+				_state = INVEN;
+			}
+			else
+			{
+				if (_num == 0)
+				{
+					if (STATMANAGER->getVWeapon(_charNum).size() == 1)
+					{
+						takeOff_weapon();
+						INVENMANAGER->pushBackVItem(0, STATMANAGER->getVWeapon(_charNum));
+						STATMANAGER->eraseVWeapon(_charNum, 0);
+					}
+				}
+				else
+				{
+					if (STATMANAGER->getVArmor(_charNum).size() == 1)
+					{
+						takeOff_armor(0);
+						INVENMANAGER->pushBackVItem(0, STATMANAGER->getVArmor(_charNum));
+						STATMANAGER->eraseVArmor(_charNum, 0);
+					}
+					else if (STATMANAGER->getVArmor(_charNum).size() == 2)
+					{
+						if (_num == 1)
+						{
+							takeOff_armor(0);
+							INVENMANAGER->pushBackVItem(0, STATMANAGER->getVArmor(_charNum));
+							_vTemp.push_back(STATMANAGER->getVArmor(_charNum)[1]);
+							STATMANAGER->erase2VArmor(_charNum, 0);
+							STATMANAGER->pushBackVArmor(_charNum, _vTemp[0]);
+							_vTemp.clear();
+						}
+						if (_num == 2)
+						{
+							takeOff_armor(1);
+							INVENMANAGER->pushBackVItem(1, STATMANAGER->getVArmor(_charNum));
+							STATMANAGER->eraseVArmor(_charNum, 1);
+						}
+					}
+					else if (STATMANAGER->getVArmor(_charNum).size() == 3)
+					{
+						if (_num == 1)
+						{
+							takeOff_armor(0);
+							INVENMANAGER->pushBackVItem(0, STATMANAGER->getVArmor(_charNum));
+							_vTemp.push_back(STATMANAGER->getVArmor(_charNum)[1]);
+							_vTemp.push_back(STATMANAGER->getVArmor(_charNum)[2]);
+							STATMANAGER->erase2VArmor(_charNum, 0);
+							STATMANAGER->pushBackVArmor(_charNum, _vTemp[0]);
+							STATMANAGER->pushBackVArmor(_charNum, _vTemp[1]);
+							_vTemp.clear();
+						}
+						if (_num == 2)
+						{
+							takeOff_armor(1);
+							INVENMANAGER->pushBackVItem(1, STATMANAGER->getVArmor(_charNum));
+							_vTemp.push_back(STATMANAGER->getVArmor(_charNum)[2]);
+							STATMANAGER->erase2VArmor(_charNum, 1);
+							STATMANAGER->pushBackVArmor(_charNum, _vTemp[0]);
+							_vTemp.clear();
+						}
+						if (_num == 3)
+						{
+							takeOff_armor(2);
+							INVENMANAGER->pushBackVItem(2, STATMANAGER->getVArmor(_charNum));
+							STATMANAGER->eraseVArmor(_charNum, 2);
+						}
+					}
+				}
+			}
+		}
+		if (KEYMANAGER->isOnceKeyDown('A')) _state = INVEN;
+		break;
 	}
 	//인벤 슬롯
 	for (int i = 0; i < 24; i++)
@@ -309,10 +445,13 @@ void equip::equipItem()
 				}
 			}
 		}
+		//아이템을 끼고 있어서 스왑할때
 		else if (STATMANAGER->getVWeapon(_charNum).size() > 0)
 		{
 			_isEquip = false;
 			_vTemp.push_back(STATMANAGER->getVWeapon(_charNum)[0]);
+			//함수 실행
+			takeOff_weapon();
 			STATMANAGER->eraseVWeapon(_charNum, 0);
 			STATMANAGER->pushBackVWeapon(_charNum, INVENMANAGER->getVItem()[_slotCount + (int)_slotNum]);
 			INVENMANAGER->erase2VItem(_slotCount + (int)_slotNum);
@@ -376,10 +515,10 @@ void equip::statUP_weapon()
 {
 	if (STATMANAGER->getVWeapon(_charNum).size() > 0)
 	{
-		STATMANAGER->setAtk(_charNum, STATMANAGER->getPlayerStat()->_atk + STATMANAGER->getVWeapon(_charNum)[0].Atk);
-		STATMANAGER->setInt(_charNum, STATMANAGER->getPlayerStat()->_int + STATMANAGER->getVWeapon(_charNum)[0].Int);
-		STATMANAGER->setDef(_charNum, STATMANAGER->getPlayerStat()->_def + STATMANAGER->getVWeapon(_charNum)[0].Def);
-		STATMANAGER->setRes(_charNum, STATMANAGER->getPlayerStat()->_res + STATMANAGER->getVWeapon(_charNum)[0].Res);
+		STATMANAGER->setAtk(_charNum, STATMANAGER->getPlayerStat()[_charNum]._atk + STATMANAGER->getVWeapon(_charNum)[0].Atk);
+		STATMANAGER->setInt(_charNum, STATMANAGER->getPlayerStat()[_charNum]._int + STATMANAGER->getVWeapon(_charNum)[0].Int);
+		STATMANAGER->setDef(_charNum, STATMANAGER->getPlayerStat()[_charNum]._def + STATMANAGER->getVWeapon(_charNum)[0].Def);
+		STATMANAGER->setRes(_charNum, STATMANAGER->getPlayerStat()[_charNum]._res + STATMANAGER->getVWeapon(_charNum)[0].Res);
 	}
 }
 
@@ -389,25 +528,40 @@ void equip::statUP_armor()
 	{
 		if (STATMANAGER->getVArmor(_charNum).size() == 1)
 		{
-			STATMANAGER->setAtk(_charNum, STATMANAGER->getPlayerStat()->_atk + STATMANAGER->getVArmor(_charNum)[0].Atk);
-			STATMANAGER->setInt(_charNum, STATMANAGER->getPlayerStat()->_int + STATMANAGER->getVArmor(_charNum)[0].Int);
-			STATMANAGER->setDef(_charNum, STATMANAGER->getPlayerStat()->_def + STATMANAGER->getVArmor(_charNum)[0].Def);
-			STATMANAGER->setRes(_charNum, STATMANAGER->getPlayerStat()->_res + STATMANAGER->getVArmor(_charNum)[0].Res);
+			STATMANAGER->setAtk(_charNum, STATMANAGER->getPlayerStat()[_charNum]._atk + STATMANAGER->getVArmor(_charNum)[0].Atk);
+			STATMANAGER->setInt(_charNum, STATMANAGER->getPlayerStat()[_charNum]._int + STATMANAGER->getVArmor(_charNum)[0].Int);
+			STATMANAGER->setDef(_charNum, STATMANAGER->getPlayerStat()[_charNum]._def + STATMANAGER->getVArmor(_charNum)[0].Def);
+			STATMANAGER->setRes(_charNum, STATMANAGER->getPlayerStat()[_charNum]._res + STATMANAGER->getVArmor(_charNum)[0].Res);
 		}
 		else if (STATMANAGER->getVArmor(_charNum).size() == 2)
 		{
-			STATMANAGER->setAtk(_charNum, STATMANAGER->getPlayerStat()->_atk + STATMANAGER->getVArmor(_charNum)[1].Atk);
-			STATMANAGER->setInt(_charNum, STATMANAGER->getPlayerStat()->_int + STATMANAGER->getVArmor(_charNum)[1].Int);
-			STATMANAGER->setDef(_charNum, STATMANAGER->getPlayerStat()->_def + STATMANAGER->getVArmor(_charNum)[1].Def);
-			STATMANAGER->setRes(_charNum, STATMANAGER->getPlayerStat()->_res + STATMANAGER->getVArmor(_charNum)[1].Res);
+			STATMANAGER->setAtk(_charNum, STATMANAGER->getPlayerStat()[_charNum]._atk + STATMANAGER->getVArmor(_charNum)[1].Atk);
+			STATMANAGER->setInt(_charNum, STATMANAGER->getPlayerStat()[_charNum]._int + STATMANAGER->getVArmor(_charNum)[1].Int);
+			STATMANAGER->setDef(_charNum, STATMANAGER->getPlayerStat()[_charNum]._def + STATMANAGER->getVArmor(_charNum)[1].Def);
+			STATMANAGER->setRes(_charNum, STATMANAGER->getPlayerStat()[_charNum]._res + STATMANAGER->getVArmor(_charNum)[1].Res);
 		}
 		else if (STATMANAGER->getVArmor(_charNum).size() == 3)
 		{
-			STATMANAGER->setAtk(_charNum, STATMANAGER->getPlayerStat()->_atk + STATMANAGER->getVArmor(_charNum)[2].Atk);
-			STATMANAGER->setInt(_charNum, STATMANAGER->getPlayerStat()->_int + STATMANAGER->getVArmor(_charNum)[2].Int);
-			STATMANAGER->setDef(_charNum, STATMANAGER->getPlayerStat()->_def + STATMANAGER->getVArmor(_charNum)[2].Def);
-			STATMANAGER->setRes(_charNum, STATMANAGER->getPlayerStat()->_res + STATMANAGER->getVArmor(_charNum)[2].Res);
+			STATMANAGER->setAtk(_charNum, STATMANAGER->getPlayerStat()[_charNum]._atk + STATMANAGER->getVArmor(_charNum)[2].Atk);
+			STATMANAGER->setInt(_charNum, STATMANAGER->getPlayerStat()[_charNum]._int + STATMANAGER->getVArmor(_charNum)[2].Int);
+			STATMANAGER->setDef(_charNum, STATMANAGER->getPlayerStat()[_charNum]._def + STATMANAGER->getVArmor(_charNum)[2].Def);
+			STATMANAGER->setRes(_charNum, STATMANAGER->getPlayerStat()[_charNum]._res + STATMANAGER->getVArmor(_charNum)[2].Res);
 		}
 
 	}
+}
+//아이템을 벗을때 능력치 돌려주는
+void equip::takeOff_weapon()
+{
+	STATMANAGER->setAtk(_charNum, STATMANAGER->getPlayerStat()[_charNum]._atk - STATMANAGER->getVWeapon(_charNum)[0].Atk);
+	STATMANAGER->setInt(_charNum, STATMANAGER->getPlayerStat()[_charNum]._int - STATMANAGER->getVWeapon(_charNum)[0].Int);
+	STATMANAGER->setDef(_charNum, STATMANAGER->getPlayerStat()[_charNum]._def - STATMANAGER->getVWeapon(_charNum)[0].Def);
+	STATMANAGER->setRes(_charNum, STATMANAGER->getPlayerStat()[_charNum]._res - STATMANAGER->getVWeapon(_charNum)[0].Res);
+}
+void equip::takeOff_armor(int i)
+{
+	STATMANAGER->setAtk(_charNum, STATMANAGER->getPlayerStat()[_charNum]._atk - STATMANAGER->getVArmor(_charNum)[i].Atk);
+	STATMANAGER->setInt(_charNum, STATMANAGER->getPlayerStat()[_charNum]._int - STATMANAGER->getVArmor(_charNum)[i].Int);
+	STATMANAGER->setDef(_charNum, STATMANAGER->getPlayerStat()[_charNum]._def - STATMANAGER->getVArmor(_charNum)[i].Def);
+	STATMANAGER->setRes(_charNum, STATMANAGER->getPlayerStat()[_charNum]._res - STATMANAGER->getVArmor(_charNum)[i].Res);
 }
