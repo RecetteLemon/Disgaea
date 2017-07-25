@@ -28,6 +28,21 @@ HRESULT dungeonScene::init()
 	_isMoveStart = false;
 	_findPlayer = false;
 
+	_rcEdge = RectMakeCenter(0, 0, 192, 96);
+	_edgeNum = 0;
+	_edgeMouseMove = false;
+	_edgeMouseY = 0;
+	_edge = IMAGEMANAGER->findImage(L"DungeonEdge");
+	_edgeMouse = IMAGEMANAGER->findImage(L"DungeonEdgeMouse");
+
+
+
+	_potal[0] = IMAGEMANAGER->findImage(L"potalbBack");
+	_potal[1] = IMAGEMANAGER->findImage(L"PptalwWite");
+
+	_alpha = 0;
+	_alphaChange = false;
+
 	return S_OK;
 }
 void dungeonScene::release()
@@ -40,6 +55,18 @@ void dungeonScene::update()
 	this->coordinateUpdate();
 	this->aStarMove();
 	_cm->update();
+
+	if (!_alphaChange)
+	{
+		_alpha += 0.004f;
+		if (_alpha > 1.0f) _alphaChange = true;
+	}
+
+	else
+	{
+		_alpha -= 0.004f;
+		if (_alpha < 0) _alphaChange = false;
+	}
 }
 void dungeonScene::render()
 {
@@ -104,11 +131,33 @@ void dungeonScene::drawTile()
 				DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[3].x, _tile[i].line[3].y, _tile[i].line[0].x, _tile[i].line[0].y, true, 1);
 			}
 
+			if (_edgeNum == i)
+			{
+				if (_tile[_edgeNum].z >= 0)
+				{
+					_edge->render(_rcEdge.left, _rcEdge.top - _tile[i].z * TILESIZEZ, true, 1.0);
+					_edgeMouse->render(_rcEdge.left, _rcEdge.top - 100 + _edgeMouseY - _tile[i].z * TILESIZEZ, true, 1.0);
+				}
+				else
+				{
+					_edge->render(_rcEdge.left, _rcEdge.top, true, 1.0);
+					_edgeMouse->render(_rcEdge.left, _rcEdge.top - 100 + _edgeMouseY, true, 1.0);
+				}
+			}
+
 			if (_tile[i].obj != OBJ_ERASE)
 			{
-				IMAGEMANAGER->findImage(L"IsoObject")->frameRender(_tile[i].x - TILESIZEX / 2 - IMAGEMANAGER->findImage(L"IsoObject")->getFrameWidth() + TILESIZEX,
-					_tile[i].y - _tile[i].z - IMAGEMANAGER->findImage(L"IsoObject")->getFrameHeight() - TILESIZEY * (_tile[i].z - 1),
-					_tile[i].objFrame.x, _tile[i].objFrame.y, true, 1.0f);
+				if (_tile[i].objFrame.x == 6 && _tile[i].objFrame.y == 6)
+				{
+					_potal[0]->render(_tile[i].x - _potal[0]->getWidth() / 2, _tile[i].y - _potal[0]->getHeight() / 2, true, 1.0f);
+					_potal[1]->render(_tile[i].x - _potal[1]->getWidth() / 2, _tile[i].y - _potal[1]->getHeight() / 2, true, _alpha);
+				}
+				else
+				{
+					IMAGEMANAGER->findImage(L"IsoObject")->frameRender(_tile[i].x - TILESIZEX / 2 - IMAGEMANAGER->findImage(L"IsoObject")->getFrameWidth() + TILESIZEX,
+						_tile[i].y - _tile[i].z - IMAGEMANAGER->findImage(L"IsoObject")->getFrameHeight() - TILESIZEY * (_tile[i].z - 1),
+						_tile[i].objFrame.x, _tile[i].objFrame.y, true, 1.0f);
+				}
 			}
 
 			if (_tileIndex == i) _cm->render();
@@ -146,6 +195,57 @@ void dungeonScene::coordinateUpdate()
 		}
 
 		DeleteObject(hRgn);
+	}
+
+
+	POINT mouse;
+	mouse.x = CAMERAMANAGER->getX() + _ptMouse.x;
+	mouse.y = CAMERAMANAGER->getY() + _ptMouse.y;
+
+	for (int i = 0; i < TILEX * TILEY; i++)
+	{
+		HRGN hRgn = CreatePolygonRgn(_tile[i].line, 4, WINDING);
+
+		if (PtInRegion(hRgn, mouse.x, mouse.y))
+		{
+			_rcEdge.left = (_tile[i].x - TILESIZEX / 2) + (_rcEdge.left - (_tile[i].x - TILESIZEX / 2)) * 0.3;
+			_rcEdge.right = _rcEdge.left + 96;
+			_rcEdge.top = _tile[i].y + (_rcEdge.top - _tile[i].y) * 0.3;
+			_rcEdge.bottom = _rcEdge.top + 48;
+		}
+
+		DeleteObject(hRgn);
+	}
+
+	for (int i = 0; i < TILEX * TILEY; i++)
+	{
+		HRGN hRgn = CreatePolygonRgn(_tile[i].line, 4, WINDING);
+
+		if (PtInRegion(hRgn, _rcEdge.left + 96, _rcEdge.top + 48))
+		{
+			_edgeNum = i;
+		}
+
+		DeleteObject(hRgn);
+	}
+
+	if (_edgeMouseMove)
+	{
+		_edgeMouseY += 1;
+
+		if (_edgeMouseY > 15)
+		{
+			_edgeMouseMove = false;
+		}
+	}
+	else
+	{
+		_edgeMouseY -= 1;
+
+		if (_edgeMouseY < -15)
+		{
+			_edgeMouseMove = true;
+		}
 	}
 }
 

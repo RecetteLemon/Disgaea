@@ -51,6 +51,9 @@ void loadingScene::loadingImage()
 	//_ld->loadFrameImage(L"IsoTerrain", L"Image/MapTool/isoTile96.png", 1920, 960, 10, 5);
 	//_ld->loadFrameImage(L"IsoObject", L"Image/MapTool/isoObject2.png", 180, 160, 2, 1);
 
+	_ld->loadImage(L"DungeonEdge", L"Image/MapTool/피킹.png", 192, 192);
+	_ld->loadImage(L"DungeonEdgeMouse", L"Image/MapTool/피킹mouse.png", 192, 192);
+
 	_ld->loadImage(L"IsoEraser", L"Image/MapTool/isoEraser.png", 128, 128);
 	_ld->loadImage(L"IsoEdge", L"Image/MapTool/Edge.png", 192, 96);
 	_ld->loadImage(L"IsoEdgeFrame", L"Image/MapTool/EdgeFrame.png", 1600, 900);
