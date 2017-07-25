@@ -62,6 +62,11 @@ HRESULT townInven::init()
 	_wareBlockMove = (478.0f - 103.0f) / 505.f;
 
 	firstNum = secNum = 0;
+
+	_charSel = new characterSelet;
+	_charSel->init();
+	_isItem = false;
+
 	return S_OK;
 }
 
@@ -72,455 +77,479 @@ void townInven::release()
 
 void townInven::update()
 {
-	if (!_wareHouseCheck && _cursorNum == 0) _itemCursor = RectMake(35, 120, 52, 39);
-	if (!_wareHouseCheck && _cursorNum == 1) _itemCursor = RectMake(35, 177, 52, 39);
-	if (!_wareHouseCheck && _cursorNum == 2) _itemCursor = RectMake(35, 234, 52, 39);
-	if (!_wareHouseCheck && _cursorNum == 3) _itemCursor = RectMake(35, 291, 52, 39);
-	if (!_wareHouseCheck && _cursorNum == 4) _itemCursor = RectMake(35, 348, 52, 39);
-	if (!_wareHouseCheck && _cursorNum == 5) _itemCursor = RectMake(35, 405, 52, 39);
-	if (!_wareHouseCheck && _cursorNum == 6) _itemCursor = RectMake(35, 462, 52, 39);
-
-	if (_wareHouseCheck && _cursorNum == 0) _itemCursor = RectMake(635, 120, 52, 39);
-	if (_wareHouseCheck && _cursorNum == 1) _itemCursor = RectMake(635, 177, 52, 39);
-	if (_wareHouseCheck && _cursorNum == 2) _itemCursor = RectMake(635, 234, 52, 39);
-	if (_wareHouseCheck && _cursorNum == 3) _itemCursor = RectMake(635, 291, 52, 39);
-	if (_wareHouseCheck && _cursorNum == 4) _itemCursor = RectMake(635, 348, 52, 39);
-	if (_wareHouseCheck && _cursorNum == 5) _itemCursor = RectMake(635, 405, 52, 39);
-	if (_wareHouseCheck && _cursorNum == 6) _itemCursor = RectMake(635, 462, 52, 39);
-
-	if (KEYMANAGER->isOnceKeyDown('W'))
+	if (_isItem)
 	{
-		if (num > 0) num--;
-		if (!_wareHouseCheck)
-		{
-			if (_slotNum > 0) _slotNum--;
-		}
+		_charSel->update();
 
-		else if (_wareHouseCheck)
+		if (KEYMANAGER->isOnceKeyDown('K'))
 		{
-			if (_wareNum > 0) _wareNum--;
+			_isItem = false;
+			eatItem();
 		}
+	}
 
-		if (_cursorNum != 0)
-		{
-			_cursorNum = (TAGCURSORNUM)num;
-		}
+	else
+	{
+		if (!_wareHouseCheck && _cursorNum == 0) _itemCursor = RectMake(35, 120, 52, 39);
+		if (!_wareHouseCheck && _cursorNum == 1) _itemCursor = RectMake(35, 177, 52, 39);
+		if (!_wareHouseCheck && _cursorNum == 2) _itemCursor = RectMake(35, 234, 52, 39);
+		if (!_wareHouseCheck && _cursorNum == 3) _itemCursor = RectMake(35, 291, 52, 39);
+		if (!_wareHouseCheck && _cursorNum == 4) _itemCursor = RectMake(35, 348, 52, 39);
+		if (!_wareHouseCheck && _cursorNum == 5) _itemCursor = RectMake(35, 405, 52, 39);
+		if (!_wareHouseCheck && _cursorNum == 6) _itemCursor = RectMake(35, 462, 52, 39);
 
-		//인벤토리 조작
-		if (!_wareHouseCheck)
+		if (_wareHouseCheck && _cursorNum == 0) _itemCursor = RectMake(635, 120, 52, 39);
+		if (_wareHouseCheck && _cursorNum == 1) _itemCursor = RectMake(635, 177, 52, 39);
+		if (_wareHouseCheck && _cursorNum == 2) _itemCursor = RectMake(635, 234, 52, 39);
+		if (_wareHouseCheck && _cursorNum == 3) _itemCursor = RectMake(635, 291, 52, 39);
+		if (_wareHouseCheck && _cursorNum == 4) _itemCursor = RectMake(635, 348, 52, 39);
+		if (_wareHouseCheck && _cursorNum == 5) _itemCursor = RectMake(635, 405, 52, 39);
+		if (_wareHouseCheck && _cursorNum == 6) _itemCursor = RectMake(635, 462, 52, 39);
+
+		if (KEYMANAGER->isOnceKeyDown('W'))
 		{
-			if (_itemSlot != 0)
+			if (num > 0) num--;
+			if (!_wareHouseCheck)
 			{
-				_itemSlot--;
+				if (_slotNum > 0) _slotNum--;
 			}
 
-			else if (_itemSlot == 0)
+			else if (_wareHouseCheck)
 			{
-				_itemSlot = 23;
-				_cursorNum = (TAGCURSORNUM)6;
-				num = 6;
-				_slotNum = 7;
-			}
-		}
-
-		//창고 조작
-		if (_wareHouseCheck)
-		{
-			if (_wareHouseSlot != 0)
-			{
-				_wareHouseSlot--;
+				if (_wareNum > 0) _wareNum--;
 			}
 
-			else if (_wareHouseSlot == 0)
+			if (_cursorNum != 0)
 			{
-				_wareHouseSlot = 511;
-				_cursorNum = (TAGCURSORNUM)6;
-				num = 6;
-				_slotNum = 1;
+				_cursorNum = (TAGCURSORNUM)num;
 			}
-		}
 
-		if (!_wareHouseCheck)
-		{
-			if (_itemSlot == 23)
+			//인벤토리 조작
+			if (!_wareHouseCheck)
 			{
-				_test = 16;
-
-				_itemBagBlock = RectMake(556, 388, 40, 123);
-
-				for (int i = _test; i < _test + 7; i++)
+				if (_itemSlot != 0)
 				{
-					r_itemSlot[i] = RectMake(62, 445 - (57 * (i - _test)), 474, 56);
+					_itemSlot--;
+				}
+
+				else if (_itemSlot == 0)
+				{
+					_itemSlot = 23;
+					_cursorNum = (TAGCURSORNUM)6;
+					num = 6;
+					_slotNum = 7;
 				}
 			}
 
-			if (_itemSlot <= 17)
+			//창고 조작
+			if (_wareHouseCheck)
 			{
-				if (_cursorNum == (TAGCURSORNUM)0)
+				if (_wareHouseSlot != 0)
 				{
-					_test = _itemSlot;
+					_wareHouseSlot--;
+				}
+
+				else if (_wareHouseSlot == 0)
+				{
+					_wareHouseSlot = 511;
+					_cursorNum = (TAGCURSORNUM)6;
+					num = 6;
+					_slotNum = 1;
+				}
+			}
+
+			if (!_wareHouseCheck)
+			{
+				if (_itemSlot == 23)
+				{
+					_test = 16;
+
+					_itemBagBlock = RectMake(556, 388, 40, 123);
 
 					for (int i = _test; i < _test + 7; i++)
 					{
-						r_itemSlot[i] = RectMake(62, 103 + (57 * (i - _test)), 474, 56);
+						r_itemSlot[i] = RectMake(62, 445 - (57 * (i - _test)), 474, 56);
 					}
+				}
 
-					if (_slotNum == 0)
+				if (_itemSlot <= 17)
+				{
+					if (_cursorNum == (TAGCURSORNUM)0)
 					{
-						_itemBagBlock.top -= _blockMove;
-						_itemBagBlock.bottom -= _blockMove;
+						_test = _itemSlot;
+
+						for (int i = _test; i < _test + 7; i++)
+						{
+							r_itemSlot[i] = RectMake(62, 103 + (57 * (i - _test)), 474, 56);
+						}
+
+						if (_slotNum == 0)
+						{
+							_itemBagBlock.top -= _blockMove;
+							_itemBagBlock.bottom -= _blockMove;
+						}
 					}
 				}
 			}
-		}
 
 
-		//---------------------------------
-		if (_wareHouseCheck)
-		{
-			if (_wareHouseSlot == 511)
+			//---------------------------------
+			if (_wareHouseCheck)
 			{
-				_test1 = 504;
-
-				_wareHouseBlock = RectMake(1157, 478, 40, 33);
-
-				for (int i = _test1; i < _test1 + 7; i++)
+				if (_wareHouseSlot == 511)
 				{
-					r_wareSlot[i] = RectMake(662, 445 - (57 * (i - _test1)), 474, 56);
-				}
-			}
+					_test1 = 504;
 
-			else if (_wareHouseSlot <= 505)
-			{
-				if (_cursorNum == (TAGCURSORNUM)0)
-				{
-					_test1 = _wareHouseSlot;
+					_wareHouseBlock = RectMake(1157, 478, 40, 33);
 
 					for (int i = _test1; i < _test1 + 7; i++)
 					{
-						r_wareSlot[i] = RectMake(662, 103 + (57 * (i - _test1)), 474, 56);
+						r_wareSlot[i] = RectMake(662, 445 - (57 * (i - _test1)), 474, 56);
 					}
+				}
 
-					_wareHouseBlock.top -= _wareBlockMove;
-					_wareHouseBlock.bottom -= _wareBlockMove;
+				else if (_wareHouseSlot <= 505)
+				{
+					if (_cursorNum == (TAGCURSORNUM)0)
+					{
+						_test1 = _wareHouseSlot;
+
+						for (int i = _test1; i < _test1 + 7; i++)
+						{
+							r_wareSlot[i] = RectMake(662, 103 + (57 * (i - _test1)), 474, 56);
+						}
+
+						_wareHouseBlock.top -= _wareBlockMove;
+						_wareHouseBlock.bottom -= _wareBlockMove;
+					}
 				}
 			}
 		}
-	}
 
 
-	//if (!_wareHouseCheck && _cursorNum == (TAGCURSORNUM)0 && _itemSlot <= 17)
-	//{
-	//	if (KEYMANAGER->isOnceKeyDown('W'))
-	//	{
-	//		_itemBagBlock.top -= _blockMove;
-	//		_itemBagBlock.bottom -= _blockMove;
-	//	}
-	//}
+		//if (!_wareHouseCheck && _cursorNum == (TAGCURSORNUM)0 && _itemSlot <= 17)
+		//{
+		//	if (KEYMANAGER->isOnceKeyDown('W'))
+		//	{
+		//		_itemBagBlock.top -= _blockMove;
+		//		_itemBagBlock.bottom -= _blockMove;
+		//	}
+		//}
 
 
-	if (KEYMANAGER->isOnceKeyDown('S'))
-	{
-
-
-		if (num < 6) num++;
-
-		if (!_wareHouseCheck)
+		if (KEYMANAGER->isOnceKeyDown('S'))
 		{
-			if (_slotNum == 0) _slotNum = 1;
-		}
 
-		if (!_wareHouseCheck)
-		{
-			if (_slotNum < 7) _slotNum++;
-		}
 
-		else if (_wareHouseCheck)
-		{
-			if (_wareNum < 6) _wareNum++;
+			if (num < 6) num++;
 
-		}
-
-		if (_cursorNum != 6)
-		{
-			_cursorNum = (TAGCURSORNUM)num;
-		}
-
-		//인벤토리 조작
-		if (!_wareHouseCheck)
-		{
-			if (_itemSlot != 24)
+			if (!_wareHouseCheck)
 			{
-				_itemSlot++;
+				if (_slotNum == 0) _slotNum = 1;
 			}
 
-			if (_itemSlot == 24)
+			if (!_wareHouseCheck)
 			{
-				_itemSlot = 0;
-				_cursorNum = (TAGCURSORNUM)0;
-				num = 0;
-
-			}
-		}
-
-		//창고 조작
-		if (_wareHouseCheck)
-		{
-			if (_wareHouseSlot != 511)
-			{
-				_wareHouseSlot++;
+				if (_slotNum < 7) _slotNum++;
 			}
 
-			else if (_wareHouseSlot == 511)
+			else if (_wareHouseCheck)
 			{
-				_wareHouseSlot = 0;
-				_cursorNum = (TAGCURSORNUM)0;
-				num = 0;
+				if (_wareNum < 6) _wareNum++;
+
 			}
-		}
 
-		if (!_wareHouseCheck)
-		{
-			if (_itemSlot == 0)
+			if (_cursorNum != 6)
 			{
-				_test = 0;
+				_cursorNum = (TAGCURSORNUM)num;
+			}
 
-				for (int i = _test; i < _test + 7; i++)
+			//인벤토리 조작
+			if (!_wareHouseCheck)
+			{
+				if (_itemSlot != 24)
 				{
-					r_itemSlot[i] = RectMake(62, 103 + (57 * i), 474, 56);
+					_itemSlot++;
+				}
+
+				if (_itemSlot == 24)
+				{
+					_itemSlot = 0;
+					_cursorNum = (TAGCURSORNUM)0;
+					num = 0;
+
 				}
 			}
 
-			if (_itemSlot > 6)
+			//창고 조작
+			if (_wareHouseCheck)
 			{
-				if (_cursorNum == (TAGCURSORNUM)6)
+				if (_wareHouseSlot != 511)
 				{
-					_test = _itemSlot - 6;
+					_wareHouseSlot++;
+				}
+
+				else if (_wareHouseSlot == 511)
+				{
+					_wareHouseSlot = 0;
+					_cursorNum = (TAGCURSORNUM)0;
+					num = 0;
+				}
+			}
+
+			if (!_wareHouseCheck)
+			{
+				if (_itemSlot == 0)
+				{
+					_test = 0;
 
 					for (int i = _test; i < _test + 7; i++)
 					{
-						r_itemSlot[i] = RectMake(62, 103 + (57 * (i - _test)), 474, 56);
+						r_itemSlot[i] = RectMake(62, 103 + (57 * i), 474, 56);
 					}
+				}
 
-					_itemBagBlock.top += _blockMove;
-					_itemBagBlock.bottom += _blockMove;
+				if (_itemSlot > 6)
+				{
+					if (_cursorNum == (TAGCURSORNUM)6)
+					{
+						_test = _itemSlot - 6;
+
+						for (int i = _test; i < _test + 7; i++)
+						{
+							r_itemSlot[i] = RectMake(62, 103 + (57 * (i - _test)), 474, 56);
+						}
+
+						_itemBagBlock.top += _blockMove;
+						_itemBagBlock.bottom += _blockMove;
+					}
 				}
 			}
-		}
 
-		//---------------------------------
-		if (_wareHouseCheck)
-		{
-
-			if (_wareHouseSlot == 0)
+			//---------------------------------
+			if (_wareHouseCheck)
 			{
-				_test1 = 0;
 
-				for (int i = _test1; i < _test1 + 7; i++)
+				if (_wareHouseSlot == 0)
 				{
-					r_wareSlot[i] = RectMake(662, 103 + (57 * i), 474, 56);
-				}
-			}
-
-			if (_wareHouseSlot > 6)
-			{
-				if (_cursorNum == (TAGCURSORNUM)6)
-				{
-					_test1 = _wareHouseSlot - 6;
+					_test1 = 0;
 
 					for (int i = _test1; i < _test1 + 7; i++)
 					{
-						r_wareSlot[i] = RectMake(662, 103 + (57 * (i - _test1)), 474, 56);
+						r_wareSlot[i] = RectMake(662, 103 + (57 * i), 474, 56);
 					}
+				}
 
-					_wareHouseBlock.top += 1;
-					_wareHouseBlock.bottom += 1;
+				if (_wareHouseSlot > 6)
+				{
+					if (_cursorNum == (TAGCURSORNUM)6)
+					{
+						_test1 = _wareHouseSlot - 6;
+
+						for (int i = _test1; i < _test1 + 7; i++)
+						{
+							r_wareSlot[i] = RectMake(662, 103 + (57 * (i - _test1)), 474, 56);
+						}
+
+						_wareHouseBlock.top += 1;
+						_wareHouseBlock.bottom += 1;
+					}
 				}
 			}
 		}
-	}
 
-	if (KEYMANAGER->isOnceKeyDown('A'))
-	{
-		_wareHouseCheck = false;
-		_itemSlot = 0;
-		_cursorNum = (TAGCURSORNUM)0;
-		num = 0;
-		_itemBagBlock = RectMake(556, 103, 40, 123);
-		_test = 0;
-
-		for (int i = _test; i < _test + 7; i++)
+		if (KEYMANAGER->isOnceKeyDown('A'))
 		{
-			r_itemSlot[i] = RectMake(62, 103 + (57 * i), 474, 56);
-		}
-	}
+			_wareHouseCheck = false;
+			_itemSlot = 0;
+			_cursorNum = (TAGCURSORNUM)0;
+			num = 0;
+			_itemBagBlock = RectMake(556, 103, 40, 123);
+			_test = 0;
 
-	if (KEYMANAGER->isOnceKeyDown('D'))
-	{
-		_wareHouseCheck = true;
-		_wareHouseSlot = 0;
-		_cursorNum = (TAGCURSORNUM)0;
-		num = 0;
-		_wareHouseBlock = RectMake(1157, 103, 40, 33);
-		_test1 = 0;
-
-		for (int i = _test1; i < _test1 + 7; i++)
-		{
-			r_wareSlot[i] = RectMake(662, 103 + (57 * i), 474, 56);
-		}
-	}
-
-	if (KEYMANAGER->isOnceKeyDown('Z'))
-	{
-		SCENEMANAGER->changeScene(L"MenuScene");
-	}
-	//아이템 스왑용
-	if (KEYMANAGER->isOnceKeyDown('Q'))
-	{
-		sortItem();
-		switch (_tagItemStat)
-		{
-		case 0:
-			_tagItemStat = ITEM_ARMOR;
-			break;
-		case 1:
-			_tagItemStat = ITEM_POTION;
-			break;
-		case 2:
-			_tagItemStat = ITEM_WEAPON;
-			break;
-		}
-	}
-	//아이템 보내기
-	if (KEYMANAGER->isOnceKeyDown('J'))
-	{
-		//스왑온
-		for (int i = _test; i < _test + 7; i++)
-		{
-			if (i_itemSlot[i] != IMAGEMANAGER->findImage(L"none") || i_wareSlot[i] != IMAGEMANAGER->findImage(L"none"))
+			for (int i = _test; i < _test + 7; i++)
 			{
-				if (!_swap) _swap = true;
+				r_itemSlot[i] = RectMake(62, 103 + (57 * i), 474, 56);
 			}
 		}
-		//스왑온이면 스왑 진행
-		if (_swap) SendItem();
-	}
 
-	/*int firstNum, secNum;
-	firstNum = secNum = 0;*/
-
-	if (KEYMANAGER->isOnceKeyDown('K'))
-	{
-		if (!_moveCheck)
+		if (KEYMANAGER->isOnceKeyDown('D'))
 		{
-			firstNum = _itemSlot;
-			_moveCheck = true;
+			_wareHouseCheck = true;
+			_wareHouseSlot = 0;
+			_cursorNum = (TAGCURSORNUM)0;
+			num = 0;
+			_wareHouseBlock = RectMake(1157, 103, 40, 33);
+			_test1 = 0;
 
-			for (int i = 0; i < _itemSlot + 1; i++)
+			for (int i = _test1; i < _test1 + 7; i++)
 			{
-				_moveCursor = RectMake(r_itemSlot[i].left + 6, r_itemSlot[i].top + 14, 52, 39);
+				r_wareSlot[i] = RectMake(662, 103 + (57 * i), 474, 56);
 			}
 		}
-		else
+
+		if (KEYMANAGER->isOnceKeyDown('Z'))
 		{
-			secNum = _itemSlot;
-			INVENMANAGER->ItemToItem(firstNum, secNum);
-			_moveCheck = false;
+			SCENEMANAGER->changeScene(L"MenuScene");
 		}
+		//아이템 스왑용
+		if (KEYMANAGER->isOnceKeyDown('Q'))
+		{
+			sortItem();
+			switch (_tagItemStat)
+			{
+			case 0:
+				_tagItemStat = ITEM_ARMOR;
+				break;
+			case 1:
+				_tagItemStat = ITEM_POTION;
+				break;
+			case 2:
+				_tagItemStat = ITEM_WEAPON;
+				break;
+			}
+		}
+		//아이템 보내기
+		if (KEYMANAGER->isOnceKeyDown('J'))
+		{
+			//스왑온
+			for (int i = _test; i < _test + 7; i++)
+			{
+				if (i_itemSlot[i] != IMAGEMANAGER->findImage(L"none") || i_wareSlot[i] != IMAGEMANAGER->findImage(L"none"))
+				{
+					if (!_swap) _swap = true;
+				}
+			}
+			//스왑온이면 스왑 진행
+			if (_swap) SendItem();
+		}
+
+		/*int firstNum, secNum;
+		firstNum = secNum = 0;*/
+		//스왑 및 아이템 사용
+		if (KEYMANAGER->isOnceKeyDown('K'))
+		{
+			if (!_moveCheck)
+			{
+				firstNum = _itemSlot;
+				_moveCheck = true;
+
+				for (int i = 0; i < _itemSlot + 1; i++)
+				{
+					_moveCursor = RectMake(r_itemSlot[i].left + 6, r_itemSlot[i].top + 14, 52, 39);
+				}
+			}
+			else
+			{
+				secNum = _itemSlot;
+				if (firstNum == secNum)
+				{
+					if (INVENMANAGER->getVItem()[_itemSlot].Type == GENERAL) _isItem = true;
+					_moveCheck = false;
+				}
+				else
+				{
+					INVENMANAGER->ItemToItem(firstNum, secNum);
+					_moveCheck = false;
+				}
+			}
+		}
+
+		if (_itemSlot == 0)	_itemBagBlock = RectMake(556, 103, 40, 123);
+		if (_itemSlot == 23) _itemBagBlock = RectMake(556, 388, 40, 123);
+		if (_wareHouseSlot == 0) _wareHouseBlock = RectMake(1157, 103, 40, 33);
+		if (_wareHouseSlot == 511) _wareHouseBlock = RectMake(1157, 478, 40, 33);
 	}
 
-	if (_itemSlot == 0)	_itemBagBlock = RectMake(556, 103, 40, 123);
-	if (_itemSlot == 23) _itemBagBlock = RectMake(556, 388, 40, 123);
-	if (_wareHouseSlot == 0) _wareHouseBlock = RectMake(1157, 103, 40, 33);
-	if (_wareHouseSlot == 511) _wareHouseBlock = RectMake(1157, 478, 40, 33);
 }
 
 void townInven::render()
 {
-
-
-	IMAGEMANAGER->findImage(L"backBlack")->render(_itemInfo.left, _itemInfo.top, false, 0.4f);
-	IMAGEMANAGER->findImage(L"아이템정보")->render(_itemInfo.left, _itemInfo.top, false, 1.0f);
-	IMAGEMANAGER->findImage(L"마을인벤")->render(_itemBag.left, _itemBag.top, false, 1.0f);
-	IMAGEMANAGER->findImage(L"마을인벤3")->render(_itemBagBlock.left, _itemBagBlock.top, false, 1.0f);
-	IMAGEMANAGER->findImage(L"마을창고")->render(_wareHouse.left, _wareHouse.top, false, 1.0f);
-	IMAGEMANAGER->findImage(L"마을창고3")->render(_wareHouseBlock.left, _wareHouseBlock.top, false, 1.0f);
-
-	if (_wareHouseCheck)
+	if (_isItem) _charSel->render();
+	else
 	{
-		IMAGEMANAGER->findImage(L"마을창고2")->render(_itemMove.left, _itemMove.top, false, 1.0f);
-	}
-	else if (!_wareHouseCheck)
-	{
-		IMAGEMANAGER->findImage(L"마을인벤2")->render(_itemMove.left, _itemMove.top, false, 1.0f);
-	}
+		IMAGEMANAGER->findImage(L"backBlack")->render(_itemInfo.left, _itemInfo.top, false, 0.4f);
+		IMAGEMANAGER->findImage(L"아이템정보")->render(_itemInfo.left, _itemInfo.top, false, 1.0f);
+		IMAGEMANAGER->findImage(L"마을인벤")->render(_itemBag.left, _itemBag.top, false, 1.0f);
+		IMAGEMANAGER->findImage(L"마을인벤3")->render(_itemBagBlock.left, _itemBagBlock.top, false, 1.0f);
+		IMAGEMANAGER->findImage(L"마을창고")->render(_wareHouse.left, _wareHouse.top, false, 1.0f);
+		IMAGEMANAGER->findImage(L"마을창고3")->render(_wareHouseBlock.left, _wareHouseBlock.top, false, 1.0f);
 
-	//인벤
-	//if (!_wareHouseCheck)
-	//{ 
-	for (int i = _test; i < _test + 7; i++)
-	{
-		if (INVENMANAGER->getVItem().size() == 0)
+		if (_wareHouseCheck)
 		{
-			i_itemSlot[i] = IMAGEMANAGER->findImage(L"none");
+			IMAGEMANAGER->findImage(L"마을창고2")->render(_itemMove.left, _itemMove.top, false, 1.0f);
 		}
-		else
+		else if (!_wareHouseCheck)
 		{
-			if (INVENMANAGER->getVItem().size() > i)
-			{
-				i_itemSlot[i] = INVENMANAGER->getVItem()[i].Image;
-				//INVENMANAGER->getVItem()[i].Image2
-			}
-			else if (INVENMANAGER->getVItem().size() <= i)
+			IMAGEMANAGER->findImage(L"마을인벤2")->render(_itemMove.left, _itemMove.top, false, 1.0f);
+		}
+
+		//인벤
+		//if (!_wareHouseCheck)
+		//{ 
+		for (int i = _test; i < _test + 7; i++)
+		{
+			if (INVENMANAGER->getVItem().size() == 0)
 			{
 				i_itemSlot[i] = IMAGEMANAGER->findImage(L"none");
 			}
-		}
-		i_itemSlot[i]->render(r_itemSlot[i].left, r_itemSlot[i].top, false, 1.0f);
-	}
-	//}
-	//창고 관련
-	//if (_wareHouseCheck)
-	//{ 
-	for (int i = _test1; i < _test1 + 7; i++)
-	{
-		if (INVENMANAGER->getVWareHouse().size() == 0)
-		{
-			i_wareSlot[i] = IMAGEMANAGER->findImage(L"none");
-		}
-		else
-		{
-			if (INVENMANAGER->getVWareHouse().size() > i)
+			else
 			{
-				i_wareSlot[i] = INVENMANAGER->getVWareHouse()[i].Image;
+				if (INVENMANAGER->getVItem().size() > i)
+				{
+					i_itemSlot[i] = INVENMANAGER->getVItem()[i].Image;
+					//INVENMANAGER->getVItem()[i].Image2
+				}
+				else if (INVENMANAGER->getVItem().size() <= i)
+				{
+					i_itemSlot[i] = IMAGEMANAGER->findImage(L"none");
+				}
 			}
-			else if (INVENMANAGER->getVWareHouse().size() <= i)
+			i_itemSlot[i]->render(r_itemSlot[i].left, r_itemSlot[i].top, false, 1.0f);
+		}
+		//}
+		//창고 관련
+		//if (_wareHouseCheck)
+		//{ 
+		for (int i = _test1; i < _test1 + 7; i++)
+		{
+			if (INVENMANAGER->getVWareHouse().size() == 0)
 			{
 				i_wareSlot[i] = IMAGEMANAGER->findImage(L"none");
 			}
+			else
+			{
+				if (INVENMANAGER->getVWareHouse().size() > i)
+				{
+					i_wareSlot[i] = INVENMANAGER->getVWareHouse()[i].Image;
+				}
+				else if (INVENMANAGER->getVWareHouse().size() <= i)
+				{
+					i_wareSlot[i] = IMAGEMANAGER->findImage(L"none");
+				}
+			}
+			i_wareSlot[i]->render(r_wareSlot[i].left, r_wareSlot[i].top, false, 1.0f);
 		}
-		i_wareSlot[i]->render(r_wareSlot[i].left, r_wareSlot[i].top, false, 1.0f);
+		//}
+		IMAGEMANAGER->findImage(L"커서")->render(_itemCursor.left, _itemCursor.top, false, 1.0f);
+
+		WCHAR str[100];
+		swprintf_s(str, L"커서넘버: %d", _cursorNum);
+		DIRECT2D->drawTextD2D(DIRECT2D->_defaultBrush, str, 100, 100, 300, 300);
+		swprintf_s(str, L"아이템슬롯넘버: %d", _itemSlot);
+		DIRECT2D->drawTextD2D(DIRECT2D->_defaultBrush, str, 100, 150, 300, 300);
+		swprintf_s(str, L"퍼스트: %d", firstNum);
+		DIRECT2D->drawTextD2D(DIRECT2D->_defaultBrush, str, 100, 200, 300, 300);
+		swprintf_s(str, L"세컨드: %d", secNum);
+		DIRECT2D->drawTextD2D(DIRECT2D->_defaultBrush, str, 100, 250, 300, 300);
+
+
+		if (_moveCheck)
+		{
+			IMAGEMANAGER->findImage(L"커서")->render(_moveCursor.left, _moveCursor.top, false, 1.0f);
+		}
+		itemNumDraw();
 	}
-	//}
-	IMAGEMANAGER->findImage(L"커서")->render(_itemCursor.left, _itemCursor.top, false, 1.0f);
-
-	WCHAR str[100];
-	swprintf_s(str, L"커서넘버: %d", _cursorNum);
-	DIRECT2D->drawTextD2D(DIRECT2D->_defaultBrush, str, 100, 100, 300, 300);
-	swprintf_s(str, L"아이템슬롯넘버: %d", _itemSlot);
-	DIRECT2D->drawTextD2D(DIRECT2D->_defaultBrush, str, 100, 150, 300, 300);
-	swprintf_s(str, L"퍼스트: %d", firstNum);
-	DIRECT2D->drawTextD2D(DIRECT2D->_defaultBrush, str, 100, 200, 300, 300);
-	swprintf_s(str, L"세컨드: %d", secNum);
-	DIRECT2D->drawTextD2D(DIRECT2D->_defaultBrush, str, 100, 250, 300, 300);
-
-
-	if (_moveCheck)
-	{
-		IMAGEMANAGER->findImage(L"커서")->render(_moveCursor.left, _moveCursor.top, false, 1.0f);
-	}
-	itemNumDraw();
-
 }
 
 void townInven::itemNumDraw()
@@ -704,5 +733,37 @@ void townInven::SendItem()
 			}
 		}
 		break;
+	}
+}
+
+void townInven::eatItem()
+{
+	STATMANAGER->setHp(_charSel->getKind(), STATMANAGER->getPlayerStat()->_hp + INVENMANAGER->getVItem()[_itemSlot].HP);
+	STATMANAGER->setSp(_charSel->getKind(), STATMANAGER->getPlayerStat()->_sp + INVENMANAGER->getVItem()[_itemSlot].SP);
+	//인벤 안에 템이 한개 있을때
+	if (INVENMANAGER->getVItem().size() == 1)
+	{
+		INVENMANAGER->erase2VItem(0);
+	}
+	//여러개 있을때
+	else if (INVENMANAGER->getVItem().size() > 1)
+	{
+		if (_itemSlot == INVENMANAGER->getVItem().size() - 1)
+		{
+			INVENMANAGER->erase2VItem(_itemSlot);
+		}
+		else if (_itemSlot < INVENMANAGER->getVItem().size() - 1)
+		{
+			for (int i = _itemSlot + 1; i < INVENMANAGER->getVItem().size(); i++)
+			{
+				_vTemp.push_back(INVENMANAGER->getVItem()[i]);
+			}
+			INVENMANAGER->eraseVItem(_itemSlot);
+			for (int i = 0; i < _vTemp.size(); i++)
+			{
+				INVENMANAGER->pushBackVItem(i, _vTemp);
+			}
+			_vTemp.clear();
+		}
 	}
 }

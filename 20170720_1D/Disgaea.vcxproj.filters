@@ -228,9 +228,6 @@
     <ClInclude Include="shopScene.h">
       <Filter>Disgaea\ShopScene</Filter>
     </ClInclude>
-    <ClInclude Include="inven.h">
-      <Filter>Disgaea\inven</Filter>
-    </ClInclude>
     <ClInclude Include="item.h">
       <Filter>Disgaea\item</Filter>
     </ClInclude>
@@ -247,6 +244,9 @@
       <Filter>Disgaea\UI</Filter>
     </ClInclude>
     <ClInclude Include="equip.h">
+      <Filter>Disgaea\inven</Filter>
+    </ClInclude>
+    <ClInclude Include="characterSelet.h">
       <Filter>Disgaea\inven</Filter>
     </ClInclude>
   </ItemGroup>
@@ -368,9 +368,6 @@
     <ClCompile Include="shopScene.cpp">
       <Filter>Disgaea\ShopScene</Filter>
     </ClCompile>
-    <ClCompile Include="inven.cpp">
-      <Filter>Disgaea\inven</Filter>
-    </ClCompile>
     <ClCompile Include="item.cpp">
       <Filter>Disgaea\item</Filter>
     </ClCompile>
@@ -387,6 +384,9 @@
       <Filter>Disgaea\UI</Filter>
     </ClCompile>
     <ClCompile Include="equip.cpp">
+      <Filter>Disgaea\inven</Filter>
+    </ClCompile>
+    <ClCompile Include="characterSelet.cpp">
       <Filter>Disgaea\inven</Filter>
     </ClCompile>
   </ItemGroup>

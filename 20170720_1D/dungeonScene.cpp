@@ -53,6 +53,11 @@ HRESULT dungeonScene::init()
 	_alpha = 0;
 	_alphaChange = false;
 
+	//인벤
+	_inven = new townInven;
+	_inven->init();
+	_invenOn = false;
+
 	return S_OK;
 }
 void dungeonScene::release()
@@ -77,6 +82,10 @@ void dungeonScene::update()
 		_alpha -= 0.004f;
 		if (_alpha < 0) _alphaChange = false;
 	}
+	if (KEYMANAGER->isOnceKeyDown('I')) _invenOn = true;
+	if (KEYMANAGER->isOnceKeyDown('L')) _invenOn = false;
+
+	if (_invenOn) _inven->update();
 }
 void dungeonScene::render()
 {
@@ -90,6 +99,7 @@ void dungeonScene::render()
 	ASTARMANAGER->render();
 	ASTARMANAGER->renderGoalList();
 	ASTARMANAGER->drawMovableTile();
+	if (_invenOn) _inven->render();
 }
 void dungeonScene::loadFile()
 {

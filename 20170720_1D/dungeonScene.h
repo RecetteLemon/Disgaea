@@ -2,7 +2,7 @@
 #include "gameNode.h"
 #include "tile.h"
 #include "characterManager.h"
-
+#include "townInven.h"
 
 class dungeonScene : public gameNode
 {
@@ -31,6 +31,9 @@ private:
 	bool _alphaChange;
 
 	WCHAR str[128];
+	//¿Œ∫•
+	townInven* _inven;
+	bool _invenOn;
 public:
 	dungeonScene();
 	~dungeonScene();

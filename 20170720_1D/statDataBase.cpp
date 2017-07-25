@@ -38,6 +38,18 @@ statDataBase::~statDataBase()
 void statDataBase::update(void)
 {
 	LvUp();
+	//아이템 먹었을때 피통이나 마나통 이상으로 회복될때 맥스치까지만 회복
+	for (int i = 0; i < DB_PLAYER_END; i++)
+	{
+		if (_plStat[i]._hp > _plStat[i]._maxHp)
+		{
+			_plStat[i]._hp = _plStat[i]._maxHp;
+		}
+		else if (_plStat[i]._sp > _plStat[i]._maxSp)
+		{
+			_plStat[i]._sp = _plStat[i]._maxSp;
+		}
+	}
 }
 
 void statDataBase::LvUp(void)

@@ -1,5 +1,6 @@
 #pragma once
 #include "gameNode.h"
+#include "characterSelet.h"
 #include <vector>
 
 enum TAGCURSORNUM
@@ -93,6 +94,9 @@ private:
 	float _wareBlockMove;
 
 	int firstNum, secNum;
+	//사용할지에 관한 불값
+	bool _isItem;
+	characterSelet* _charSel;
 
 public:
 	HRESULT init();
@@ -105,6 +109,7 @@ public:
 
 	void sortItem();
 	void SendItem();
+	void eatItem();
 
 	townInven();
 	~townInven();
