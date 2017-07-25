@@ -311,18 +311,18 @@ bool aStarManager::checkList(vector<tagIso> &list, aStarTile* tile)
 //플레이어의 경우; 목표 타일이 될 수 있는 것들을 보여준다
 void aStarManager::renderGoalList()
 {
-	WCHAR str[64];
+	/*WCHAR str[64];
 
 	for (int i = 0; i < _vMoveList.size(); ++i)
 	{
 		wsprintf(str, L"%d %d", _vMoveList[i].indexX, _vMoveList[i].indexY);
 		DIRECT2D->drawTextD2D(DIRECT2D->_defaultBrush, str, WINSIZEX - 200, i * 50 + 50, WINSIZEX - 100, i * 50 + 100);
-	}
+	}*/
 }
 
 void aStarManager::drawMovableTile()
 {
-	WCHAR str[64];
+	/*WCHAR str[64];
 
 	for (int i = 0; i < _vMovableList.size(); ++i)
 	{
@@ -332,12 +332,12 @@ void aStarManager::drawMovableTile()
 			_vMovableList[i].centerY - CAMERAMANAGER->getY(),
 			_vMovableList[i].centerX + 30 - CAMERAMANAGER->getX(),
 			_vMovableList[i].centerY + 30 - CAMERAMANAGER->getY());
-	}
+	}*/
 }
 
 void aStarManager::render()
 {
-	if (_goalTile != NULL)
+	/*if (_goalTile != NULL)
 	{
 		WCHAR str[126];
 		swprintf(str, L"%d %d", _goalTile->getIso().indexX, _goalTile->getIso().indexY);
@@ -358,7 +358,7 @@ void aStarManager::render()
 			_vMoveList[i].centerY - CAMERAMANAGER->getY(),
 			_vMoveList[i].centerX + 30 - CAMERAMANAGER->getX(),
 			_vMoveList[i].centerY + 30 - CAMERAMANAGER->getY());
-	}
+	}*/
 }
 
 /*

@@ -74,10 +74,10 @@ void player::update(void)
 void player::render(void) 
 {
 	//상태별로 애니메이션 그려줌
-	WCHAR str[12];
+	/*WCHAR str[12];
 	swprintf_s(str, L"%d", _player.pos[PLAYER_POS_LB_ATTACK]->getFrameNum());
 	DIRECT2D->drawTextD2D(DIRECT2D->_defaultBrush, str, WINSIZEX / 2, WINSIZEY / 2, WINSIZEX / 2 + 100, WINSIZEY / 2 + 100);
-	DIRECT2D->drawRectangle(DIRECT2D->_defaultBrush, _player.shadowRC.left, _player.shadowRC.top, _player.shadowRC.right, _player.shadowRC.bottom, 10);
+	DIRECT2D->drawRectangle(DIRECT2D->_defaultBrush, _player.shadowRC.left, _player.shadowRC.top, _player.shadowRC.right, _player.shadowRC.bottom, 10);*/
 	this->draw();
 }
 

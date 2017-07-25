@@ -22,11 +22,11 @@ HRESULT dungeonScene::init()
 	_selectPlNum = 0;
 	_dm = new dungeonManager;
 	_dm->init();
-	_dm->setAdell(_tile[80].centerX, _tile[80].centerY);
-	_dm->setCleric(_tile[81].centerX, _tile[81].centerY);
+	_dm->setAdell(_tile[58].centerX, _tile[58].centerY);
+	_dm->setCleric(_tile[59].centerX, _tile[59].centerY);
 	_dm->setPram(_tile[79].centerX, _tile[79].centerY);
-	_dm->setRozalin(_tile[60].centerX, _tile[60].centerY);
-	_dm->setValvatorez(_tile[59].centerX, _tile[59].centerY);
+	_dm->setRozalin(_tile[81].centerX, _tile[81].centerY);
+	_dm->setValvatorez(_tile[80].centerX, _tile[80].centerY);
 
 	_dm->setEnemy(_tile[23].centerX, _tile[23].centerY + 45);
 	
@@ -125,6 +125,15 @@ void dungeonScene::drawTile()
 		}
 	}
 
+	for (int j = 0; j < ASTARMANAGER->getMovableTile().size(); j++)
+	{
+		if (ASTARMANAGER->getMovableTile()[j].z < 1)
+		{
+			IMAGEMANAGER->findImage(L"movableTile")->render(ASTARMANAGER->getMovableTile()[j].x - TILESIZEX / 2 - IMAGEMANAGER->findImage(L"movableTile")->getWidth() + TILESIZEX,
+				ASTARMANAGER->getMovableTile()[j].y - ASTARMANAGER->getMovableTile()[j].z - IMAGEMANAGER->findImage(L"movableTile")->getHeight() - TILESIZEY * (ASTARMANAGER->getMovableTile()[j].z - 1), true, 1);
+		}
+	}
+
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
 		if ((-CAMERAMANAGER->getX() + _tile[i].x + TILESIZEX / 2 > 22 ||
@@ -150,7 +159,19 @@ void dungeonScene::drawTile()
 			//	DIRECT2D->drawLine(DIRECT2D->_defaultBrush, _tile[i].line[3].x, _tile[i].line[3].y, _tile[i].line[0].x, _tile[i].line[0].y, true, 1);
 			//}
 
-
+			if (_edgeNum == i)
+			{
+				if (_tile[_edgeNum].z >= 0)
+				{
+					_edge->render(_rcEdge.left, _rcEdge.top - _tile[i].z * TILESIZEZ, true, 1.0);
+					_edgeMouse->render(_rcEdge.left, _rcEdge.top - 100 + _edgeMouseY - _tile[i].z * TILESIZEZ, true, 1.0);
+				}
+				else
+				{
+					_edge->render(_rcEdge.left, _rcEdge.top, true, 1.0);
+					_edgeMouse->render(_rcEdge.left, _rcEdge.top - 100 + _edgeMouseY, true, 1.0);
+				}
+			}
 
 			if (_tile[i].obj != OBJ_ERASE)
 			{
@@ -166,24 +187,22 @@ void dungeonScene::drawTile()
 						_tile[i].objFrame.x, _tile[i].objFrame.y, true, 1.0f);
 				}
 			}
+
+			for (int j = 0; j < 5; j++)
+			{
+				if (_tileIndex[j] == i) _dm->render();
+			}
 		}
 	}
-	for (int j = 0; j < ASTARMANAGER->getMovableTile().size(); j++)
-	{
-		if (ASTARMANAGER->getMovableTile()[j].z < 1)
-		{
-			IMAGEMANAGER->findImage(L"movableTile")->render(ASTARMANAGER->getMovableTile()[j].x - TILESIZEX / 2 - IMAGEMANAGER->findImage(L"movableTile")->getWidth() + TILESIZEX,
-				ASTARMANAGER->getMovableTile()[j].y - ASTARMANAGER->getMovableTile()[j].z - IMAGEMANAGER->findImage(L"movableTile")->getHeight() - TILESIZEY * (ASTARMANAGER->getMovableTile()[j].z - 1), true, 1);
-		}
-	}
+	
 
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
-		for (int j = 0; j < 5; j++)
+		/*for (int j = 0; j < 5; j++)
 		{
 			if (_tileIndex[j] == i) _dm->render();
-		}
-		if (_edgeNum == i)
+		}*/
+		/*if (_edgeNum == i)
 		{
 			if (_tile[_edgeNum].z >= 0)
 			{
@@ -195,7 +214,7 @@ void dungeonScene::drawTile()
 				_edge->render(_rcEdge.left, _rcEdge.top, true, 1.0);
 				_edgeMouse->render(_rcEdge.left, _rcEdge.top - 100 + _edgeMouseY, true, 1.0);
 			}
-		}
+		}*/
 	}
 }
 void dungeonScene::camControl()

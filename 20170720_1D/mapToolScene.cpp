@@ -629,9 +629,9 @@ void mapToolScene::drawTile()
 	IMAGEMANAGER->findImage(L"IsoEdgeFrame")->render(0, 0, false, 1);
 
 
-	WCHAR ptr[128];
-	wsprintf(ptr, L"X : %d, Y : %d", _ptMouse.x, _ptMouse.y);
-	DIRECT2D->drawTextD2D(DIRECT2D->_defaultBrush, ptr, 20, 80, 400, 100);
+	//WCHAR ptr[128];
+	//wsprintf(ptr, L"X : %d, Y : %d", _ptMouse.x, _ptMouse.y);
+	//DIRECT2D->drawTextD2D(DIRECT2D->_defaultBrush, ptr, 20, 80, 400, 100);
 }
 void mapToolScene::drawSample()
 {
@@ -663,14 +663,14 @@ void mapToolScene::initButton()
 	_btn[BTN_LOAD]->init(L"LoadButton", WINSIZEX - 22 - 100 + 40, 348 + 50, { 0, 1 }, { 0, 0 });
 	_btn[BTN_SAVE]->init(L"SaveButton", WINSIZEX - 22 - 100 - 22 - 100 + 40, 348 + 50, { 0, 1 }, { 0, 0 });
 	_btn[BTN_START]->init(L"StartButton", WINSIZEX - 22 - 100 - 22 - 100 - 22 - 100 + 40, 348 + 50, { 0, 1 }, { 0, 0 });
-	_btn[BTN_TERRAIN]->init(L"TerrainButton", WINSIZEX - IMAGEMANAGER->findImage(L"TerrainButton")->getFrameWidth() + IMAGEMANAGER->findImage(L"TerrainButton")->getFrameWidth() / 2, WINSIZEY - IMAGEMANAGER->findImage(L"TerrainButton")->getFrameHeight() / 2 - IMAGEMANAGER->findImage(L"SaveButton")->getFrameHeight(), { 0, 1 }, { 0, 0 });
+	/*_btn[BTN_TERRAIN]->init(L"TerrainButton", WINSIZEX - IMAGEMANAGER->findImage(L"TerrainButton")->getFrameWidth() + IMAGEMANAGER->findImage(L"TerrainButton")->getFrameWidth() / 2, WINSIZEY - IMAGEMANAGER->findImage(L"TerrainButton")->getFrameHeight() / 2 - IMAGEMANAGER->findImage(L"SaveButton")->getFrameHeight(), { 0, 1 }, { 0, 0 });
 	_btn[BTN_OBJECT]->init(L"ObjectButton", WINSIZEX - IMAGEMANAGER->findImage(L"ObjectButton")->getFrameWidth() + IMAGEMANAGER->findImage(L"ObjectButton")->getFrameWidth() / 2, WINSIZEY - IMAGEMANAGER->findImage(L"ObjectButton")->getFrameHeight() - IMAGEMANAGER->findImage(L"ObjectButton")->getFrameHeight() / 2 - IMAGEMANAGER->findImage(L"SaveButton")->getFrameHeight(), { 0, 1 }, { 0, 0 });
-	_btn[BTN_ERASER]->init(L"EraseButton", WINSIZEX - IMAGEMANAGER->findImage(L"EraseButton")->getFrameWidth() + IMAGEMANAGER->findImage(L"EraseButton")->getFrameWidth() / 2, WINSIZEY - IMAGEMANAGER->findImage(L"EraseButton")->getFrameHeight() * 2 - IMAGEMANAGER->findImage(L"EraseButton")->getFrameHeight() / 2 - IMAGEMANAGER->findImage(L"SaveButton")->getFrameHeight(), { 0, 1 }, { 0, 0 });
+	_btn[BTN_ERASER]->init(L"EraseButton", WINSIZEX - IMAGEMANAGER->findImage(L"EraseButton")->getFrameWidth() + IMAGEMANAGER->findImage(L"EraseButton")->getFrameWidth() / 2, WINSIZEY - IMAGEMANAGER->findImage(L"EraseButton")->getFrameHeight() * 2 - IMAGEMANAGER->findImage(L"EraseButton")->getFrameHeight() / 2 - IMAGEMANAGER->findImage(L"SaveButton")->getFrameHeight(), { 0, 1 }, { 0, 0 });*/
 }
 void mapToolScene::updateButton()
 {
 	for (int i = 0; i < BTN_END; i++) _btn[(SAMPLE_TYPE)i]->update();
-	if (_btn[BTN_TERRAIN]->getPush() == TRUE)
+	/*if (_btn[BTN_TERRAIN]->getPush() == TRUE)
 	{
 		_phaseSample.cur = SAM_TERRAIN;
 		_phaseSample.token.x = 0;
@@ -682,7 +682,7 @@ void mapToolScene::updateButton()
 		_phaseSample.token.x = 0;
 		_phaseSample.token.y = 0;
 	}
-	if (_btn[BTN_ERASER]->getPush() == TRUE) _phaseSample.cur = SAM_OBJ_ERASER; 
+	if (_btn[BTN_ERASER]->getPush() == TRUE) _phaseSample.cur = SAM_OBJ_ERASER; */
 	if (_btn[BTN_START]->getPush() == TRUE) this->startTile();
 	if (_btn[BTN_SAVE]->getPush() == TRUE) this->saveTile();
 	if (_btn[BTN_LOAD]->getPush() == TRUE) this->loadTile();
