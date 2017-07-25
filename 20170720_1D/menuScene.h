@@ -14,6 +14,8 @@ class menuScene : public gameNode
 private:
 	MENU _menu;
 	POINT _mouse;
+	float _alpha;
+	bool _changeScene[MENU_END];
 public:
 	menuScene();
 	~menuScene();
@@ -25,5 +27,8 @@ public:
 	void keyDownW();
 	void keyDownS();
 	void keyDownSpace();
+	bool blackOut();
+	bool blackIn();
+	void sceneChange();
 };
 

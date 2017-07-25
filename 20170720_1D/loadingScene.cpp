@@ -39,6 +39,7 @@ void loadingScene::loadingImage()
 	// 메뉴씬 이미지
 	_ld->loadImage(L"Menu", L"Image/Menu/M01.png", 1600, 900);
 	_ld->loadImage(L"MenuMouse", L"Image/Menu/MMouse.png", 50, 39);
+	_ld->loadImage(L"MenuBlackOut", L"Image/Menu/BlackOut.png", 1600, 900);
 	
 	// 맵툴 이미지
 	_ld->loadFrameImage(L"StartButton", L"Image/MapTool/BtnBack.png", 100, 200, 1, 2);
