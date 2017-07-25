@@ -36,12 +36,14 @@ HRESULT shopScene::init()
 
 	_sortNum = 0;
 
+	SOUNDMANAGER->play(L"ShopScene");
+
 	return S_OK;
 }
 void shopScene::release()
 {
 
-
+	SOUNDMANAGER->stop(L"ShopScene");
 }
 void shopScene::update()
 {

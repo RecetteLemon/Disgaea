@@ -365,22 +365,26 @@ void player::control(void)
 
 	if (KEYMANAGER->isStayKeyDown('W'))
 	{
+		if (!SOUNDMANAGER->isPlaySound(L"Walking")) SOUNDMANAGER->play(L"Walking");
 		_player.stat = PLAYER_STAT_RT_MOVE;
 		this->move();
 	}
 	else if (KEYMANAGER->isStayKeyDown('D'))
 	{
+		if (!SOUNDMANAGER->isPlaySound(L"Walking")) SOUNDMANAGER->play(L"Walking");
 		_player.stat = PLAYER_STAT_RB_MOVE;
 		this->move();
 	}
 
 	else if (KEYMANAGER->isStayKeyDown('S'))
 	{
+		if (!SOUNDMANAGER->isPlaySound(L"Walking")) SOUNDMANAGER->play(L"Walking");
 		_player.stat = PLAYER_STAT_LB_MOVE;
 		this->move();
 	}
 	else if (KEYMANAGER->isStayKeyDown('A'))
 	{
+		if (!SOUNDMANAGER->isPlaySound(L"Walking")) SOUNDMANAGER->play(L"Walking");
 		_player.stat = PLAYER_STAT_LT_MOVE;
 		this->move();
 	}

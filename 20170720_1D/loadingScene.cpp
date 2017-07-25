@@ -224,9 +224,11 @@ void loadingScene::loadingSound()
 	_ld->loadSound(L"LevelUp", L"Sound/DisgaeaLevelUp.mp3", false, false);
 	_ld->loadSound(L"MenuScene", L"Sound/DisgaeaMenuSceneBGM.mp3", true, true);
 	_ld->loadSound(L"Pick", L"Sound/DisgaeaPick.mp3", false, false);
+	_ld->loadSound(L"ShopScene", L"Sound/DisgaeaShopSceneBGM.mp3", false, false);
 	_ld->loadSound(L"StageClear", L"Sound/DisgaeaClear.mp3", false, false);
 	_ld->loadSound(L"TownScene", L"Sound/DisgaeaTownSceneBGM.mp3", true, true);
 	_ld->loadSound(L"UnitDead", L"Sound/DisgaeaUnitDead.mp3", false, false);
+	_ld->loadSound(L"Walking", L"Sound/DisgaeaWalking.wav", false, false);
 	
 
 	// ?? Sound
