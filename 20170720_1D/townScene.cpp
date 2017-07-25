@@ -16,11 +16,12 @@ HRESULT townScene::init()
 	_mUI->init();
 
 	_cm = new characterManager;
-	_cm->init(500, 500);
-	_cm->selectPlayer(3);
 	_tileNum = 0;
 	_tileIndex = 0;
 	this->loadTile();
+
+	_cm->init(_tile[131].centerX, _tile[131].centerY);
+	_cm->selectPlayer(3);
 
 	_npc = IMAGEMANAGER->addFrameImage(L"npc", L"image/face/NPC.png", 588, 156, 6, 1);
 
