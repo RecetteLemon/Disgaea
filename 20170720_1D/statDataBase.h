@@ -20,14 +20,14 @@ struct playerStat
 	int _exp, _maxExp;
 	int _atk, _int, _def, _res;
 	int	_mov, _thr, _counter, _jm;
+	vector<Item> _vWeapon;  //장착 무기 벡터 - 1칸
+	vector<Item> _vArmor;	//장착 아머 벡터 - 3칸 쓸것
 
 };
 
 class statDataBase : public singletonBase<statDataBase>
 {
 private:
-	vector<Item> _vWeapon;  //장착 무기 벡터 - 1칸
-	vector<Item> _vArmor;	//장착 아머 벡터 - 3칸 쓸것
 
 	playerStat _plStat[DB_PLAYER_END];
 	unsigned int _money;
@@ -55,19 +55,18 @@ public:
 	unsigned int getMoney() { return _money; }
 
 	//아이템 착용 및 교체를 위한 벡터 겟터 셋터
-	vector<Item> getVWeapon(void) { return _vWeapon; }
-	vector<Item> getVArmor(void) { return _vArmor; }
+	vector<Item> &getVWeapon(int i) { return _plStat[i]._vWeapon; }
+	vector<Item> &getVArmor(int i) { return _plStat[i]._vArmor; }
 	//푸시백
-	void pushBackVWeapon(int i, vector<Item> Item) { _vWeapon.push_back(Item[i]); }
-	void pushBackVArmor(int i, vector<Item> Item) { _vArmor.push_back(Item[i]); }
+	void pushBackVWeapon(int i, Item item) { _plStat[i]._vWeapon.push_back(item); }
+	void pushBackVArmor(int i, Item Item) { _plStat[i]._vArmor.push_back(Item); }
 	//지우기 1 - 선택만 지우기
-	void eraseVWeapon(int i) { _vWeapon.erase(_vWeapon.begin() + i); }
-	void eraseVArmor(int i) { _vArmor.erase(_vArmor.begin() + i); }
+	void eraseVWeapon(int playerArray, int itemAraay) { _plStat[(playerNum)playerArray]._vWeapon.erase(_plStat[(playerNum)playerArray]._vWeapon.begin() + itemAraay); }
+	void eraseVArmor(int playerArray, int itemAraay) { _plStat[(playerNum)playerArray]._vArmor.erase(_plStat[(playerNum)playerArray]._vArmor.begin() + itemAraay); }
 	//지우기 2 - 선택부터 끝까지 지우기
-	void erase2VWeapon(int i) { _vWeapon.erase(_vWeapon.begin() + i, _vWeapon.end()); }
-	void erase2VArmor(int i) { _vArmor.erase(_vArmor.begin() + i, _vArmor.end()); }
+	void erase2VWeapon(int playerArray, int itemAraay) { _plStat[(playerNum)playerArray]._vWeapon.erase(_plStat[(playerNum)playerArray]._vWeapon.begin() + itemAraay, _plStat[(playerNum)playerArray]._vWeapon.end()); }
+	void erase2VArmor(int playerArray, int itemAraay) { _plStat[(playerNum)playerArray]._vArmor.erase(_plStat[(playerNum)playerArray]._vArmor.begin() + itemAraay, _plStat[(playerNum)playerArray]._vArmor.end()); }
 
 	statDataBase();
 	~statDataBase();
 };
-

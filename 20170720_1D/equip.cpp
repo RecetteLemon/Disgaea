@@ -4,6 +4,7 @@
 
 equip::equip()
 {
+	_charNum = 0;
 }
 
 
@@ -44,6 +45,24 @@ void equip::release()
 
 void equip::update()
 {
+	switch (_charNum)
+	{
+	case 0:
+		face = IMAGEMANAGER->findImage(L"AdellFace");
+		break;
+	case 1:
+		face = IMAGEMANAGER->findImage(L"RozalinFace");
+		break;
+	case 2:
+		face = IMAGEMANAGER->findImage(L"PramFace");
+		break;
+	case 3:
+		face = IMAGEMANAGER->findImage(L"ValvatorezFace");
+		break;
+	case 4:
+		face = IMAGEMANAGER->findImage(L"ClericFace");
+		break;
+	}
 	for (int i = 0; i < 24; i++)
 	{
 		//있는 배열 범위까지만 아이템의 이미지를 넣어준다
@@ -74,34 +93,34 @@ void equip::render()
 {
 	IMAGEMANAGER->findImage(L"StatUI")->render(_statBox.left, _statBox.top, false, 0.4f);
 	IMAGEMANAGER->findImage(L"StatUI1")->render(_statBox.left, _statBox.top, false, 1.0f);
+	face->render(_statBox.left + 5, _statBox.top + 70, 195, 195, false, 1.0f);
 	//무기 끼우기
-	if (STATMANAGER->getVWeapon().size() == 0)	IMAGEMANAGER->findImage(L"weapon")->render(_equipSlot[0].left, _equipSlot[0].top, false, 1.0f);
-	else STATMANAGER->getVWeapon()[0].Image2->render(_equipSlot[0].left + 100, _equipSlot[0].top, false, 1.0f);
-
-	if (STATMANAGER->getVArmor().size() == 0)
+	if (STATMANAGER->getVWeapon(_charNum).size() == 0)	IMAGEMANAGER->findImage(L"weapon")->render(_equipSlot[0].left, _equipSlot[0].top, false, 1.0f);
+	else STATMANAGER->getVWeapon(_charNum)[0].Image2->render(_equipSlot[0].left + 100, _equipSlot[0].top, false, 1.0f);
+	// 방어구
+	if (STATMANAGER->getVArmor(_charNum).size() == 0)
 	{
 		IMAGEMANAGER->findImage(L"other")->render(_equipSlot[1].left, _equipSlot[1].top, false, 1.0f);
 		IMAGEMANAGER->findImage(L"other")->render(_equipSlot[2].left, _equipSlot[2].top, false, 1.0f);
 		IMAGEMANAGER->findImage(L"other")->render(_equipSlot[3].left, _equipSlot[3].top, false, 1.0f);
 	}
-
-	if (STATMANAGER->getVArmor().size() == 1)
+	if (STATMANAGER->getVArmor(_charNum).size() == 1)
 	{
-		STATMANAGER->getVArmor()[0].Image2->render(_equipSlot[1].left + 100, _equipSlot[1].top, false, 1.0f);
+		STATMANAGER->getVArmor(_charNum)[0].Image2->render(_equipSlot[1].left + 100, _equipSlot[1].top, false, 1.0f);
 		IMAGEMANAGER->findImage(L"other")->render(_equipSlot[2].left, _equipSlot[2].top, false, 1.0f);
 		IMAGEMANAGER->findImage(L"other")->render(_equipSlot[3].left, _equipSlot[3].top, false, 1.0f);
 	}
-	if (STATMANAGER->getVArmor().size() == 2)
+	if (STATMANAGER->getVArmor(_charNum).size() == 2)
 	{
-		STATMANAGER->getVArmor()[0].Image2->render(_equipSlot[1].left + 100, _equipSlot[1].top, false, 1.0f);
-		STATMANAGER->getVArmor()[1].Image2->render(_equipSlot[2].left + 100, _equipSlot[2].top, false, 1.0f);
+		STATMANAGER->getVArmor(_charNum)[0].Image2->render(_equipSlot[1].left + 100, _equipSlot[1].top, false, 1.0f);
+		STATMANAGER->getVArmor(_charNum)[1].Image2->render(_equipSlot[2].left + 100, _equipSlot[2].top, false, 1.0f);
 		IMAGEMANAGER->findImage(L"other")->render(_equipSlot[3].left, _equipSlot[3].top, false, 1.0f);
 	}
-	if (STATMANAGER->getVArmor().size() == 3)
+	if (STATMANAGER->getVArmor(_charNum).size() == 3)
 	{
-		STATMANAGER->getVArmor()[0].Image2->render(_equipSlot[1].left + 100, _equipSlot[1].top, false, 1.0f);
-		STATMANAGER->getVArmor()[1].Image2->render(_equipSlot[2].left + 100, _equipSlot[2].top, false, 1.0f);
-		STATMANAGER->getVArmor()[2].Image2->render(_equipSlot[3].left + 100, _equipSlot[3].top, false, 1.0f);
+		STATMANAGER->getVArmor(_charNum)[0].Image2->render(_equipSlot[1].left + 100, _equipSlot[1].top, false, 1.0f);
+		STATMANAGER->getVArmor(_charNum)[1].Image2->render(_equipSlot[2].left + 100, _equipSlot[2].top, false, 1.0f);
+		STATMANAGER->getVArmor(_charNum)[2].Image2->render(_equipSlot[3].left + 100, _equipSlot[3].top, false, 1.0f);
 	}
 	//if()
 	IMAGEMANAGER->findImage(L"itemBag")->render(_invenBox.left, _invenBox.top, false, 1.0f);
@@ -141,6 +160,17 @@ void equip::render()
 		}
 	}
 	IMAGEMANAGER->findImage(L"cursor")->render(_cursor.left, _cursor.top, false, 1.0f);
+
+
+	WCHAR str[128];
+	swprintf_s(str, L"%d", STATMANAGER->getPlayerStat()->_atk);
+	DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(255, 255, 255), 1), L"고딕", 40, str, 400, WINSIZEY / 2 - 280, WINSIZEX, WINSIZEY);
+	swprintf_s(str, L"%d", STATMANAGER->getPlayerStat()->_int);
+	DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(255, 255, 255), 1), L"고딕", 40, str, 400, WINSIZEY / 2 - 250, WINSIZEX, WINSIZEY);
+	swprintf_s(str, L"%d", STATMANAGER->getPlayerStat()->_def);
+	DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(255, 255, 255), 1), L"고딕", 40, str, WINSIZEX / 2, WINSIZEY / 2 - 280, WINSIZEX, WINSIZEY);
+	swprintf_s(str, L"%d", STATMANAGER->getPlayerStat()->_res);
+	DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(255, 255, 255), 1), L"고딕", 40, str, WINSIZEX / 2, WINSIZEY / 2 - 250, WINSIZEX, WINSIZEY);
 }
 
 void equip::cursorMove()
@@ -169,10 +199,7 @@ void equip::cursorMove()
 			break;
 		}
 	}
-	else
-	{
 
-	}
 }
 void equip::slotMove()
 {
@@ -244,13 +271,13 @@ void equip::equipItem()
 	switch (INVENMANAGER->getVItem()[_slotCount + (int)_slotNum].Type)
 	{
 	case WEAPON:
-		if (STATMANAGER->getVWeapon().size() == 0)
+		if (STATMANAGER->getVWeapon(_charNum).size() == 0)
 		{
 			//인벤창에 장비 템 하나 있을때
 			if (INVENMANAGER->getVItem().size() == 1)
 			{
 				_isEquip = false;
-				STATMANAGER->pushBackVWeapon(0, INVENMANAGER->getVItem());
+				STATMANAGER->pushBackVWeapon(_charNum, INVENMANAGER->getVItem()[0]);
 				INVENMANAGER->erase2VItem(0);
 			}
 			//템이 여러개 있을때
@@ -260,7 +287,7 @@ void equip::equipItem()
 				if (_slotCount + (int)_slotNum == INVENMANAGER->getVItem().size() - 1)
 				{
 					_isEquip = false;
-					STATMANAGER->pushBackVWeapon(_slotCount + (int)_slotNum, INVENMANAGER->getVItem());
+					STATMANAGER->pushBackVWeapon(_charNum, INVENMANAGER->getVItem()[_slotCount + (int)_slotNum]);
 					INVENMANAGER->erase2VItem(_slotCount + (int)_slotNum);
 
 				}
@@ -268,7 +295,7 @@ void equip::equipItem()
 				else if (_slotCount + (int)_slotNum < INVENMANAGER->getVItem().size())
 				{
 					_isEquip = false;
-					STATMANAGER->pushBackVWeapon(_slotCount + (int)_slotNum, INVENMANAGER->getVItem());
+					STATMANAGER->pushBackVWeapon(_charNum, INVENMANAGER->getVItem()[_slotCount + (int)_slotNum]);
 					for (int i = _slotCount + (int)_slotNum + 1; i < INVENMANAGER->getVItem().size(); i++)
 					{
 						_vTemp.push_back(INVENMANAGER->getVItem()[i]);
@@ -282,28 +309,29 @@ void equip::equipItem()
 				}
 			}
 		}
-		else if (STATMANAGER->getVWeapon().size() > 0)
+		else if (STATMANAGER->getVWeapon(_charNum).size() > 0)
 		{
 			_isEquip = false;
-			_vTemp.push_back(STATMANAGER->getVWeapon()[0]);
-			STATMANAGER->eraseVWeapon(0);
-			STATMANAGER->pushBackVWeapon(_slotCount + (int)_slotNum, INVENMANAGER->getVItem());
+			_vTemp.push_back(STATMANAGER->getVWeapon(_charNum)[0]);
+			STATMANAGER->eraseVWeapon(_charNum, 0);
+			STATMANAGER->pushBackVWeapon(_charNum, INVENMANAGER->getVItem()[_slotCount + (int)_slotNum]);
 			INVENMANAGER->erase2VItem(_slotCount + (int)_slotNum);
 			INVENMANAGER->pushBackVItem(0, _vTemp);
 			_vTemp.clear();
 		}
+		statUP_weapon();
 		break;
 
 	case ARMOR:
 
-		if (STATMANAGER->getVArmor().size() < 4)
+		if (STATMANAGER->getVArmor(_charNum).size() < 4)
 		{
 			_isEquip = false;
 			//인벤창에 장비 템 하나 있을때
 			if (INVENMANAGER->getVItem().size() == 1)
 			{
 				_isEquip = false;
-				STATMANAGER->pushBackVArmor(0, INVENMANAGER->getVItem());
+				STATMANAGER->pushBackVArmor(_charNum, INVENMANAGER->getVItem()[0]);
 				INVENMANAGER->erase2VItem(0);
 			}
 			else if (INVENMANAGER->getVItem().size() > 1)
@@ -312,7 +340,7 @@ void equip::equipItem()
 				if (_slotCount + (int)_slotNum == INVENMANAGER->getVItem().size() - 1)
 				{
 					_isEquip = false;
-					STATMANAGER->pushBackVArmor(_slotCount + (int)_slotNum, INVENMANAGER->getVItem());
+					STATMANAGER->pushBackVArmor(_charNum, INVENMANAGER->getVItem()[_slotCount + (int)_slotNum]);
 					INVENMANAGER->erase2VItem(_slotCount + (int)_slotNum);
 
 				}
@@ -320,7 +348,7 @@ void equip::equipItem()
 				else if (_slotCount + (int)_slotNum < INVENMANAGER->getVItem().size())
 				{
 					_isEquip = false;
-					STATMANAGER->pushBackVArmor(_slotCount + (int)_slotNum, INVENMANAGER->getVItem());
+					STATMANAGER->pushBackVArmor(_charNum, INVENMANAGER->getVItem()[_slotCount + (int)_slotNum]);
 					for (int i = _slotCount + (int)_slotNum + 1; i < INVENMANAGER->getVItem().size(); i++)
 					{
 						_vTemp.push_back(INVENMANAGER->getVItem()[i]);
@@ -335,11 +363,51 @@ void equip::equipItem()
 			}
 
 		}
-		else if (STATMANAGER->getVArmor().size() == 3)
-		{
-
-		}
+		//else if (STATMANAGER->getVArmor().size() == 3)
+		//{
+		//
+		//}
+		statUP_armor();
 		break;
 	}
 
+}
+void equip::statUP_weapon()
+{
+	if (STATMANAGER->getVWeapon(_charNum).size() > 0)
+	{
+		STATMANAGER->setAtk(_charNum, STATMANAGER->getPlayerStat()->_atk + STATMANAGER->getVWeapon(_charNum)[0].Atk);
+		STATMANAGER->setInt(_charNum, STATMANAGER->getPlayerStat()->_int + STATMANAGER->getVWeapon(_charNum)[0].Int);
+		STATMANAGER->setDef(_charNum, STATMANAGER->getPlayerStat()->_def + STATMANAGER->getVWeapon(_charNum)[0].Def);
+		STATMANAGER->setRes(_charNum, STATMANAGER->getPlayerStat()->_res + STATMANAGER->getVWeapon(_charNum)[0].Res);
+	}
+}
+
+void equip::statUP_armor()
+{
+	if (STATMANAGER->getVArmor(_charNum).size() > 0)
+	{
+		if (STATMANAGER->getVArmor(_charNum).size() == 1)
+		{
+			STATMANAGER->setAtk(_charNum, STATMANAGER->getPlayerStat()->_atk + STATMANAGER->getVArmor(_charNum)[0].Atk);
+			STATMANAGER->setInt(_charNum, STATMANAGER->getPlayerStat()->_int + STATMANAGER->getVArmor(_charNum)[0].Int);
+			STATMANAGER->setDef(_charNum, STATMANAGER->getPlayerStat()->_def + STATMANAGER->getVArmor(_charNum)[0].Def);
+			STATMANAGER->setRes(_charNum, STATMANAGER->getPlayerStat()->_res + STATMANAGER->getVArmor(_charNum)[0].Res);
+		}
+		else if (STATMANAGER->getVArmor(_charNum).size() == 2)
+		{
+			STATMANAGER->setAtk(_charNum, STATMANAGER->getPlayerStat()->_atk + STATMANAGER->getVArmor(_charNum)[1].Atk);
+			STATMANAGER->setInt(_charNum, STATMANAGER->getPlayerStat()->_int + STATMANAGER->getVArmor(_charNum)[1].Int);
+			STATMANAGER->setDef(_charNum, STATMANAGER->getPlayerStat()->_def + STATMANAGER->getVArmor(_charNum)[1].Def);
+			STATMANAGER->setRes(_charNum, STATMANAGER->getPlayerStat()->_res + STATMANAGER->getVArmor(_charNum)[1].Res);
+		}
+		else if (STATMANAGER->getVArmor(_charNum).size() == 3)
+		{
+			STATMANAGER->setAtk(_charNum, STATMANAGER->getPlayerStat()->_atk + STATMANAGER->getVArmor(_charNum)[2].Atk);
+			STATMANAGER->setInt(_charNum, STATMANAGER->getPlayerStat()->_int + STATMANAGER->getVArmor(_charNum)[2].Int);
+			STATMANAGER->setDef(_charNum, STATMANAGER->getPlayerStat()->_def + STATMANAGER->getVArmor(_charNum)[2].Def);
+			STATMANAGER->setRes(_charNum, STATMANAGER->getPlayerStat()->_res + STATMANAGER->getVArmor(_charNum)[2].Res);
+		}
+
+	}
 }

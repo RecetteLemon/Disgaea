@@ -43,11 +43,12 @@ private:
 	int _slotCount;
 	int _num;
 	int _tempNum;
-
+	image* face;
 	bool _infoOn;
 
 	bool _isEquip;
 
+	int _charNum;
 public:
 	HRESULT init();
 	void release();
@@ -58,6 +59,10 @@ public:
 	void slotMove();
 	void itemInfo();
 	void equipItem();
+	void statUP_weapon();
+	void statUP_armor();
+
+	void setCharNum(int charNum) { _charNum = charNum; }
 
 	equip();
 	~equip();
