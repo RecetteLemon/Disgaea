@@ -166,13 +166,37 @@ void equip::render()
 	}
 	if (_infoOn)
 	{
+		WCHAR str[100];
 		IMAGEMANAGER->findImage(L"miniBlack")->render(_itemBox.left, _itemBox.top, false, 0.4f);
 		IMAGEMANAGER->findImage(L"miniInfo")->render(_itemBox.left, _itemBox.top, false, 1.0f);
 		IMAGEMANAGER->findImage(L"infoBox")->render(61, _invenBox.bottom + 20, false, 1.0f);
 		if (INVENMANAGER->getVItem().size())
 		{
-			INVENMANAGER->getVItem()[_slotCount + (int)_slotNum].info->render(61 + 13, _invenBox.bottom + 20 + 7, false, 1.0f);
-			INVENMANAGER->getVItem()[_slotCount + (int)_slotNum].Image2->render(_itemBox.left + 7, _itemBox.top + 10, false, 1.0f);
+			for (int i = 0; i < INVENMANAGER->getVItem().size(); i++)
+			{
+				if (i == _slotCount + (int)_slotNum)
+				{
+					INVENMANAGER->getVItem()[i].info->render(61 + 13, _invenBox.bottom + 20 + 7, false, 1.0f);
+					INVENMANAGER->getVItem()[i].Image2->render(_itemBox.left + 7, _itemBox.top + 10, false, 1.0f);
+					swprintf_s(str, L"%d", INVENMANAGER->getVItem()[i].HP);
+					DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0x7a, 0x7a, 0x7a), 1), L"°íµñ", 30, str, 600 + 330 - 60, 532 + 100 - 10, 600 + 330, 523 + 100 + 50);
+
+					swprintf_s(str, L"%d", INVENMANAGER->getVItem()[i].SP);
+					DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0x7a, 0x7a, 0x7a), 1), L"°íµñ", 30, str, 600 + 330 - 60, 532 + 130 - 10, 600 + 330, 523 + 130 + 50);
+
+					swprintf_s(str, L"%d", INVENMANAGER->getVItem()[i].Atk);
+					DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0x7a, 0x7a, 0x7a), 1), L"°íµñ", 30, str, 600 + 330 - 60, 532 + 165 - 5, 600 + 330, 523 + 165 + 50);
+
+					swprintf_s(str, L"%d", INVENMANAGER->getVItem()[i].Int);
+					DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0x7a, 0x7a, 0x7a), 1), L"°íµñ", 30, str, 600 + 330 - 60, 532 + 195 - 5, 600 + 330, 523 + 195 + 50);
+
+					swprintf_s(str, L"%d", INVENMANAGER->getVItem()[i].Def);
+					DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0x7a, 0x7a, 0x7a), 1), L"°íµñ", 30, str, 600 + 665 - 60, 532 + 165 - 5, 600 + 665, 523 + 165 + 50);
+
+					swprintf_s(str, L"%d", INVENMANAGER->getVItem()[i].Res);
+					DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0x7a, 0x7a, 0x7a), 1), L"°íµñ", 30, str, 600 + 665 - 60, 532 + 195 - 5, 600 + 665, 523 + 195 + 50);
+				}
+			}
 		}
 	}
 	IMAGEMANAGER->findImage(L"cursor")->render(_cursor.left, _cursor.top, false, 1.0f);

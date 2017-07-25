@@ -70,6 +70,8 @@ private:
 	RECT r_wareSlot[512];
 	image* i_itemSlot[24];
 	image* i_wareSlot[512];
+	image* _infoImage;
+	image* _infoImage2;
 	RECT _moveCursor;
 
 	RECT _itemName2;
@@ -97,6 +99,8 @@ private:
 	//사용할지에 관한 불값
 	bool _isItem;
 	characterSelet* _charSel;
+	//인포
+	bool _isInfo;
 
 public:
 	HRESULT init();

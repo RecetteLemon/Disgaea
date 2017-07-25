@@ -66,6 +66,7 @@ HRESULT townInven::init()
 	_charSel = new characterSelet;
 	_charSel->init();
 	_isItem = false;
+	_isInfo = false;
 
 	return S_OK;
 }
@@ -77,6 +78,14 @@ void townInven::release()
 
 void townInven::update()
 {
+	//정보 이미지 나오게하는 조건
+	RECT tempRC;
+	if (IntersectRect(&tempRC, &RectMake(_itemCursor.left - 20, _itemCursor.top + 10, _itemCursor.right + 10, _itemCursor.bottom - 20), &r_itemSlot[_itemSlot]))
+	{
+		if (i_itemSlot[_itemSlot] == IMAGEMANAGER->findImage(L"noneShop"))_isInfo = false;
+		else if (i_itemSlot[_itemSlot] != IMAGEMANAGER->findImage(L"noneShop")) _isInfo = true;
+	}
+	if (INVENMANAGER->getVItem().size() == 0) _isInfo = false;
 	if (_isItem)
 	{
 		_charSel->update();
@@ -460,7 +469,6 @@ void townInven::update()
 		if (_wareHouseSlot == 0) _wareHouseBlock = RectMake(1157, 103, 40, 33);
 		if (_wareHouseSlot == 511) _wareHouseBlock = RectMake(1157, 478, 40, 33);
 	}
-
 }
 
 void townInven::render()
@@ -468,8 +476,8 @@ void townInven::render()
 	if (_isItem) _charSel->render();
 	else
 	{
-		IMAGEMANAGER->findImage(L"backBlack")->render(_itemInfo.left, _itemInfo.top, false, 0.4f);
-		IMAGEMANAGER->findImage(L"아이템정보")->render(_itemInfo.left, _itemInfo.top, false, 1.0f);
+		//
+		//IMAGEMANAGER->findImage(L"아이템정보")->render(_itemInfo.left, _itemInfo.top, false, 1.0f);
 		IMAGEMANAGER->findImage(L"마을인벤")->render(_itemBag.left, _itemBag.top, false, 1.0f);
 		IMAGEMANAGER->findImage(L"마을인벤3")->render(_itemBagBlock.left, _itemBagBlock.top, false, 1.0f);
 		IMAGEMANAGER->findImage(L"마을창고")->render(_wareHouse.left, _wareHouse.top, false, 1.0f);
@@ -549,6 +557,41 @@ void townInven::render()
 			IMAGEMANAGER->findImage(L"커서")->render(_moveCursor.left, _moveCursor.top, false, 1.0f);
 		}
 		itemNumDraw();
+		//정보이미지 출력
+		if (_isInfo)
+		{
+			for (int i = 0; i < INVENMANAGER->getVItem().size(); i++)
+			{
+				if (i == _itemSlot)
+				{
+					_infoImage = INVENMANAGER->getVItem()[i].info;
+					_infoImage2 = INVENMANAGER->getVItem()[i].Image2;
+					IMAGEMANAGER->findImage(L"infoBox")->render(63, WINSIZEY - 117, false, 1.0f);
+					_infoImage->render(76, WINSIZEY - 110, false, 1.0f);
+					IMAGEMANAGER->findImage(L"backBlack")->render(63, 523, false, 0.4f);
+					IMAGEMANAGER->findImage(L"itemStat")->render(63, 523, false, 1.0f);
+					_infoImage2->render(69, 532, false, 1.0f);
+
+					swprintf_s(str, L"%d", INVENMANAGER->getVItem()[i].HP);
+					DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0x7a, 0x7a, 0x7a), 1), L"고딕", 30, str, 63 + 330 - 60, 532 + 100 - 20, 63 + 330, 523 + 100 + 50);
+
+					swprintf_s(str, L"%d", INVENMANAGER->getVItem()[i].SP);
+					DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0x7a, 0x7a, 0x7a), 1), L"고딕", 30, str, 63 + 330 - 60, 532 + 130 - 20, 63 + 330, 523 + 130 + 50);
+
+					swprintf_s(str, L"%d", INVENMANAGER->getVItem()[i].Atk);
+					DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0x7a, 0x7a, 0x7a), 1), L"고딕", 30, str, 63 + 330 - 60, 532 + 165 - 15, 63 + 330, 523 + 165 + 50);
+
+					swprintf_s(str, L"%d", INVENMANAGER->getVItem()[i].Int);
+					DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0x7a, 0x7a, 0x7a), 1), L"고딕", 30, str, 63 + 330 - 60, 532 + 195 - 15, 63 + 330, 523 + 195 + 50);
+
+					swprintf_s(str, L"%d", INVENMANAGER->getVItem()[i].Def);
+					DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0x7a, 0x7a, 0x7a), 1), L"고딕", 30, str, 63 + 665 - 60, 532 + 165 - 15, 63 + 665, 523 + 165 + 50);
+
+					swprintf_s(str, L"%d", INVENMANAGER->getVItem()[i].Res);
+					DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0x7a, 0x7a, 0x7a), 1), L"고딕", 30, str, 63 + 665 - 60, 532 + 195 - 15, 63 + 665, 523 + 195 + 50);
+				}
+			}
+		}
 	}
 }
 
