@@ -12,8 +12,8 @@ private:
 	vector<Item> _vWareHouse;
 public:
 	//인벤 벡터값 가져오기
-	vector<Item> getVItem(void) { return _vInvenItem; }
-	vector<Item>::iterator getVIItem(void) { return _viInvenItem; }
+	vector<Item> &getVItem(void) { return _vInvenItem; }
+	vector<Item>::iterator &getVIItem(void) { return _viInvenItem; }
 	//푸시백
 	void pushBackVItem(int i, vector<Item> Item) { _vInvenItem.push_back(Item[i]); }
 	//지정한곳에서 부터 끝까지 지우기
@@ -26,7 +26,7 @@ public:
 	void swapVItem(vector<Item> Item) { _vInvenItem.swap(Item); }
 	//=========================================================================================
 	//창고 벡터 가져오기
-	vector<Item> getVWareHouse(void) { return _vWareHouse; }
+	vector<Item> &getVWareHouse(void) { return _vWareHouse; }
 	//창고 푸시백
 	void pushBackWareHouse(int i, vector<Item> Item) { _vWareHouse.push_back(Item[i]); }
 	//창고 하나 지우기

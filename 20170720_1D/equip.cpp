@@ -76,9 +76,32 @@ void equip::render()
 	//무기 끼우기
 	if (STATMANAGER->getVWeapon().size() == 0)	IMAGEMANAGER->findImage(L"weapon")->render(_equipSlot[0].left, _equipSlot[0].top, false, 1.0f);
 	else STATMANAGER->getVWeapon()[0].Image2->render(_equipSlot[0].left + 100, _equipSlot[0].top, false, 1.0f);
-	IMAGEMANAGER->findImage(L"other")->render(_equipSlot[1].left, _equipSlot[1].top, false, 1.0f);
-	IMAGEMANAGER->findImage(L"other")->render(_equipSlot[2].left, _equipSlot[2].top, false, 1.0f);
-	IMAGEMANAGER->findImage(L"other")->render(_equipSlot[3].left, _equipSlot[3].top, false, 1.0f);
+
+	if (STATMANAGER->getVArmor().size() == 0)
+	{
+		IMAGEMANAGER->findImage(L"other")->render(_equipSlot[1].left, _equipSlot[1].top, false, 1.0f);
+		IMAGEMANAGER->findImage(L"other")->render(_equipSlot[2].left, _equipSlot[2].top, false, 1.0f);
+		IMAGEMANAGER->findImage(L"other")->render(_equipSlot[3].left, _equipSlot[3].top, false, 1.0f);
+	}
+
+	if (STATMANAGER->getVArmor().size() == 1)
+	{
+		STATMANAGER->getVArmor()[0].Image2->render(_equipSlot[1].left + 100, _equipSlot[1].top, false, 1.0f);
+		IMAGEMANAGER->findImage(L"other")->render(_equipSlot[2].left, _equipSlot[2].top, false, 1.0f);
+		IMAGEMANAGER->findImage(L"other")->render(_equipSlot[3].left, _equipSlot[3].top, false, 1.0f);
+	}
+	if (STATMANAGER->getVArmor().size() == 2)
+	{
+		STATMANAGER->getVArmor()[0].Image2->render(_equipSlot[1].left + 100, _equipSlot[1].top, false, 1.0f);
+		STATMANAGER->getVArmor()[1].Image2->render(_equipSlot[2].left + 100, _equipSlot[2].top, false, 1.0f);
+		IMAGEMANAGER->findImage(L"other")->render(_equipSlot[3].left, _equipSlot[3].top, false, 1.0f);
+	}
+	if (STATMANAGER->getVArmor().size() == 3)
+	{
+		STATMANAGER->getVArmor()[0].Image2->render(_equipSlot[1].left + 100, _equipSlot[1].top, false, 1.0f);
+		STATMANAGER->getVArmor()[1].Image2->render(_equipSlot[2].left + 100, _equipSlot[2].top, false, 1.0f);
+		STATMANAGER->getVArmor()[2].Image2->render(_equipSlot[3].left + 100, _equipSlot[3].top, false, 1.0f);
+	}
 	//if()
 	IMAGEMANAGER->findImage(L"itemBag")->render(_invenBox.left, _invenBox.top, false, 1.0f);
 	IMAGEMANAGER->findImage(L"equipSort")->frameRender(_sort.left, _sort.top, 0, 0, false, 1.0f);
@@ -109,8 +132,11 @@ void equip::render()
 		IMAGEMANAGER->findImage(L"miniBlack")->render(_itemBox.left, _itemBox.top, false, 0.4f);
 		IMAGEMANAGER->findImage(L"miniInfo")->render(_itemBox.left, _itemBox.top, false, 1.0f);
 		IMAGEMANAGER->findImage(L"infoBox")->render(61, _invenBox.bottom + 20, false, 1.0f);
-		INVENMANAGER->getVItem()[_slotCount + (int)_slotNum].info->render(61 + 13, _invenBox.bottom + 20 + 7, false, 1.0f);
-		INVENMANAGER->getVItem()[_slotCount + (int)_slotNum].Image2->render(_itemBox.left + 7, _itemBox.top + 10, false, 1.0f);
+		if (INVENMANAGER->getVItem().size())
+		{
+			INVENMANAGER->getVItem()[_slotCount + (int)_slotNum].info->render(61 + 13, _invenBox.bottom + 20 + 7, false, 1.0f);
+			INVENMANAGER->getVItem()[_slotCount + (int)_slotNum].Image2->render(_itemBox.left + 7, _itemBox.top + 10, false, 1.0f);
+		}
 	}
 	IMAGEMANAGER->findImage(L"cursor")->render(_cursor.left, _cursor.top, false, 1.0f);
 }
@@ -233,7 +259,7 @@ void equip::equipItem()
 				{
 					_isEquip = false;
 					STATMANAGER->pushBackVWeapon(_slotCount + (int)_slotNum, INVENMANAGER->getVItem());
-					INVENMANAGER->erase2VItem(0);
+					INVENMANAGER->erase2VItem(_slotCount + (int)_slotNum);
 
 				}
 				//마지막거 말고
@@ -267,11 +293,47 @@ void equip::equipItem()
 		break;
 
 	case ARMOR:
-		if (STATMANAGER->getVArmor().size() == 0)
+
+		if (STATMANAGER->getVArmor().size() < 4)
 		{
+			_isEquip = false;
+			//인벤창에 장비 템 하나 있을때
+			if (INVENMANAGER->getVItem().size() == 1)
+			{
+				_isEquip = false;
+				STATMANAGER->pushBackVArmor(0, INVENMANAGER->getVItem());
+				INVENMANAGER->erase2VItem(0);
+			}
+			else if (INVENMANAGER->getVItem().size() > 1)
+			{
+				//마지막꺼
+				if (_slotCount + (int)_slotNum == INVENMANAGER->getVItem().size() - 1)
+				{
+					_isEquip = false;
+					STATMANAGER->pushBackVArmor(_slotCount + (int)_slotNum, INVENMANAGER->getVItem());
+					INVENMANAGER->erase2VItem(_slotCount + (int)_slotNum);
+
+				}
+				//마지막거 말고
+				else if (_slotCount + (int)_slotNum < INVENMANAGER->getVItem().size())
+				{
+					_isEquip = false;
+					STATMANAGER->pushBackVArmor(_slotCount + (int)_slotNum, INVENMANAGER->getVItem());
+					for (int i = _slotCount + (int)_slotNum + 1; i < INVENMANAGER->getVItem().size(); i++)
+					{
+						_vTemp.push_back(INVENMANAGER->getVItem()[i]);
+					}
+					INVENMANAGER->eraseVItem(_slotCount + (int)_slotNum);
+					for (int i = 0; i < _vTemp.size(); i++)
+					{
+						INVENMANAGER->pushBackVItem(i, _vTemp);
+					}
+					_vTemp.clear();
+				}
+			}
 
 		}
-		else if (STATMANAGER->getVArmor().size() > 0)
+		else if (STATMANAGER->getVArmor().size() == 3)
 		{
 
 		}
