@@ -1,0 +1,29 @@
+﻿  dungeonScene.cpp
+dungeonScene.cpp : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+dungeonScene.cpp(106): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+dungeonScene.cpp(124): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+dungeonScene.cpp(130): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+dungeonScene.cpp(131): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+dungeonScene.cpp(132): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+dungeonScene.cpp(133): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+dungeonScene.cpp(140): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+dungeonScene.cpp(141): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+dungeonScene.cpp(145): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+dungeonScene.cpp(146): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+dungeonScene.cpp(154): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+dungeonScene.cpp(155): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+dungeonScene.cpp(161): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+dungeonScene.cpp(208): warning C4244: '=': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+dungeonScene.cpp(209): warning C4244: '=': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+dungeonScene.cpp(217): warning C4244: '=': 'double'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+dungeonScene.cpp(219): warning C4244: '=': 'double'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+dungeonScene.cpp(323): warning C4018: '>=': signed 또는 unsigned가 일치하지 않습니다.
+dungeonScene.cpp(352): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+dungeonScene.cpp(367): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+  코드를 생성하고 있습니다.
+  60 of 1951 functions ( 3.1%) were compiled, the rest were copied from previous compilation.
+    17 functions were new in current compilation
+    28 functions had inline decision re-evaluated but remain unchanged
+  코드를 생성했습니다.
+  Disgaea.vcxproj -> C:\Users\봉기남\Documents\GitHub\Disgaea\20170720_1D\Release\Disgaea.exe
+  Disgaea.vcxproj -> C:\Users\봉기남\Documents\GitHub\Disgaea\20170720_1D\Release\Disgaea.pdb (Full PDB)

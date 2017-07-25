@@ -364,11 +364,17 @@ void dungeonScene::aStarMove(int plNum)
 
 				if (KEYMANAGER->isOnceKeyDown(VK_RBUTTON))
 				{
-					//키 값에 도착좌표(타일배열번호)를 넘겨줍니다!
-					ASTARMANAGER->setGoalTile(i);
-					//키 값에 길찾기를 시작합니다!
-					ASTARMANAGER->startPathFinder();
-					_isMoveStart = true;
+					for (int j = 0; j < ASTARMANAGER->getMovableTile().size(); ++j)
+					{
+						if (ASTARMANAGER->getMovableTile()[j].indexX == _tile[i].indexX &&
+							ASTARMANAGER->getMovableTile()[j].indexY == _tile[i].indexY)
+						{
+							ASTARMANAGER->setGoalTile(i);
+							ASTARMANAGER->startPathFinder();
+							_isMoveStart = true;
+							break;
+						}
+					}
 				}
 			}
 			else _tile[i].edgePaint = false;
