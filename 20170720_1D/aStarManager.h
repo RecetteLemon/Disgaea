@@ -79,7 +79,6 @@ private:
 	aStarTile* _startTile;		//시작 타일
 	aStarTile* _goalTile;		//목표 타일
 	aStarTile* _currentTile;	//지금 타일
-
 public:
 	aStarManager() {};
 	~aStarManager() {};
@@ -138,6 +137,7 @@ public:
 	//플레이어가 이동 가능한 타일(아직 안만듬)
 	//	void setMoveTile(tagIso tile); <- 이 함수를 아래와 같이 변경함.(민수)
 	void getMovablePath(tagIso* currentMap, int arrNum, int moveNum);
+	vector<tagIso> getMovableTile() { return _vMovableList; }
 
 	//캐릭터에게 이동해야될 길을 넘겨준다
 	//이 함수는 캐릭터한테 갈 수 있는 길을 넘겨주는게 아니라,

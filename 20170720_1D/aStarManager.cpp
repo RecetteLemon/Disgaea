@@ -56,7 +56,8 @@ void aStarManager::setCurrentMap(tagIso* currentMap, int tileNum)
 		//타일의 속성값이나 캐릭터가 있을때
 		//못가게 막아줍시다!
 //		if (node->getIso().ter == TER_LOAD || node->getIso().ter == TER_VOID) node->setIsOpen(1);
-		if ((node->getIso().obj == OBJ_ERASE) && (node->getIso().ter == TER_LOAD || node->getIso().ter == TER_VOID)) node->setIsOpen(1);
+		if (node->getIso().obj == OBJ_ERASE && node->getIso().ter == TER_LOAD) node->setIsOpen(1);
+		else if (node->getIso().obj == OBJ_ERASE || node->getIso().ter == TER_VOID) node->setIsOpen(0);
 		else node->setIsOpen(0);
 
 		_vTotalList.push_back(node);
@@ -262,9 +263,7 @@ void aStarManager::movablepathFinder(aStarTile* currentTile)
 	//tempTile이 도착할 타일에 도착했으면
 	if (tempTile == _goalTile)
 	{
-		// 도착지점까지 움직이도록 움직여야할 리스트에 담아주고
 		if (!checkList(_vMovableList, tempTile)) _vMovableList.insert(_vMovableList.begin(), tempTile->getIso());
-		//이때까지 지나온 타일을 담아줍시다~
 		while (_currentTile->getParentNode() != NULL)
 		{
 			if (!checkList(_vMovableList, _currentTile)) _vMovableList.insert(_vMovableList.begin(), _currentTile->getIso());
@@ -406,7 +405,8 @@ void aStarManager::getMovablePath(tagIso* currentMap, int arrNum, int moveNum)
 
 		setCurrentMap(currentMap, arrNum);
 		setGoalTile((startY * TILEX) + startX + x + (y * TILEX));
-		movablepathFinder(_startTile);
+		if (abs(_goalTile->getIso().indexX - _startTile->getIso().indexX) + abs(_goalTile->getIso().indexY - _startTile->getIso().indexY) <= moveNum)
+			movablepathFinder(_startTile);
 	}
 
 	vectorClear();
