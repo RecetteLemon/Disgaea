@@ -54,10 +54,10 @@ void player::update(void)
 		_player.shadowImg->getWidth(), _player.shadowImg->getHeight());
 
 
-	if(SCENEMANAGER->sceneCheck(L"DungeonScene"))this->control();
+	if(SCENEMANAGER->sceneCheck(L"TownScene"))this->control();
 	this->stat();
 	this->AstarMove();
-	this->control();
+	//this->control();
 	//this->move();
 
 	if (KEYMANAGER->isOnceKeyDown('P'))

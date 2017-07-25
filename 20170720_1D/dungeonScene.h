@@ -8,13 +8,14 @@ class dungeonScene : public gameNode
 {
 private:
 	tagIso _tile[TILEX * TILEY];
-	characterManager* _cm;
-	int _tileIndex;
+	dungeonManager* _dm;
+	int _tileIndex[5];
 
 	//에이스타용
 	int _tileNum;
 	bool _isMoveStart;
 	bool _findPlayer;
+	int _selectPlNum;
 
 	RECT _rcEdge;
 	int _edgeNum;
@@ -39,7 +40,7 @@ public:
 	void loadFile();
 	void drawTile();
 	void camControl();
-	void aStarMove();
+	void aStarMove(int plNum);
 
 	void coordinateUpdate();
 };

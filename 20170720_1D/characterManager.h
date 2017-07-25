@@ -1,14 +1,12 @@
 #pragma once
 #include "gameNode.h"
+#include "player.h"
 #include "rozalin.h"
 #include "valvatorez.h"
 #include "Cleric.h"
 #include "Adell.h"
 #include "Pram.h"
 #include "Prinny.h"
-
-
-
 
 enum PLAYER
 {
@@ -35,9 +33,6 @@ private:
 	player* _player;
 	enemy* _enemy;
 	int _x, _y;	
-
-
-	
 
 	RECT _shadowRc;
 
@@ -70,3 +65,29 @@ public:
 	~characterManager();
 };
 
+
+
+class dungeonManager : public gameNode
+{
+private:
+	PLAYER _playerKind;
+	player* _player[PLAYER_END];
+	RECT _shadowRc[PLAYER_END];
+	tagIso _tile[TILEX * TILEY];
+	
+
+public:
+	HRESULT init(void);
+	void release(void);
+	void update(void);
+	void render(void);
+
+	inline RECT* getShadowRC() { return _shadowRc; }
+
+	player* getPlayer(int plNum) { return _player[plNum]; }
+	
+	void setPlayerState(int plNum,PLAYERSTAT ps) { _player[plNum]->setStat(ps); }
+
+	dungeonManager();
+	~dungeonManager();
+};

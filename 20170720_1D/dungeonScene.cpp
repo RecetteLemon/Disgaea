@@ -14,12 +14,14 @@ HRESULT dungeonScene::init()
 {
 	this->loadFile();
 
-
-	_tileIndex = 0;
-	_cm = new characterManager;
-	_cm->init(2, 5);
-	_cm->selectPlayer(0);
-
+	for (int i = 0; i < 5; i++)
+	{
+		_tileIndex[i] = 0;
+	}
+	_selectPlNum = 0;
+	_dm = new dungeonManager;
+	_dm->init();
+	
 	//a* 알고리즘을 적용할 캐릭터 수 만큼 호출
 	//	ASTARMANAGER->addAStar(_tile, _cm->getName(), _cm->getPlayerX(), _cm->getPlayerY());
 	//							현재맵, 캐릭터명, 캐릭터 시작점
@@ -37,8 +39,8 @@ HRESULT dungeonScene::init()
 
 
 
-	_potal[0] = IMAGEMANAGER->findImage(L"potalbBack");
-	_potal[1] = IMAGEMANAGER->findImage(L"PptalwWite");
+	_potal[0] = IMAGEMANAGER->findImage(L"potalBlack");
+	_potal[1] = IMAGEMANAGER->findImage(L"potalWhite");
 
 	_alpha = 0;
 	_alphaChange = false;
@@ -53,8 +55,8 @@ void dungeonScene::update()
 {
 	this->camControl();
 	this->coordinateUpdate();
-	this->aStarMove();
-	_cm->update();
+	this->aStarMove(_selectPlNum);
+	_dm->update();
 
 	if (!_alphaChange)
 	{
@@ -160,7 +162,10 @@ void dungeonScene::drawTile()
 				}
 			}
 
-			if (_tileIndex == i) _cm->render();
+			for (int j = 0; j < 5; j++)
+			{
+				if (_tileIndex[j] == i) _dm->render();
+			}
 		}
 	}
 }
@@ -188,12 +193,13 @@ void dungeonScene::coordinateUpdate()
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
 		HRGN hRgn = CreatePolygonRgn(_tile[i].line, 4, WINDING);
-
-		if (PtInRegion(hRgn, _cm->getShadowRC().left + 40, _cm->getShadowRC().bottom + 20))
+		for (int j = 0; j < 5; j++)
 		{
-			_tileIndex = i;
+			if (PtInRegion(hRgn, _dm->getShadowRC()[j].left + 40, _dm->getShadowRC()[j].bottom + 20))
+			{
+				_tileIndex[j] = i;
+			}
 		}
-
 		DeleteObject(hRgn);
 	}
 
@@ -249,67 +255,67 @@ void dungeonScene::coordinateUpdate()
 	}
 }
 
-void dungeonScene::aStarMove()
+void dungeonScene::aStarMove(int plNum)
 {
 	//움직일때(예외처리)
 	if (ASTARMANAGER->getMoveTile().size() != NULL && _isMoveStart)
 	{
-		if ((int)_cm->getPlayerCenter().x < ASTARMANAGER->getMoveTile()[_tileNum].centerX &&
-			(int)_cm->getPlayerCenter().y < ASTARMANAGER->getMoveTile()[_tileNum].centerY)
+		if ((int)_dm->getPlayer(plNum)->getX() < ASTARMANAGER->getMoveTile()[_tileNum].centerX &&
+			(int)_dm->getPlayer(plNum)->getY() < ASTARMANAGER->getMoveTile()[_tileNum].centerY)
 		{
-			_cm->setPlayerState(PLAYER_STAT_RB_MOVE);
-			_cm->moveOn();
+			_dm->setPlayerState(plNum, PLAYER_STAT_RB_MOVE);
+			_dm->getPlayer(plNum)->move();
 		}
-		else if ((int)_cm->getPlayerCenter().x > ASTARMANAGER->getMoveTile()[_tileNum].centerX &&
-			(int)_cm->getPlayerCenter().y < ASTARMANAGER->getMoveTile()[_tileNum].centerY)
+		else if ((int)_dm->getPlayer(plNum)->getX() > ASTARMANAGER->getMoveTile()[_tileNum].centerX &&
+			(int)_dm->getPlayer(plNum)->getY() < ASTARMANAGER->getMoveTile()[_tileNum].centerY)
 		{
-			_cm->setPlayerState(PLAYER_STAT_LB_MOVE);
-			_cm->moveOn();
+			_dm->setPlayerState(plNum, PLAYER_STAT_LB_MOVE);
+			_dm->getPlayer(plNum)->move();
 		}
-		else if ((int)_cm->getPlayerCenter().x < ASTARMANAGER->getMoveTile()[_tileNum].centerX &&
-			(int)_cm->getPlayerCenter().y > ASTARMANAGER->getMoveTile()[_tileNum].centerY)
+		else if ((int)_dm->getPlayer(plNum)->getX() < ASTARMANAGER->getMoveTile()[_tileNum].centerX &&
+			(int)_dm->getPlayer(plNum)->getY() > ASTARMANAGER->getMoveTile()[_tileNum].centerY)
 		{
-			_cm->setPlayerState(PLAYER_STAT_RT_MOVE);
-			_cm->moveOn();
+			_dm->setPlayerState(plNum, PLAYER_STAT_RT_MOVE);
+			_dm->getPlayer(plNum)->move();
 		}
-		else if ((int)_cm->getPlayerCenter().x > ASTARMANAGER->getMoveTile()[_tileNum].centerX &&
-			(int)_cm->getPlayerCenter().y > ASTARMANAGER->getMoveTile()[_tileNum].centerY)
+		else if ((int)_dm->getPlayer(plNum)->getX() > ASTARMANAGER->getMoveTile()[_tileNum].centerX &&
+			(int)_dm->getPlayer(plNum)->getY() > ASTARMANAGER->getMoveTile()[_tileNum].centerY)
 		{
-			_cm->setPlayerState(PLAYER_STAT_LT_MOVE);
-			_cm->moveOn();
+			_dm->setPlayerState(plNum, PLAYER_STAT_LT_MOVE);
+			_dm->getPlayer(plNum)->move();
 		}
 
-		switch (_cm->getPlayerStat())
+		switch (_dm->getPlayer(plNum)->getStat())
 		{
 		case PLAYER_STAT_RB_MOVE:
-			if (_cm->getPlayerCenter().x >= ASTARMANAGER->getMoveTile()[_tileNum].centerX &&
-				_cm->getPlayerCenter().y >= ASTARMANAGER->getMoveTile()[_tileNum].centerY)
+			if (_dm->getPlayer(plNum)->getX() >= ASTARMANAGER->getMoveTile()[_tileNum].centerX &&
+				_dm->getPlayer(plNum)->getY() >= ASTARMANAGER->getMoveTile()[_tileNum].centerY)
 			{
-				_cm->setPlayerState(PLAYER_STAT_RB_STAND);
+				_dm->setPlayerState(plNum, PLAYER_STAT_RB_STAND);
 				++_tileNum;
 			}
 			break;
 		case PLAYER_STAT_LB_MOVE:
-			if (_cm->getPlayerCenter().x <= ASTARMANAGER->getMoveTile()[_tileNum].centerX &&
-				_cm->getPlayerCenter().y >= ASTARMANAGER->getMoveTile()[_tileNum].centerY)
+			if (_dm->getPlayer(plNum)->getX() <= ASTARMANAGER->getMoveTile()[_tileNum].centerX &&
+				_dm->getPlayer(plNum)->getY() >= ASTARMANAGER->getMoveTile()[_tileNum].centerY)
 			{
-				_cm->setPlayerState(PLAYER_STAT_LB_STAND);
+				_dm->setPlayerState(plNum, PLAYER_STAT_LB_STAND);
 				++_tileNum;
 			}
 			break;
 		case PLAYER_STAT_RT_MOVE:
-			if (_cm->getPlayerCenter().x >= ASTARMANAGER->getMoveTile()[_tileNum].centerX &&
-				_cm->getPlayerCenter().y <= ASTARMANAGER->getMoveTile()[_tileNum].centerY)
+			if (_dm->getPlayer(plNum)->getX() >= ASTARMANAGER->getMoveTile()[_tileNum].centerX &&
+				_dm->getPlayer(plNum)->getY() <= ASTARMANAGER->getMoveTile()[_tileNum].centerY)
 			{
-				_cm->setPlayerState(PLAYER_STAT_RT_STAND);
+				_dm->setPlayerState(plNum, PLAYER_STAT_RT_STAND);
 				++_tileNum;
 			}
 			break;
 		case PLAYER_STAT_LT_MOVE:
-			if (_cm->getPlayerCenter().x <= ASTARMANAGER->getMoveTile()[_tileNum].centerX &&
-				_cm->getPlayerCenter().y <= ASTARMANAGER->getMoveTile()[_tileNum].centerY)
+			if (_dm->getPlayer(plNum)->getX() <= ASTARMANAGER->getMoveTile()[_tileNum].centerX &&
+				_dm->getPlayer(plNum)->getY() <= ASTARMANAGER->getMoveTile()[_tileNum].centerY)
 			{
-				_cm->setPlayerState(PLAYER_STAT_LT_STAND);
+				_dm->setPlayerState(plNum, PLAYER_STAT_LT_STAND);
 				++_tileNum;
 			}
 			break;
@@ -334,7 +340,7 @@ void dungeonScene::aStarMove()
 			//실시간으로 플레이어 위치를 받아서 스타트타일 셋팅
 			if (!_findPlayer)
 			{
-				if (PtInRegion(playerTile, _cm->getPlayerCenter().x, _cm->getPlayerCenter().y))
+				if (PtInRegion(playerTile, _dm->getPlayer(plNum)->getX(), _dm->getPlayer(plNum)->getY()))
 				{
 					//키 값에 현재 맵 값과 시작좌표(타일배열번호)를 넘겨줍니다!
 					ASTARMANAGER->setCurrentMap(_tile, i);
@@ -346,6 +352,15 @@ void dungeonScene::aStarMove()
 			if (PtInRegion(hRgn, _ptMouse.x + CAMERAMANAGER->getX(), _ptMouse.y + CAMERAMANAGER->getY()))
 			{
 				_tile[i].edgePaint = true;
+
+				if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+				{
+					for (int j = 0; j < 5; ++j)
+					{
+						if (_tileIndex[j] == i)_selectPlNum = j;
+						_findPlayer = false;
+					}
+				}
 
 				if (KEYMANAGER->isOnceKeyDown(VK_RBUTTON))
 				{
@@ -366,3 +381,4 @@ void dungeonScene::aStarMove()
 	}
 
 }
+

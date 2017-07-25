@@ -94,3 +94,56 @@ void characterManager::playerTileCol(int num)
 {
 	_player->setPlayerCol(num);
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+dungeonManager::dungeonManager()
+{
+
+}
+dungeonManager::~dungeonManager()
+{
+
+}
+
+HRESULT dungeonManager::init(void)
+{
+
+	_player[PLAYER_ADELL] = new Adell;
+	_player[PLAYER_ADELL]->init(L"NameAdell", L"Adell", 0, 0);
+
+	_player[PLAYER_CLERIC] = new Cleric;
+	_player[PLAYER_CLERIC]->init(L"NameCleric", L"Cleric", 80, 80);
+
+	_player[PLAYER_PRAM] = new Pram;
+	_player[PLAYER_PRAM]->init(L"NamePram", L"Pram", 160, 160);
+
+	_player[PLAYER_ROZALIN] = new rozalin;
+	_player[PLAYER_ROZALIN]->init(L"NameRozalin", L"Rozalin", 240, 240);
+
+	_player[PLAYER_VALVATOREZ] = new valvatorez;
+	_player[PLAYER_VALVATOREZ]->init(L"NameValvatorez", L"Valvatorez", 320, 320);
+
+
+	return S_OK;
+}
+void dungeonManager::release(void)
+{
+
+}
+void dungeonManager::update(void)
+{
+	for (int i = 0; i < PLAYER_END; i++)
+	{
+		_player[i]->update();
+		_shadowRc[i] = _player[i]->getShadowRect();
+	}
+}
+
+void dungeonManager::render(void)
+{
+	for (int i = 0; i < PLAYER_END; i++)
+	{
+		_player[i]->render();
+	}
+}
+
