@@ -56,8 +56,8 @@ HRESULT mapToolScene::init()
 		_tile[i].ter = TER_LOAD;
 		_tile[i].obj = OBJ_ERASE;
 		// 맵툴 이용할때만 사용
-		_tile[i].terFrame.x = 0;
-		// _tile[i].terFrame.x = 1;
+		//_tile[i].terFrame.x = 0;
+		_tile[i].terFrame.x = 1;
 		_tile[i].terFrame.y = 0;
 		_tile[i].objFrame.x = 0;
 		_tile[i].objFrame.y = 0;
@@ -121,6 +121,35 @@ HRESULT mapToolScene::init()
 	{
 		_tileImage[T_NOW].nextFrameX[i] = 1;
 		_tileImage[T_NOW].nextFrameY[i] = 0;
+	}
+	//첫번째 줄 타일
+	for (int i = 0; i < TILEX; i++)
+	{
+		_tile[i].ter = TER_VOID;
+		_tile[i].terFrame.x = 0;
+		_tile[i].terFrame.y = 0;
+	}
+	//오른쪽 줄 타일
+	for (int i = 0; i < TILEY; i++)
+	{
+		_tile[(i + 1) * TILEX - 1].ter = TER_VOID;
+		_tile[(i + 1) * TILEX - 1].terFrame.x = 0;
+		_tile[(i + 1) * TILEX - 1].terFrame.y = 0;
+	}
+
+	//아래쪽 타일
+	for (int i = TILEX * (TILEY - 1) + 1; i < TILEX * TILEY; i++)
+	{
+		_tile[i].ter = TER_VOID;
+		_tile[i].terFrame.x = 0;
+		_tile[i].terFrame.y = 0;
+	}
+	//왼쪽
+	for (int i = 0; i < TILEY; i++)
+	{
+		_tile[i * TILEX].ter = TER_VOID;
+		_tile[i * TILEX].terFrame.x = 0;
+		_tile[i * TILEX].terFrame.y = 0;
 	}
 
 	return S_OK;
@@ -755,6 +784,7 @@ TERRAIN_TYPE mapToolScene::terCreater(POINT tile)
 OBJECT_TYPE mapToolScene::objCreater(POINT tile)
 {
 	if (tile.x == 4 && tile.y == 6) return OBJ_NPC;
+	if (tile.x == 6 && tile.y == 6)	return OBJ_PLAYER;
 	if (tile.x == 7 && tile.y == 6) return OBJ_HOUSE;
 	return OBJ_ITEM;
 }

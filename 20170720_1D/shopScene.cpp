@@ -108,6 +108,24 @@ void shopScene::render()
 				IMAGEMANAGER->findImage(L"backBlack")->render(63, 523, false, 0.1f);
 				IMAGEMANAGER->findImage(L"itemStat")->render(63, 523, false, 1.0f);
 				_infoImage2->render(69, 532, false, 1.0f);
+				
+				swprintf_s(str, L"%d", _item->getVItem()[_buySlotNum + (int)_buySlot].HP);
+				DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0x00, 0x00, 0x00), 1), L"°íµñ", 30, str, 63 + 330 - wcslen(str), WINSIZEY - 117 + 100, 63 + 330 + 1, 523 + 100 + 50);
+
+				swprintf_s(str, L"%d", _item->getVItem()[_buySlotNum + (int)_buySlot].SP);
+				DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0x00, 0x00, 0x00), 1), L"°íµñ", 30, str, 63 + 330 - wcslen(str), WINSIZEY - 117 + 130, 63 + 330 + 1, 523 + 130 + 50);
+
+				swprintf_s(str, L"%d", _item->getVItem()[_buySlotNum + (int)_buySlot].Atk);
+				DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0x00, 0x00, 0x00), 1), L"°íµñ", 30, str, 63 + 330 - wcslen(str), WINSIZEY - 117 + 165, 63 + 330 + 1, 523 + 165 + 50);
+
+				swprintf_s(str, L"%d", _item->getVItem()[_buySlotNum + (int)_buySlot].Int);
+				DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0x00, 0x00, 0x00), 1), L"°íµñ", 30, str, 63 + 330 - wcslen(str), WINSIZEY - 117 + 195, 63 + 330 + 1, 523 + 195 + 50);
+
+				swprintf_s(str, L"%d", _item->getVItem()[_buySlotNum + (int)_buySlot].Def);
+				DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0x00, 0x00, 0x00), 1), L"°íµñ", 30, str, 63 + 665 - wcslen(str), WINSIZEY - 117 + 165, 63 + 665 + 1, 523 + 165 + 50);
+
+				swprintf_s(str, L"%d", _item->getVItem()[_buySlotNum + (int)_buySlot].Res);
+				DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(0x00, 0x00, 0x00), 1), L"°íµñ", 30, str, 63 + 665 - wcslen(str), WINSIZEY - 117 + 195, 63 + 665 + 1, 523 + 195 + 50);
 			}
 			//»ì°ÇÁö ¹°¾îº¸´Â °Í Ãâ·Â
 			if (_isBuying)
@@ -118,6 +136,9 @@ void shopScene::render()
 		}
 		swprintf_s(str, L"%d", _playerMoney);
 		DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(255, 255, 255), 1), L"°íµñ", 40, str, WINSIZEX - 280, 443, WINSIZEX - 77, 503);
+
+
+		
 		break;
 		//ÆÇ¸Å
 	case 2:
@@ -151,6 +172,7 @@ void shopScene::render()
 		{
 			IMAGEMANAGER->findImage(L"infoBox")->render(63, WINSIZEY - 117, false, 1.0f);
 			_infoImage->render(76, WINSIZEY - 110, false, 1.0f);
+			
 		}
 		swprintf_s(str, L"%d", _playerMoney);
 		DIRECT2D->drawTextD2D(DIRECT2D->createBrush(RGB(255, 255, 255), 1), L"°íµñ", 40, str, WINSIZEX - 280, 450, WINSIZEX - 77, 510);
