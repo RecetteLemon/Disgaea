@@ -40,6 +40,9 @@ public:
 
 	inline RECT getShadowRC() { return _shadowRc; }
 
+	inline void setPlayerX(int x) { return _player->setX(_player->getX() + x); }
+	inline void setPlayerY(int y) { return _player->setY(_player->getY() + y); }
+
 	POINT getPlayerCenter() { return PointMake(_player->getX(), _player->getY()); }
 	PLAYERSTAT getPlayerStat() { return _player->getStat(); }
 
