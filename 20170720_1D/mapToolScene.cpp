@@ -786,5 +786,6 @@ OBJECT_TYPE mapToolScene::objCreater(POINT tile)
 	if (tile.x == 4 && tile.y == 6) return OBJ_NPC;
 	if (tile.x == 6 && tile.y == 6)	return OBJ_PLAYER;
 	if (tile.x == 7 && tile.y == 6) return OBJ_HOUSE;
+	if (tile.x == 4 && tile.y == 6) return OBJ_ENEMY;
 	return OBJ_ITEM;
 }

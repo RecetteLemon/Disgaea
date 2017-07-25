@@ -155,7 +155,7 @@ void townScene::loadTile()
 	CAMERAMANAGER->setPosition(INITX - WINSIZEX / 2, INITY + 22);
 	HANDLE file;
 	DWORD read;
-	file = CreateFile(L"Tile/Town/TownTile2.map", GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	file = CreateFile(L"Tile/Town/TownTile3.map", GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	ReadFile(file, _tile, sizeof(tagIso) * TILEX * TILEY, &read, NULL);
 	CloseHandle(file);
 }
@@ -193,7 +193,7 @@ void townScene::playerTileCol()
 			else
 			{
 				_cm->playerTileCol(4);
-				break;
+				
 			}
 		}
 		DeleteObject(hRgn);

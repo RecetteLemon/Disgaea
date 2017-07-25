@@ -87,7 +87,7 @@ void dungeonScene::loadFile()
 {
 	HANDLE file;
 	DWORD read;
-	file = CreateFile(L"Tile/Dungeon/DungeonTile2.map", GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	file = CreateFile(L"Tile/Dungeon/DungeonTile3.map", GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	ReadFile(file, _tile, sizeof(tagIso) * TILEX * TILEY, &read, NULL);
 	CloseHandle(file);
 }
