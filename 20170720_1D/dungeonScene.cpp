@@ -394,9 +394,28 @@ void dungeonScene::aStarMove(int plNum)
 						if (ASTARMANAGER->getMovableTile()[j].indexX == _tile[i].indexX &&
 							ASTARMANAGER->getMovableTile()[j].indexY == _tile[i].indexY)
 						{
+							bool isExist = false;//캐릭터가 이미 존재하나요?
+
+							//일단 목표 타일 설정
 							ASTARMANAGER->setGoalTile(i);
-							ASTARMANAGER->startPathFinder();
-							_isMoveStart = true;
+
+							//플레이어 수만큼 돌린다
+							for (int i = 0; i < 5; i++)
+							{
+								if (ASTARMANAGER->getGoalTile()->getIso().x >= _dm->getPlayer(i)->getShadowRect().left &&
+									ASTARMANAGER->getGoalTile()->getIso().y <= _dm->getPlayer(i)->getShadowRect().top)
+									isExist = true;
+
+								if (isExist)
+									break;
+							}
+
+							if (!isExist)
+							{
+								ASTARMANAGER->startPathFinder();
+								_isMoveStart = true;
+							}
+
 							break;
 						}
 					}
