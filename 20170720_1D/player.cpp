@@ -20,6 +20,7 @@ HRESULT player::init(const wstring characterName, const wchar_t* imageName, int 
 	_player.y = y;
 	_player.shadowImg = IMAGEMANAGER->findImage(L"shadow");
 	_player.img = IMAGEMANAGER->findImage(imageName);
+	_moveControl = true;
 
 	//인벤틀 생성
 	
@@ -362,32 +363,34 @@ void player::draw(void)
 
 void player::control(void)
 {
+	if (_moveControl)
+	{
+		if (KEYMANAGER->isStayKeyDown('W'))
+		{
+			if (!SOUNDMANAGER->isPlaySound(L"Walking")) SOUNDMANAGER->play(L"Walking");
+			_player.stat = PLAYER_STAT_RT_MOVE;
+			this->move();
+		}
+		else if (KEYMANAGER->isStayKeyDown('D'))
+		{
+			if (!SOUNDMANAGER->isPlaySound(L"Walking")) SOUNDMANAGER->play(L"Walking");
+			_player.stat = PLAYER_STAT_RB_MOVE;
+			this->move();
+		}
 
-	if (KEYMANAGER->isStayKeyDown('W'))
-	{
-		if (!SOUNDMANAGER->isPlaySound(L"Walking")) SOUNDMANAGER->play(L"Walking");
-		_player.stat = PLAYER_STAT_RT_MOVE;
-		this->move();
-	}
-	else if (KEYMANAGER->isStayKeyDown('D'))
-	{
-		if (!SOUNDMANAGER->isPlaySound(L"Walking")) SOUNDMANAGER->play(L"Walking");
-		_player.stat = PLAYER_STAT_RB_MOVE;
-		this->move();
-	}
-
-	else if (KEYMANAGER->isStayKeyDown('S'))
-	{
-		if (!SOUNDMANAGER->isPlaySound(L"Walking")) SOUNDMANAGER->play(L"Walking");
-		_player.stat = PLAYER_STAT_LB_MOVE;
-		this->move();
-	}
-	else if (KEYMANAGER->isStayKeyDown('A'))
-	{
-		if (!SOUNDMANAGER->isPlaySound(L"Walking")) SOUNDMANAGER->play(L"Walking");
-		_player.stat = PLAYER_STAT_LT_MOVE;
-		this->move();
-	}
+		else if (KEYMANAGER->isStayKeyDown('S'))
+		{
+			if (!SOUNDMANAGER->isPlaySound(L"Walking")) SOUNDMANAGER->play(L"Walking");
+			_player.stat = PLAYER_STAT_LB_MOVE;
+			this->move();
+		}
+		else if (KEYMANAGER->isStayKeyDown('A'))
+		{
+			if (!SOUNDMANAGER->isPlaySound(L"Walking")) SOUNDMANAGER->play(L"Walking");
+			_player.stat = PLAYER_STAT_LT_MOVE;
+			this->move();
+		}
+	
 
 	if (KEYMANAGER->isOnceKeyUp('W'))
 	{
@@ -406,6 +409,7 @@ void player::control(void)
 	if (KEYMANAGER->isOnceKeyUp('A'))
 	{
 		_player.stat = PLAYER_STAT_LT_STAND;
+	}
 	}
 	if (KEYMANAGER->isOnceKeyDown('Z'))
 	{

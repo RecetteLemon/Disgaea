@@ -93,6 +93,7 @@ protected:
 	
 	
 	bool _shopOn;
+	bool _moveControl;
 
 public:
 	virtual HRESULT init(const wstring characterName ,const wchar_t* imageName, int x, int y);
@@ -122,6 +123,9 @@ public:
 
 	inline void setX(int x) { _player.x = x; }
 	inline void setY(int y) { _player.y = y; }
+
+	inline void setMoveControl(bool state) { _moveControl = state; }
+	inline bool getMoveControl() { return _moveControl; }
 	PLAYERSTAT getStat() { return _player.stat; }
 
 	void setStat(PLAYERSTAT ps) { _player.stat = ps; }

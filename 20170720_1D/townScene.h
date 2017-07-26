@@ -30,5 +30,6 @@ public:
 	void camControl();
 	void playerTileCol();
 	void backMenu();
+	void keyContorl();
 };
 

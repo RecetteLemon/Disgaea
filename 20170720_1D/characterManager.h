@@ -43,6 +43,9 @@ public:
 	inline void setPlayerX(int x) { return _player->setX(_player->getX() + x); }
 	inline void setPlayerY(int y) { return _player->setY(_player->getY() + y); }
 
+	inline void setMoveControl(bool state) { _player->setMoveControl(state); }
+	inline bool getMoveControl() { return _player->getMoveControl(); }
+
 	POINT getPlayerCenter() { return PointMake(_player->getX(), _player->getY()); }
 	PLAYERSTAT getPlayerStat() { return _player->getStat(); }
 

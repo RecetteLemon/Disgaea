@@ -37,6 +37,8 @@ public:
 	void cursorDraw();
 	void control();
 
+	inline bool getMenuUI() { return _turnMenu; }
+
 	menuUI();
 	~menuUI();
 };

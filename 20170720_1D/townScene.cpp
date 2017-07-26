@@ -69,8 +69,10 @@ void townScene::update()
 	_npcFrame->frameUpdate(0.2);
 	_potalNpcFrame->frameUpdate(0.2);
 	this->backMenu();
+	this->keyContorl();
 	
-	
+	if (_mUI->getMenuUI()) _cm->setMoveControl(false);
+	else _cm->setMoveControl(true);
 }
 void townScene::render()
 {
@@ -200,9 +202,21 @@ void townScene::playerTileCol()
 
 		DeleteObject(hRgn);
 	}
-
-
-
+	
+}
+void townScene::backMenu()
+{
+	if (KEYMANAGER->isOnceKeyDown('M'))
+	{
+		vector<wstring> v;
+		wchar_t str[10];
+		v.push_back(_itow(_tileIndex, str, 10));
+		TXTDATA->txtSave(L"PlayerSave.txt", v);
+		SCENEMANAGER->changeScene(L"MenuScene");
+	}
+}
+void townScene::keyContorl()
+{
 	HRGN hRgn1 = CreatePolygonRgn(_tile[_tileIndex - TILEX].line, 4, WINDING);
 	if (_tile[_tileIndex - TILEX].z > 0 || _tile[_tileIndex - TILEX].ter == TER_WALL || _tile[_tileIndex - TILEX].ter == TER_VOID || _tile[_tileIndex - TILEX].obj != OBJ_ERASE)
 	{
@@ -210,7 +224,7 @@ void townScene::playerTileCol()
 		{
 			/*if (_cm->getPlayerStat() == PLAYER_STAT_RT_MOVE)
 			{
-				_cm->playerTileCol(PLAYER_COL_RT);
+			_cm->playerTileCol(PLAYER_COL_RT);
 			}*/
 			_cm->setPlayerX(-8);
 			_cm->setPlayerY(+4);
@@ -225,7 +239,7 @@ void townScene::playerTileCol()
 		{
 			/*if (_cm->getPlayerStat() == PLAYER_STAT_LB_MOVE)
 			{
-				_cm->playerTileCol(PLAYER_COL_LB);
+			_cm->playerTileCol(PLAYER_COL_LB);
 			}*/
 			_cm->setPlayerX(+8);
 			_cm->setPlayerY(-4);
@@ -240,7 +254,7 @@ void townScene::playerTileCol()
 		{
 			/*if (_cm->getPlayerStat() == PLAYER_STAT_RB_MOVE)
 			{
-				_cm->playerTileCol(PLAYER_COL_RB);
+			_cm->playerTileCol(PLAYER_COL_RB);
 			}*/
 			_cm->setPlayerX(-8);
 			_cm->setPlayerY(-4);
@@ -255,23 +269,11 @@ void townScene::playerTileCol()
 		{
 			/*if (_cm->getPlayerStat() == PLAYER_STAT_LT_MOVE)
 			{
-				_cm->playerTileCol(PLAYER_COL_LT);
+			_cm->playerTileCol(PLAYER_COL_LT);
 			}*/
 			_cm->setPlayerX(+8);
 			_cm->setPlayerY(+4);
 		}
 	}
 	DeleteObject(hRgn4);
-	
-}
-void townScene::backMenu()
-{
-	if (KEYMANAGER->isOnceKeyDown('M'))
-	{
-		vector<wstring> v;
-		wchar_t str[10];
-		v.push_back(_itow(_tileIndex, str, 10));
-		TXTDATA->txtSave(L"PlayerSave.txt", v);
-		SCENEMANAGER->changeScene(L"MenuScene");
-	}
 }
