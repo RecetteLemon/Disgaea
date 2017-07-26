@@ -408,7 +408,7 @@ void aStarManager::getMovablePath(tagIso* currentMap, int arrNum, int moveNum)
 
 		setCurrentMap(currentMap, arrNum);
 		setGoalTile((startY * TILEX) + startX + x + (y * TILEX));
-		if (abs(_goalTile->getIso().indexX - _startTile->getIso().indexX) + abs(_goalTile->getIso().indexY - _startTile->getIso().indexY) <= moveNum)
+		if (abs(_goalTile->getIso().indexX - _startTile->getIso().indexX) + abs(_goalTile->getIso().indexY - _startTile->getIso().indexY) < moveNum)
 			movablepathFinder(_startTile);
 	}
 

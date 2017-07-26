@@ -67,9 +67,6 @@
     <Filter Include="Disgaea\LoadingScene">
       <UniqueIdentifier>{95ef20ff-59b8-49f6-8688-5b8e8084d14b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Disgaea\DungeonScene">
-      <UniqueIdentifier>{a4e8f62b-3cda-4431-903e-5ca6b33cc87c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Disgaea\Character">
       <UniqueIdentifier>{6fc5fc4e-aa9f-483d-ba38-874117434f58}</UniqueIdentifier>
     </Filter>
@@ -93,6 +90,9 @@
     </Filter>
     <Filter Include="Disgaea\inven">
       <UniqueIdentifier>{e79a5d25-03a8-462e-9545-94af8fafc58c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Disgaea\DungeonScene">
+      <UniqueIdentifier>{a4e8f62b-3cda-4431-903e-5ca6b33cc87c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -61,7 +61,7 @@ void player::update(void)
 	//this->control();
 	//this->move();
 
-	if (KEYMANAGER->isOnceKeyDown('P'))
+	if (KEYMANAGER->isOnceKeyDown('P')&& SCENEMANAGER->sceneCheck(L"TownScene"))
 	{
 		if (_shopOn) _shopOn = false;
 		else _shopOn = true;

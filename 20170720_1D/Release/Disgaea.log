@@ -1,0 +1,13 @@
+﻿  aStarManager.cpp
+aStarManager.cpp(136): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+aStarManager.cpp(140): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+aStarManager.cpp(222): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+aStarManager.cpp(226): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+aStarManager.cpp(299): warning C4018: '>': signed 또는 unsigned가 일치하지 않습니다.
+  코드를 생성하고 있습니다.
+  1 of 1991 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
+  코드를 생성했습니다.
+  Disgaea.vcxproj -> C:\Users\봉기남\Documents\GitHub\Disgaea\20170720_1D\Release\Disgaea.exe
+  Disgaea.vcxproj -> C:\Users\봉기남\Documents\GitHub\Disgaea\20170720_1D\Release\Disgaea.pdb (Full PDB)

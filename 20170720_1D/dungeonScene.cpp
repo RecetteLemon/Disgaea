@@ -311,11 +311,7 @@ void dungeonScene::aStarMove(int plNum)
 		for (int j = 0; j < 5; j++)
 		{
 			//캐릭터가 타일 안에 있으면
-			if (PtInRegion(hrgn, _dm->getPlayer(j)->getX(), _dm->getPlayer(j)->getY()))
-			{
-				_tile[i].isOpen = false;
-			}
-			//else _tile[i].isOpen = true;
+			if (PtInRegion(hrgn, _dm->getPlayer(j)->getX(), _dm->getPlayer(j)->getY())) _tile[i].isOpen = false;
 		}
 		DeleteObject(hrgn);
 	}
@@ -389,6 +385,7 @@ void dungeonScene::aStarMove(int plNum)
 			_isMoveStart = false;
 			_findPlayer = false;
 		}
+		//이동이 끝나면 캐릭터 타일을 한번 더 업데이트 해준다
 		this->characterTileUpdate();
 	}
 
@@ -407,7 +404,7 @@ void dungeonScene::aStarMove(int plNum)
 				{
 					//키 값에 현재 맵 값과 시작좌표(타일배열번호)를 넘겨줍니다!
 					ASTARMANAGER->setCurrentMap(_tile, i);
-					ASTARMANAGER->getMovablePath(_tile, i, 3);
+					ASTARMANAGER->getMovablePath(_tile, i, STATMANAGER->getPlayerStat()->_mov);
 					_findPlayer = true;
 				}
 			}
@@ -423,28 +420,9 @@ void dungeonScene::aStarMove(int plNum)
 						if (ASTARMANAGER->getMovableTile()[j].indexX == _tile[i].indexX &&
 							ASTARMANAGER->getMovableTile()[j].indexY == _tile[i].indexY)
 						{
-							bool isExist = false;//캐릭터가 이미 존재하나요?
-
-							//일단 목표 타일 설정
 							ASTARMANAGER->setGoalTile(i);
-
-							//플레이어 수만큼 돌린다
-							for (int i = 0; i < 5; i++)
-							{
-								if (ASTARMANAGER->getGoalTile()->getIso().x >= _dm->getPlayer(i)->getShadowRect().left &&
-									ASTARMANAGER->getGoalTile()->getIso().y <= _dm->getPlayer(i)->getShadowRect().top)
-									isExist = true;
-
-								if (isExist)
-									break;
-							}
-
-							if (!isExist)
-							{
-								ASTARMANAGER->startPathFinder();
-								_isMoveStart = true;
-							}
-
+							ASTARMANAGER->startPathFinder();
+							_isMoveStart = true;
 							break;
 						}
 					}
@@ -454,8 +432,6 @@ void dungeonScene::aStarMove(int plNum)
 
 			DeleteObject(hRgn);
 			DeleteObject(playerTile);
-
-			if (_isMoveStart) break;
 		}
 	}
 
@@ -473,7 +449,6 @@ void dungeonScene::aStarMove(int plNum)
 					_findPlayer = false;
 				}
 			}
-
 			DeleteObject(hRgn);
 		}
 	}
@@ -487,10 +462,7 @@ void dungeonScene::characterTileUpdate()
 		for (int j = 0; j < 5; j++)
 		{
 			//캐릭터가 타일 안에 없으면
-			if (PtInRegion(hrgn, _dm->getPlayer(j)->getX(), _dm->getPlayer(j)->getY()))
-			{
-				_tile[i].isOpen = false;
-			}
+			//if (PtInRegion(hrgn, _dm->getPlayer(j)->getX(), _dm->getPlayer(j)->getY())) _tile[i].isOpen = false;
 			if (!PtInRegion(hrgn, _dm->getPlayer(j)->getX(), _dm->getPlayer(j)->getY())) _tile[i].isOpen = true;
 		}
 		DeleteObject(hrgn);
